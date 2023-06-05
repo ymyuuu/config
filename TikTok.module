@@ -1,5 +1,5 @@
 #!name=TikTok
-#!desc=解锁日本地区
+#!desc=解锁🇯🇵地区
 [URL Rewrite]
 (?<=_region=)CN(?=&) JP 307
 (?<=&mcc_mnc=)4 2 307
