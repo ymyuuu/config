@@ -2,7 +2,7 @@
 #!desc=
 [Script]
 
-#TF信息获取 = type=http-request,pattern=^https:\/\/testflight\.apple\.com\/v3\/accounts/.*\/apps$,requires-body=0,script-path=https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/scripts/TF_keys.js
+#TF信息获取 = Auto join TF = type=cron, cronexp=*/5 * * * *, timeout=30, script-path=https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/scripts/Auto_Join_TF.js
 
 Auto join TF = type=cron,cronexp=*/1 * * * * *,script-path=https://raw.githubusercontent.com/chengkongyiban/shadowrocket/main/scripts/Auto_Join_TF.js
 
