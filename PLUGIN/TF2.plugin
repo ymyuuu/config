@@ -1,0 +1,9 @@
+#!name = 自动加入TF
+#!desc=
+#!openUrl=https://github.com/Y-7-0101
+#!author=YangMingyu
+#!homepage=https://github.com/Y-7-0101
+#!icon = https://gitlab.com/lodepuly/iconlibrary/-/raw/master/App_icon/120px/TestFlight.png
+
+[Script]
+cron "0 */20 * * * *" script=https://raw.githubusercontent.com/seirhsiao/config/main/scripts/testflight.js ,tag=TF监控 ,timeout=120
