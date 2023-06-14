@@ -1,5 +1,5 @@
-#!name = WeChatPro
-#!desc = 整合公众号和小程序去广告和解锁微信外部链接访问限制
+#!name = WeChatMix
+#!desc = 整合公众号和小程序去广告
 #!openUrl=https://github.com/Y-7-0101
 #!author=YangMingyu
 #!homepage=https://github.com/Y-7-0101
@@ -94,11 +94,9 @@
 ^https://m.ctrip.com/restapi/soa2/12673/queryWeChatHotEvent url reject-dict
 
 [Script]
+http-response ^https\:\/\/(weixin110\.qq|security.wechat)\.com\/cgi-bin\/mmspamsupport-bin\/newredirectconfirmcgi\? script-path = https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/Weixin/Weixin_external_links_unlock.js, tag=微信外部链接解锁
 # 公众号
 http-response ^https?:\/\/mp\.weixin\.qq\.com\/mp\/getappmsgad script-path=https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/Weixin/Weixin_Official_Accounts_remove_ads.js, requires-body = true, tag = 微信公众号去广告
-
-# 解锁微信外部链接访问限制，跳过中间界面。支付宝链接、被封禁链接进行通知弹窗跳转，在微信中用快照显示被封禁的链接，在微信中进行强制重定向
-http-response ^https\:\/\/(weixin110\.qq|security.wechat)\.com\/cgi-bin\/mmspamsupport-bin\/newredirectconfirmcgi\? script-path = https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/Weixin/Weixin_external_links_unlock.js, tag=微信外部链接解锁
 
 # 小程序
 http-response ^https://ump.ems.com.cn/new-generation-extend/redis/pageInfoByChannel script-path = https://raw.githubusercontent.com/jizhi0520/QX/main/ems.js, requires-body = true, tag = EMS中国邮政物流速递去广告
