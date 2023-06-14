@@ -7,4 +7,3 @@
 
 [Script]
 cron "5 0 * * *" script-path=https://raw.githubusercontent.com/lowking/Scripts/master/ali/aliYunPanCheckIn.js, timeout=300, tag=aliyun
-cron "10 0 * * *" script-path=https://raw.githubusercontent.com/lowking/Scripts/master/ali/aliYunPanCheckIn.js, timeout=300, tag=aliyun
