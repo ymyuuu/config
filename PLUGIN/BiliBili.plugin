@@ -1,0 +1,17 @@
+#!name=BiliBili
+#!desc=
+#!openUrl=https://github.com/Y-7-0101
+#!author=YangMingyu
+#!homepage=https://github.com/Y-7-0101
+#!icon=https://pic4.zhimg.com/80/v2-74d133acb51b60ad2fa293c71cd505bb_1440w.png
+# 订阅地址：https://raw.githubusercontent.com/ClydeTime/BiliBili/main/boxjs/BiliBili.boxjs.json
+
+
+[Script]
+cron "7 0 * * *" script-path=https://raw.githubusercontent.com/ClydeTime/BiliBili/main/js/BiliBiliDailyBonus.js, tag=签到
+
+http-request ^https?:\/\/app\.bilibili\.com\/x\/resource\/domain\? script-path=https://raw.githubusercontent.com/ClydeTime/BiliBili/main/js/BiliBiliDailyBonus.js, tag=BiliBiliCookie
+
+
+[MITM]
+hostname = app.bilibili.com, m.bilibili.com
