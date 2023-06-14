@@ -4,6 +4,7 @@
 #!author=YangMingyu
 #!homepage=https://github.com/Y-7-0101
 #!icon=https://raw.githubusercontent.com/Softlyx/Fileball/main/YUAN/ALiYun.png
+# https://raw.githubusercontent.com/songyangzz/QuantumultX/master/syzzzf.box.json
 
 [Script]
 cron "5 0 * * *" script-path=https://raw.githubusercontent.com/lowking/Scripts/master/ali/aliYunPanCheckIn.js, timeout=300, tag=aliyun
