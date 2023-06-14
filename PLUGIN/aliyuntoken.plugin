@@ -1,4 +1,4 @@
-#!name=阿里网盘token获取
+#!name=aliyuntoken
 #!desc=
 #!openUrl=https://github.com/Y-7-0101
 #!author=YangMingyu
@@ -6,7 +6,7 @@
 #!icon=https://raw.githubusercontent.com/Softlyx/Fileball/main/YUAN/ALiYun.png
 
 [Script]
-http-request ^https:\/\/auth\.aliyundrive\.com\/v2\/account\/token script-path=https://raw.githubusercontent.com/zqzess/rule_for_quantumultX/master/js/Mine/aDriveCheckIn/aDriveCheckIn.js, requires-body=true, timeout=10, enabled=true, tag=aliyuntoken
+http-response https:\/\/auth.aliyundrive.com\/v2\/account\/token script-path=https://raw.githubusercontent.com/lowking/Scripts/master/ali/aliYunPanCheckIn.js, requires-body=true, timeout=10, tag=aliyuntoken
 
 [MITM]
 hostname = auth.aliyundrive.com
