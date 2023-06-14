@@ -10,3 +10,6 @@ DOMAIN, testflight.apple.com, PROXY
 
 [Script]
 cron "0 */20 * * * *" script=https://raw.githubusercontent.com/seirhsiao/config/main/scripts/testflight.js ,tag=TF监控 ,timeout=120
+
+[MITM]
+hostname = testflight.apple.com
