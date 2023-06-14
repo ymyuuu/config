@@ -1,0 +1,16 @@
+#!name = 自动加入TF
+#!desc =  
+#!author = ymyuuu
+#!icon = https://gitlab.com/lodepuly/iconlibrary/-/raw/master/App_icon/120px/TestFlight.png
+#!input = APP_ID
+
+[Rule]
+DOMAIN, testflight.apple.com, PROXY
+
+[Script]
+http-request ^https?:\/\/testflight\.apple\.com\/v3\/accounts\/.*\/apps$ script-path=https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/TestFlight/TF_keys.js, tag = tfkey
+http-request ^https://testflight.apple.com/join/(.*) script-path=https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/TestFlight/TF_keys.js, tag=appid
+cron "0 */10 * * * *" script-path=https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/TestFlight/Auto_join_TF.js, tag=Auto TF, timeout=180
+
+[MITM]
+hostname = testflight.apple.com
