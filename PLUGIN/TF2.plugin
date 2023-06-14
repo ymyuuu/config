@@ -9,7 +9,7 @@
 DOMAIN, testflight.apple.com, PROXY
 
 [Script]
-cron "0 */20 * * * *" tag=TF监控 script=https://raw.githubusercontent.com/seirhsiao/config/main/scripts/testflight.js timeout=120
+cron "0 */20 * * * *" script-path=https://raw.githubusercontent.com/seirhsiao/config/main/scripts/testflight.js,tag=TF,timeout=180
 
 [MITM]
 hostname = testflight.apple.com
