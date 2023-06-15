@@ -6,17 +6,17 @@
 #!icon= https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Social_Media/TikTok.png
 
 [Rule]
-DOMAIN-SUFFIX,byteoversea.com,TikTok
-DOMAIN-SUFFIX,ibytedtos.com,TikTok
-DOMAIN-SUFFIX,ipstatp.com,TikTok
-DOMAIN-SUFFIX,muscdn.com,TikTok
-DOMAIN-SUFFIX,musical.ly,TikTok
-DOMAIN-SUFFIX,tik-tokapi.com,TikTok
-DOMAIN-SUFFIX,tiktok.com,TikTok
-DOMAIN-SUFFIX,tiktokcdn.com,TikTok
-DOMAIN-SUFFIX,tiktokv.com,TikTok
-DOMAIN-KEYWORD,-tiktokcdn-com,TikTok
-USER-AGENT,tiktok*,TikTok
+DOMAIN-SUFFIX,byteoversea.com,PROXY
+DOMAIN-SUFFIX,ibytedtos.com,PROXY
+DOMAIN-SUFFIX,ipstatp.com,PROXY
+DOMAIN-SUFFIX,muscdn.com,PROXY
+DOMAIN-SUFFIX,musical.ly,PROXY
+DOMAIN-SUFFIX,tik-tokapi.com,PROXY
+DOMAIN-SUFFIX,tiktok.com,PROXY
+DOMAIN-SUFFIX,tiktokcdn.com,PROXY
+DOMAIN-SUFFIX,tiktokv.com,PROXY
+DOMAIN-KEYWORD,-tiktokcdn-com,PROXY
+USER-AGENT,tiktok*,PROXY
 
 [URL Rewrite]
 (?<=_region=)CN(?=&) JP 307
