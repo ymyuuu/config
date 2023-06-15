@@ -5,24 +5,13 @@
 #!homepage=https://github.com/Y-7-0101
 #!icon= https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Social_Media/TikTok.png
 
-[Rule]
-DOMAIN-SUFFIX,byteoversea.com,PROXY
-DOMAIN-SUFFIX,ibytedtos.com,PROXY
-DOMAIN-SUFFIX,ipstatp.com,PROXY
-DOMAIN-SUFFIX,muscdn.com,PROXY
-DOMAIN-SUFFIX,musical.ly,PROXY
-DOMAIN-SUFFIX,tik-tokapi.com,PROXY
-DOMAIN-SUFFIX,tiktok.com,PROXY
-DOMAIN-SUFFIX,tiktokcdn.com,PROXY
-DOMAIN-SUFFIX,tiktokv.com,PROXY
-DOMAIN-KEYWORD,-tiktokcdn-com,PROXY
-USER-AGENT,tiktok*,PROXY
-
-[URL Rewrite]
-(?<=_region=)CN(?=&) JP 307
-(?<=&mcc_mnc=)4 2 307
-^(https?:\/\/(tnc|dm)[\w-]+\.\w+\.com\/.+)(\?)(.+) $1$4 302
-(?<=\d\/\?\w{7}_\w{4}=)1[6-9]..(?=.?.?&) 18.4 307
+[Rewrite]
+^https?://(www.)?g.cn 302 https://www.google.com
+^https?://(www.)?google.cn 302 https://www.google.com
+(?<=_region=)CN(?=&) 307 JP
+(?<=&mcc_mnc=)4 307 2
+^(https?:\/\/(tnc|dm)[\w-]+\.\w+\.com\/.+)(\?)(.+) 302 $1$3
+(^https?:\/\/*\.\w{4}okv.com\/.+&.+)(\d{2}\.3\.\d)(.+) 302 $118.0$3
 
 [MITM]
-hostname = *.tiktokv.com,*.byteoversea.com,*.tik-tokapi.com
+hostname = *.google.cn,*.tiktokv.com,*.byteoversea.com,*.tik-tokapi.com
