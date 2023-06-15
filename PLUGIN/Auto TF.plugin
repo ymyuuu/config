@@ -1,7 +1,7 @@
 #!name = 自动加入TF
 #!desc=
 #!openUrl=https://github.com/Y-7-0101
-#!author=YangMingyu
+#!author=@YangMingyu
 #!homepage=https://github.com/Y-7-0101
 #!icon = https://gitlab.com/lodepuly/iconlibrary/-/raw/master/App_icon/120px/TestFlight.png
 #!input = APP_ID
