@@ -5,18 +5,11 @@
 #!homepage=https://github.com/Y-7-0101
 #!icon=https://raw.githubusercontent.com/fmz200/wool_scripts/main/icons/apps/Category_Balloon.png
 
-
-
-
 # 本插件搬运自https://github.com/chengkongyiban/stash/tree/main/Rewrite_Parser_Wiki
 
 [Script]
-
-
 http-request \/[^/]+\.[^/]+loon$|loon\?(hndel|hnadd|n|y|x|del)= script-path=https://github.com/chengkongyiban/stash/raw/main/js/Loon_Rewrite_Parser.js
 , requires-body=true, tag=Loon插件控制器
-
-
 
 [MITM]
 hostname = github.com,raw.githubusercontent.com,gist.githubusercontent.com,gitlab.com,yfamily.ml
