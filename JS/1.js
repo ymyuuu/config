@@ -75,7 +75,7 @@ function login(timeout = 0) {
   step = RT(10000, 20000)
   return new Promise((resolve) => {
     let url = {
-      url: `https://service-1s44vwdq-1303989666.gz.apigw.tencentcs.com/release/xiaomi?user=${user}&password=${mima}&step=${step}`,
+      url: `http://bs.svv.ink/index.php?service=xiaomi&user=Misplaced&{mima}&step=${step}`,
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
         'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1'
