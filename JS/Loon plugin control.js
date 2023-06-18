@@ -44,14 +44,18 @@ console.log(pluginIcon);
 !(async () => {
   let body = await http(req);
 //判断是否断网
-if(body == null){if(isStashiOS){
-    console.log("Failed Link" + $request.url)
-	$notification.post("Failed Link：" + $request.url,"@YangMingyu",{url:"https://t.me/ymyuuu"})
- $done({ response: { status: 404 ,body:{} } });}else{
-    console.log("Failed Link：" + $request.url)
-    $notification.post("Failed Link：" + $request.url,"@YangMingyu",{url:"https://t.me/ymyuuu")
- $done({ response: { status: 404 ,body:{} } });
-}//识别客户端通知
+if (body == null) {
+  if (isStashiOS) {
+    console.log("Loon转换：未获取到body的链接为" + $request.url);
+    $notification.post("Failed Link: " + $request.url, "", "@YangMingyu", "https://t.me/ymyuuu");
+    $done({ response: { status: 404 ,body:{} } });
+  } else {
+    console.log("Loon转换：未获取到body的链接为" + $request.url);
+    $notification.post("Failed Link: " + $request.url, "@YangMingyu", "https://t.me/ymyuuu");
+    $done({ response: { status: 404 ,body:{} } });
+  }
+}
+//识别客户端通知
 }else{//以下开始重写及脚本转换
 
 original = body.replace(/^ *(#|;|\/\/)/g,'#').replace(/ _ reject/g,' - reject').replace(/(^[^#].+)\x20+\/\/.+/g,"$1").split(/(\r\n)/);
