@@ -3,7 +3,7 @@
 #!openUrl=https://github.com/Y-7-0101
 #!author=@YangMingyu
 #!homepage=https://github.com/Y-7-0101
-#!icon=https://raw.githubusercontent.com/Softlyx/Fileball/main/YUAN/ALiYun.png
+#!icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/iCloud.png
 
 [Script]
 cron "5 0 * * *" script-path=https://raw.githubusercontent.com/lowking/Scripts/master/ali/aliYunPanCheckIn.js, timeout=300, tag=aliyun
