@@ -1,3 +1,6 @@
+const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-version'];
+const isSurgeiOS = 'undefined' !== typeof $environment && $environment['surge-version'];
+const isShadowrocket = 'undefined' !== typeof $rocket;
 const isLooniOS = 'undefined' != typeof $loon;
 
 var name = "";
@@ -38,10 +41,10 @@ console.log(pluginIcon);
 //判断是否断网
 if(body == null){if(isStashiOS){
     console.log("Failed Link" + $request.url)
-	$notification.post("Failed Link" + $request.url,"@YangMingyu",{url:"https://t.me/ymyuuu"})
+	$notification.post("Failed Link：" + $request.url,"@YangMingyu",{url:"https://t.me/ymyuuu"})
  $done({ response: { status: 404 ,body:{} } });}else{
-    console.log("Failed Link" + $request.url)
-    $notification.post("Failed Link" + $request.url,"@YangMingyu",{url:"https://t.me/ymyuuu"})
+    console.log("Failed Link：" + $request.url)
+    $notification.post("Failed Link：" + $request.url,"@YangMingyu",{url:"https://t.me/ymyuuu")
  $done({ response: { status: 404 ,body:{} } });
 }//识别客户端通知
 }else{//以下开始重写及脚本转换
