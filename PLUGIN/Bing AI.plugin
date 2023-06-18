@@ -5,6 +5,17 @@
 #!homepage=https://github.com/Y-7-0101
 #!icon = https://raw.githubusercontent.com/fmz200/wool_scripts/main/icons/lige47/bing(1).png
 
+[Rule]
+DOMAIN-SUFFIX, bing.com, PROXY
+DOMAIN-SUFFIX, bing.com.cn, PROXY
+DOMAIN-SUFFIX, bing.net, PROXY
+DOMAIN-SUFFIX, bingads.com, PROXY
+DOMAIN-SUFFIX, bingagencyawards.com, PROXY
+DOMAIN-SUFFIX, bingapistatistics.com, PROXY
+DOMAIN-SUFFIX, bingsandbox.com, PROXY
+DOMAIN-SUFFIX, bingvisualsearch.com, PROXY
+DOMAIN-SUFFIX, bingworld.com, PROXY
+
 [Script]
 http-request ^https:\/\/www\.bing\.com\/(search|new) script-path = https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/Bing/BingAI.js, requires-body = false, tag = Bing AI
 
