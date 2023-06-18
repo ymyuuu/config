@@ -2,6 +2,7 @@ const isStashiOS = 'undefined' !== typeof $environment && $environment['stash-ve
 const isSurgeiOS = 'undefined' !== typeof $environment && $environment['surge-version'];
 const isShadowrocket = 'undefined' !== typeof $rocket;
 const isLooniOS = 'undefined' != typeof $loon;
+const iconLibrary2 = iconLibrary1.split("(")[0];
 
 var name = "";
 var desc = "";
