@@ -50,18 +50,14 @@ console.log(pluginIcon);
 !(async () => {
   let body = await http(req);
 //判断是否断网
-if (body == null) {
-  if (isStashiOS) {
-    console.log("Loon转换：未获取到body的链接为" + $request.url);
-    $notification.post("Failed Link", "" + $request.url, "@ymyuuu", { url: "https://t.me/ymyuu" });
-    $done({ response: { status: 404 ,body: {} } });
-  } else {
-    console.log("Failed Link：" + $request.url);
-    $notification.post("Failed Link", " " + $request.url, "@ymyuuu", "https://t.me/ymyuuu");
-    $done({ response: { status: 404 ,body: {} } });
-  }
-}
-//识别客户端通知
+if(body == null){if(isStashiOS){
+    console.log("Loon转换：未获取到body的链接为" + $request.url)
+	$notification.post("Loon转换：未获取到body","请检查网络及节点是否畅通\n" + "源链接为" + $request.url,"认为是bug?点击通知反馈",{url:"https://t.me/ymyuuu"})
+ $done({ response: { status: 404 ,body:{} } });}else{
+    console.log("Loon转换：未获取到body的链接为" + $request.url)
+    $notification.post("Loon转换：未获取到body","请检查网络及节点是否畅通\n" + "源链接为" + $request.url,"认为是bug?点击通知反馈","https://t.me/ymyuuu)
+ $done({ response: { status: 404 ,body:{} } });
+}//识别客户端通知
 }else{//以下开始重写及脚本转换
 
 original = body.replace(/^ *(#|;|\/\/)/g,'#').replace(/ _ reject/g,' - reject').replace(/(^[^#].+)\x20+\/\/.+/g,"$1").split(/(\r\n)/);
