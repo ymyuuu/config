@@ -1,0 +1,12 @@
+#!name = Bing AI
+#!desc= Safari伪装Edge浏览器
+#!openUrl=https://github.com/Y-7-0101
+#!author=@YangMingyu
+#!homepage=https://github.com/Y-7-0101
+#!icon = https://raw.githubusercontent.com/fmz200/wool_scripts/main/icons/lige47/bing(1).png
+
+[Script]
+http-request ^https:\/\/www\.bing\.com\/(search|new) script-path = https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/Bing/BingAI.js, requires-body = false, tag = Bing AI
+
+[MITM]
+hostname = www.bing.com
