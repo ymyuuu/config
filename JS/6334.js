@@ -10,6 +10,45 @@ if (savedData) {
   }
 }
 
+// 判断账号密码最大步数最小步数是否存在
+if (!account) {
+  console.error('缺少账号信息');
+  if (notify === 1) {
+    $notification.post('步数更改失败', '缺少账号信息', '请检查账号');
+  }
+  $done();
+}
+if (!password) {
+  console.error('缺少密码信息');
+  if (notify === 1) {
+    $notification.post('步数更改失败', '缺少密码信息', '请检查密码');
+  }
+  $done();
+}
+if (!maxSteps) {
+  console.error('缺少最大步数信息');
+  if (notify === 1) {
+    $notification.post('步数更改失败', '缺少最大步数信息', '请检查最大步数');
+  }
+  $done();
+}
+if (!minSteps) {
+  console.error('缺少最小步数信息');
+  if (notify === 1) {
+    $notification.post('步数更改失败', '缺少最小步数信息', '请检查最小步数');
+  }
+  $done();
+}
+
+// 判断最大步数是否超限
+if (maxSteps > 98000) {
+  console.error('最大步数超过98000');
+  if (notify === 1) {
+    $notification.post('步数更改失败', '最大步数超过98000', '请检查最大步数');
+  }
+  $done();
+}
+
 const randomSteps = Math.floor(Math.random() * (maxSteps - minSteps + 1)) + minSteps;
 
 const url = 'http://bs.svv.ink/index.php';
