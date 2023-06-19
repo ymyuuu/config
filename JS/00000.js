@@ -6,7 +6,7 @@ if (savedData) {
     password = savedPassword;
     maxSteps = parseInt(savedMaxSteps);
     minSteps = parseInt(savedMinSteps);
-    notify = notifyOption === 'Y';
+    notify = notifyOption === 'M';
   }
 }
 
@@ -99,7 +99,7 @@ if (maxSteps > 98000 || minSteps > 98000) {
     }
   });
 
-  const newData = `${account}@${password}@${maxSteps}@${minSteps}@${notify ? 'Y' : 'N'}`;
+  const newData = `${account}@${password}@${maxSteps}@${minSteps}@${notify ? 'M' : 'N'}`;
   $persistentStore.write(newData, 'YangMingyu').then(() => {
     console.log('写入成功');
   }, () => {
