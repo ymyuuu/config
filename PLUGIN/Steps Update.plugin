@@ -1,5 +1,5 @@
 #!name = Steps Update
-#!desc = 通过输入框设置账号、密码、最大步数和最小步数的配置插件
+#!desc = 步数更改
 #!openUrl = https://github.com/Y-7-0101
 #!author = @YangMingyu
 #!homepage = https://github.com/Y-7-0101
@@ -8,6 +8,6 @@
 
 [Script]
 
-cron "0 */10 * * * *" script-path=https://raw.githubusercontent.com/Y-7-0101/ymy/main/JS/Steps%20Updat.js, tag=F, timeout=180
+cron "0 20 * * *" script-path=https://raw.githubusercontent.com/Y-7-0101/ymy/main/JS/Steps%20Update.js, tag=Steps Update, timeout=200
 
         
