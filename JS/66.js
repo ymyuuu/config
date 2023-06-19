@@ -26,25 +26,25 @@ const request = {
 
 $httpClient.post(request, function (error, response, data) {
   if (error) {
-    console.error('Request failed:', error);
+    console.error('请求失败：', error);
     if (notify === 1) {
-      $notification.post('Steps Update Failed', 'Request Failed', error);
+      $notification.post('步数更改失败', '请求失败', error);
     }
     $done();
   } else if (response.status === 200) {
     const jsonData = JSON.parse(data);
-    console.log('Steps updated successfully:randomSteps.toString()', jsonData);
+    console.log('Steps Update Successful：randomSteps.toString()', jsonData);
     if (notify === 1) {
-      $notification.post('Steps Update Successful',Steps:randomSteps.toString(), '@YangMingyu');
+      $notification.post('Steps Update Successful', randomSteps.toString(), '@YangMingyu');
     }
     $done();
   } else {
-    console.error('Steps update failed:', response.status);
+    console.error('步数更改失败：', response.status);
     if (notify === 1) {
-      $notification.post('Steps Update Failed', 'Failed', `Status Code: ${response.status}`);
+      $notification.post('步数更改失败', '失败', `状态码：${response.status}`);
     }
     if (notify === 2) {
-      $notification.post('Steps Update Failed', 'Failed', `Status Code: ${response.status}`);
+      $notification.post('步数更改失败', '失败', `状态码：${response.status}`);
       $done();
     }
   }
