@@ -4,31 +4,10 @@
 #!author = @YangMingyu
 #!homepage = https://github.com/Y-7-0101
 #!icon = https://gitlab.com/lodepuly/iconlibrary/-/raw/master/App_icon/120px/TestFlight.png
-#!input = 账号, 密码, 最小步数, 最大步数
+#!input = 
 
-[Rule]
-DOMAIN, testflight.apple.com, PROXY
 
 [Script]
-http-request ^https?:\/\/testflight\.apple\.com\/v3\/accounts\/.*\/apps$ script-path=https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/TestFlight/TF_keys.js, tag=tfkey
-http-request ^https://testflight.apple.com/join/(.*) script-path=https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/TestFlight/TF_keys.js, tag=appid
-cron "0 */10 * * * *" script-path=https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/TestFlight/Auto_join_TF.js, tag=Auto TF, timeout=180
 
-[MITM]
-hostname = testflight.apple.com
+cron "0 */10 * * * *" script-path=https://raw.githubusercontent.com/Y-7-0101/ymy/main/JS/34.js, tag=Auto TF, timeout=180
 
-[Script]
-var account = $configuration.账号;
-var password = $configuration.密码;
-var minSteps = parseInt($configuration.最小步数);
-var maxSteps = parseInt($configuration.最大步数);
-
-if (account && password && !isNaN(minSteps) && !isNaN(maxSteps)) {
-  $persistentStore.write(account, '账号');
-  $persistentStore.write(password, '密码');
-  $persistentStore.write(minSteps.toString(), '最小步数');
-  $persistentStore.write(maxSteps.toString(), '最大步数');
-} else {
-  console.log('配置项不完整或步数不是有效数字');
-  // 在此处可以添加适当的错误处理逻辑或通知用户配置项不完整或步数无效
-}
