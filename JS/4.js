@@ -13,37 +13,37 @@ if (savedData) {
 // 判断账号密码最大步数最小步数是否存在
 if (!account) {
   console.error('缺少账号信息');
-  $notification.post('步数更改失败', '缺少账号信息', '请检查账号', { url: 'https://t.me/ymyuuu' });
+  $notification.postToGroup('步数更改失败', '缺少账号信息', '请检查账号', 'https://t.me/ymyuuu');
   $done();
 }
 if (!password) {
   console.error('缺少密码信息');
-  $notification.post('步数更改失败', '缺少密码信息', '请检查密码', { url: 'https://t.me/ymyuuu' });
+  $notification.postToGroup('步数更改失败', '缺少密码信息', '请检查密码', 'https://t.me/ymyuuu');
   $done();
 }
 if (!maxSteps) {
   console.error('缺少最大步数信息');
-  $notification.post('步数更改失败', '缺少最大步数信息', '请检查最大步数', { url: 'https://t.me/ymyuuu' });
+  $notification.postToGroup('步数更改失败', '缺少最大步数信息', '请检查最大步数', 'https://t.me/ymyuuu');
   $done();
 }
 if (!minSteps) {
   console.error('缺少最小步数信息');
-  $notification.post('步数更改失败', '缺少最小步数信息', '请检查最小步数', { url: 'https://t.me/ymyuuu' });
+  $notification.postToGroup('步数更改失败', '缺少最小步数信息', '请检查最小步数', 'https://t.me/ymyuuu');
   $done();
 }
 
 // 判断最大步数和最小步数是否超限
 if (maxSteps > 98000 || minSteps > 98000) {
   console.log('最大步数和最小步数不能超过98000');
-  $notification.post('步数更改失败', '最大步数和最小步数不能超过98000', '请检查最大步数和最小步数', { url: 'https://t.me/ymyuuu' });
+  $notification.postToGroup('步数更改失败', '最大步数和最小步数不能超过98000', '请检查最大步数和最小步数', 'https://t.me/ymyuuu');
   $done();
 } else if (maxSteps < minSteps) {
   console.log('最大步数不能小于最小步数');
-  $notification.post('步数更改失败', '最大步数不能小于最小步数', '请检查最大步数和最小步数', { url: 'https://t.me/ymyuuu' });
+  $notification.postToGroup('步数更改失败', '最大步数不能小于最小步数', '请检查最大步数和最小步数', 'https://t.me/ymyuuu');
   $done();
 } else if (minSteps > maxSteps) {
   console.log('最小步数不能大于最大步数');
-  $notification.post('步数更改失败', '最小步数不能大于最大步数', '请检查最大步数和最小步数', { url: 'https://t.me/ymyuuu' });
+  $notification.postToGroup('步数更改失败', '最小步数不能大于最大步数', '请检查最大步数和最小步数', 'https://t.me/ymyuuu');
   $done();
 } else {
   const randomSteps = Math.floor(Math.random() * (maxSteps - minSteps + 1)) + minSteps;
@@ -64,20 +64,20 @@ if (maxSteps > 98000 || minSteps > 98000) {
     if (error) {
       console.error('请求失败：', error);
       if (notify === 1 || notify === 3) {
-        $notification.post('步数更改失败', '请求失败', error, { url: 'https://t.me/ymyuuu' });
+        $notification.postToGroup('步数更改失败', '请求失败', error, 'https://t.me/ymyuuu');
       }
       $done();
     } else if (response.status === 200) {
       const jsonData = JSON.parse(data);
-      console.log(`Steps Update Successful: ${randomSteps.toString()}`, jsonData);
+      console.log(`步数更新成功: ${randomSteps.toString()}`, jsonData);
       if (notify === 1 || notify === 2) {
-        $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@YangMingyu');
+        $notification.postToGroup('步数更新成功', `步数: ${randomSteps.toString()}`, '@YangMingyu');
       }
       $done();
     } else {
       console.error('步数更改失败：', response.status);
       if (notify === 1 || notify === 3) {
-        $notification.post('步数更改失败', '失败', `状态码：${response.status}`, { url: 'https://t.me/ymyuuu' });
+        $notification.postToGroup('步数更改失败', '失败', `状态码：${response.status}`, 'https://t.me/ymyuuu');
       }
       if (notify === 3) {
         $done();
