@@ -33,9 +33,9 @@ $httpClient.post(request, function (error, response, data) {
     $done();
   } else if (response.status === 200) {
     const jsonData = JSON.parse(data);
-    console.log('Steps Update Successful: randomSteps.toString()', jsonData);
+    console.log(`Steps Update Successful: ${randomSteps.toString()}`, jsonData);
     if (notify === 1) {
-      $notification.post('Steps Update Successful', Steps: randomSteps.toString(), '@YangMingyu');
+      $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@YangMingyu');
     }
     $done();
   } else {
@@ -51,4 +51,8 @@ $httpClient.post(request, function (error, response, data) {
 });
 
 const newData = `${account}@${password}@${maxSteps}@${minSteps}@${notify}`;
-$persistentStore.write(newData, 'YangMingyu');
+$persistentStore.write(newData, 'YangMingyu').then(() => {
+    console.log("写入成功");
+}, () => {
+    console.log("写入失败");
+});
