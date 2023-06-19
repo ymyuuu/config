@@ -42,11 +42,11 @@ if (!minSteps) {
 
 // 判断最大步数是否超限
 if (maxSteps > 98000) {
-  console.error('最大步数超过98000');
+  console.error('最大步数超过 98000');
   if (notify === 1) {
     $notification.post('步数更改失败', '最大步数超过98000', '请检查最大步数');
   }
-  $done();
+  return $done();
 }
 
 const randomSteps = Math.floor(Math.random() * (maxSteps - minSteps + 1)) + minSteps;
