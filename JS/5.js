@@ -93,7 +93,7 @@ if (maxSteps > 98000 || minSteps > 98000) {
   });
 
   if (![1, 2, 3, 4].includes(notify)) {
-    $notification.post('通知设置错误', '请检查notify的值', '应为1、2、3或4', { url: 'https://t.me/ymyuuu' });
+    console.log('通知设置错误');
     $done();
   }
 }
