@@ -40,11 +40,17 @@ if (!minSteps) {
   $done();
 }
 
-// 判断最大步数是否超限
-if (maxSteps > 98000) {
-  console.log('最大步数超过 98000');
+// 判断最大步数和最小步数是否超限
+if (maxSteps > 98000 || minSteps > 98000) {
+  console.log('最大步数和最小步数不能超过98000');
   if (notify === 1) {
-    $notification.post('步数更改失败', '最大步数超过98000', '请检查最大步数');
+    $notification.post('步数更改失败', '最大步数和最小步数不能超过98000', '请检查最大步数和最小步数');
+  }
+  $done();
+} else if (maxSteps < minSteps) {
+  console.log('最大步数不能小于最小步数');
+  if (notify === 1) {
+    $notification.post('步数更改失败', '最大步数不能小于最小步数', '请检查最大步数和最小步数');
   }
   $done();
 } else {
