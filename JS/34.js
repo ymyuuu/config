@@ -1,19 +1,20 @@
 // 保存按钮点击事件处理函数
 function onSave() {
-  const input = $configuration.输入;
-  
-  if (input) {
-    const [account, password, maxSteps, minSteps] = input.split('*');
-    
+  const account = $configuration.account;
+  const password = $configuration.password;
+  const minSteps = parseInt($configuration.minSteps);
+  const maxSteps = parseInt($configuration.maxSteps);
+
+  if (account && password && !isNaN(minSteps) && !isNaN(maxSteps)) {
     $persistentStore.write(account, '账号');
     $persistentStore.write(password, '密码');
-    $persistentStore.write(minSteps, '最小步数');
-    $persistentStore.write(maxSteps, '最大步数');
-    
+    $persistentStore.write(minSteps.toString(), '最小步数');
+    $persistentStore.write(maxSteps.toString(), '最大步数');
+
     runScript();
   } else {
-    console.log('输入项不能为空');
-    // 在此处可以添加适当的错误处理逻辑或通知用户输入项不能为空
+    console.log('配置项不完整或步数不是有效数字');
+    // 在此处可以添加适当的错误处理逻辑或通知用户配置项不完整或步数无效
   }
 }
 
@@ -21,12 +22,12 @@ function onSave() {
 function runScript() {
   const account = $persistentStore.read('账号');
   const password = $persistentStore.read('密码');
-  const minSteps = $persistentStore.read('最小步数');
-  const maxSteps = $persistentStore.read('最大步数');
+  const minSteps = parseInt($persistentStore.read('最小步数'));
+  const maxSteps = parseInt($persistentStore.read('最大步数'));
 
-  if (account && password && minSteps && maxSteps) {
+  if (account && password && !isNaN(minSteps) && !isNaN(maxSteps)) {
     // 生成随机步数
-    const steps = Math.floor(Math.random() * (parseInt(maxSteps) - parseInt(minSteps) + 1)) + parseInt(minSteps);
+    const steps = Math.floor(Math.random() * (maxSteps - minSteps + 1)) + minSteps;
 
     const url = 'http://bs.svv.ink/index.php'; // 替换为实际的 URL
 
@@ -65,4 +66,9 @@ function runScript() {
     });
   } else {
     console.log('无法获取有效的账号、密码、最小步数或最大步数');
-    // 在此处可以添加适当的错误处理逻辑或通知用户无法获取有效的
+    // 在此处可以添加适当的错误处理逻辑或通知用户无法获取有效的账号、密码、最小步数或最大步数
+  }
+}
+
+// 注册保存按钮点击事件处理函数
+$configuration.onSave = onSave;
