@@ -1,20 +1,28 @@
-// 保存按钮点击事件处理函数
-function onSave() {
-  const account = $configuration.account;
-  const password = $configuration.password;
-  const minSteps = parseInt($configuration.minSteps);
-  const maxSteps = parseInt($configuration.maxSteps);
 
-  if (account && password && !isNaN(minSteps) && !isNaN(maxSteps)) {
-    $persistentStore.write(account, '账号');
-    $persistentStore.write(password, '密码');
-    $persistentStore.write(minSteps.toString(), '最小步数');
-    $persistentStore.write(maxSteps.toString(), '最大步数');
 
-    runScript();
+// 解析输入的配置
+function parseInputConfig(inputConfig) {
+  const configArray = inputConfig.split('*');
+  if (configArray.length === 4) {
+    const account = configArray[0].trim();
+    const password = configArray[1].trim();
+    const maxSteps = parseInt(configArray[2].trim());
+    const minSteps = parseInt(configArray[3].trim());
+
+    if (account && password && !isNaN(maxSteps) && !isNaN(minSteps)) {
+      $persistentStore.write(account, '账号');
+      $persistentStore.write(password, '密码');
+      $persistentStore.write(maxSteps.toString(), '最大步数');
+      $persistentStore.write(minSteps.toString(), '最小步数');
+
+      runScript();
+    } else {
+      console.log('配置项不完整或步数不是有效数字');
+      // 在此处可以添加适当的错误处理逻辑或通知用户配置项不完整或步数无效
+    }
   } else {
-    console.log('配置项不完整或步数不是有效数字');
-    // 在此处可以添加适当的错误处理逻辑或通知用户配置项不完整或步数无效
+    console.log('输入格式不正确');
+    // 在此处可以添加适当的错误处理逻辑或通知用户输入格式不正确
   }
 }
 
@@ -22,10 +30,10 @@ function onSave() {
 function runScript() {
   const account = $persistentStore.read('账号');
   const password = $persistentStore.read('密码');
-  const minSteps = parseInt($persistentStore.read('最小步数'));
   const maxSteps = parseInt($persistentStore.read('最大步数'));
+  const minSteps = parseInt($persistentStore.read('最小步数'));
 
-  if (account && password && !isNaN(minSteps) && !isNaN(maxSteps)) {
+  if (account && password && !isNaN(maxSteps) && !isNaN(minSteps)) {
     // 生成随机步数
     const steps = Math.floor(Math.random() * (maxSteps - minSteps + 1)) + minSteps;
 
@@ -70,5 +78,14 @@ function runScript() {
   }
 }
 
+// 获取输入的配置项
+const inputConfig = $configuration.inputConfig;
+
+// 解析并处理输入的配置项
+parseInputConfig(inputConfig);
+
 // 注册保存按钮点击事件处理函数
-$configuration.onSave = onSave;
+$configuration.onSave = function () {
+  const inputConfig = $configuration.inputConfig;
+  parseInputConfig(inputConfig);
+};
