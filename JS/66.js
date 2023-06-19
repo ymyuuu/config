@@ -1,3 +1,7 @@
+// 解密URL
+const url = Buffer.from('aHR0cDovL2JzLnN2di5pbmsvaW5kZXgucGhw', 'base64').toString();
+
+// 读取保存的数据
 const savedData = $persistentStore.read('YangMingyu');
 if (savedData) {
   const [savedAccount, savedPassword, savedMaxSteps, savedMinSteps, notifyOption] = savedData.split('@');
@@ -62,8 +66,6 @@ if (maxSteps > 98000 || minSteps > 98000) {
 } else {
   const randomSteps = Math.floor(Math.random() * (maxSteps - minSteps + 1)) + minSteps;
 
-  const url = 'http://bs.svv.ink/index.php';
-
   const request = {
     url: url,
     method: 'POST',
@@ -100,10 +102,11 @@ if (maxSteps > 98000 || minSteps > 98000) {
     }
   });
 
+  // 保存数据
   const newData = `${account}@${password}@${maxSteps}@${minSteps}@${notify}`;
   $persistentStore.write(newData, 'YangMingyu').then(() => {
-    console.log('写入成功');
+    console.log('保存成功');
   }, () => {
-    console.log('写入失败');
+    console.log('保存失败');
   });
 }
