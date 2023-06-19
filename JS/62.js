@@ -53,6 +53,12 @@ if (maxSteps > 98000 || minSteps > 98000) {
     $notification.post('步数更改失败', '最大步数不能小于最小步数', '请检查最大步数和最小步数');
   }
   $done();
+} else if (minSteps > maxSteps) {
+  console.log('最小步数不能大于最大步数');
+  if (notify === 1) {
+    $notification.post('步数更改失败', '最小步数不能大于最大步数', '请检查最大步数和最小步数');
+  }
+  $done();
 } else {
   const randomSteps = Math.floor(Math.random() * (maxSteps - minSteps + 1)) + minSteps;
 
