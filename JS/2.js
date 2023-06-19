@@ -74,6 +74,12 @@ if (maxSteps > 98000 || minSteps > 98000) {
     body: `account=${account}&password=${password}&steps=${randomSteps}&max_steps=${maxSteps}&min_steps=${minSteps}`,
   };
 
+  if (![1, 2, 3, 4].includes(notify)) {
+    console.error('无效的通知策略');
+    $notification.post('步数更改失败', '无效的通知策略', '请检查通知选项');
+    $done();
+  }
+
   $httpClient.post(request, function (error, response, data) {
     if (error) {
       console.error('请求失败：', error);
