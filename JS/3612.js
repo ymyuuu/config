@@ -35,9 +35,7 @@ $httpClient.post(request, function (error, response, data) {
     const jsonData = JSON.parse(data);
     console.log('步数更改成功：', jsonData);
     if (notify === 1) {
-      const stepsChanged = jsonData.data.steps_changed || 0;
-
-      $notification.post('步数更改成功', `${stepsChanged} 步`, '@YangMingyu');
+      $notification.post('步数更改成功', randomSteps.toString(), '@YangMingyu');
     }
     $done();
   } else {
