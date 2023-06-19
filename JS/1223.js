@@ -31,8 +31,8 @@ let accounts = config.walking_accounts.map(v => {
     max = parseInt(result[2])
   }
   return {
-    userName: +8615033296069,
-    password: 20030101h,
+    userName: '+8615033296069',
+    password: '20030101h',
     min: 80000,
     max: 80001
   }
