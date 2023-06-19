@@ -1,10 +1,10 @@
-#!name = 自动加入TF
+#!name = 111
 #!desc = 通过#!input来修改账号密码最大最小步数的配置插件
 #!openUrl = https://github.com/Y-7-0101
 #!author = @YangMingyu
 #!homepage = https://github.com/Y-7-0101
 #!icon = https://gitlab.com/lodepuly/iconlibrary/-/raw/master/App_icon/120px/TestFlight.png
-#!input = 
+#!input = 111
 
 
 [Script]
