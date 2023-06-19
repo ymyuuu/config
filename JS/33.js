@@ -1,6 +1,7 @@
-const account = '15033296069'; // 替换为实际的账号
+const account = '13700308271'; // 替换为实际的账号
 const password = '20030101h'; // 替换为实际的密码
 const steps = '90000'; // 替换为实际的步数
+
 const url = 'http://bs.svv.ink/index.php'; // 替换为实际的 URL
 
 const request = {
@@ -16,13 +17,16 @@ const request = {
 $httpClient.post(request, function (error, response, data) {
   if (error) {
     console.error('请求失败：', error);
+    $notification.post('步数更改失败', '请求失败', error);
     $done();
   } else if (response.status === 200) {
     const jsonData = JSON.parse(data);
     console.log('步数更改成功：', jsonData);
+    $notification.post('步数更改成功', '成功', '步数更改成功');
     $done();
   } else {
     console.error('步数更改失败：', response.status);
+    $notification.post('步数更改失败', '失败', `状态码：${response.status}`);
     $done();
   }
 });
