@@ -35,7 +35,7 @@ $httpClient.post(request, function (error, response, data) {
     const jsonData = JSON.parse(data);
     console.log('Steps Update Successful：randomSteps.toString()', jsonData);
     if (notify === 1) {
-      $notification.post('Steps Update Successful', randomSteps.toString(), '@YangMingyu');
+      $notification.post('Steps Update Successful', Steps：randomSteps.toString(), '@YangMingyu');
     }
     $done();
   } else {
