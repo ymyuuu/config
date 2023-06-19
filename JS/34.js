@@ -22,7 +22,7 @@ const request = {
     'Content-Type': 'application/x-www-form-urlencoded',
     'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1',
   },
-  body: `account=${account}&password=${password}&steps=${randomSteps}`,
+  body: `account=${account}&password=${password}&steps=${randomSteps}&max_steps=${maxSteps}&min_steps=${minSteps}`,
 };
 
 $httpClient.post(request, function (error, response, data) {
