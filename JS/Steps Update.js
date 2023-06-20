@@ -1,4 +1,4 @@
-const savedData = $persistentStore.read('MI');
+const savedData = $persistentStore.read('Mi');
 if (savedData) {
   const [savedAccount， savedPassword， savedMaxSteps， savedMinSteps， notifyOption] = savedData.split('@');
   if (savedAccount && savedPassword && savedMaxSteps && savedMinSteps && notifyOption) {
