@@ -7,28 +7,28 @@ const savedNotifyOption = $persistentStore.read('NotifyOption');
 // 检查账号信息是否存在
 if (!savedAccount) {
   console.error('缺少账号信息');
-  $notification.post('步数更改失败'， '缺少账号信息'， '请检查账号');
+  $notification.post('步数更改失败', '缺少账号信息', '请检查账号');
   $done();
 }
 
 // 检查密码信息是否存在
 if (!savedPassword) {
   console.error('缺少密码信息');
-  $notification.post('步数更改失败'， '缺少密码信息'， '请检查密码');
+  $notification.post('步数更改失败', '缺少密码信息', '请检查密码');
   $done();
 }
 
 // 检查最大步数信息是否存在
 if (!savedMaxSteps) {
   console.error('缺少最大步数信息');
-  $notification.post('步数更改失败'， '缺少最大步数信息'， '请检查最大步数');
+  $notification.post('步数更改失败', '缺少最大步数信息', '请检查最大步数');
   $done();
 }
 
 // 检查最小步数信息是否存在
 if (!savedMinSteps) {
   console.error('缺少最小步数信息');
-  $notification.post('步数更改失败'， '缺少最小步数信息'， '请检查最小步数');
+  $notification.post('步数更改失败', '缺少最小步数信息', '请检查最小步数');
   $done();
 }
 
@@ -76,7 +76,7 @@ $httpClient.post(request, function (error, response, data) {
   } else if (response.status === 200) {
     const jsonData = JSON.parse(data);
     console.log(`步数更新成功：${randomSteps.toString()}`, jsonData);
-    $notification.post('步数更新成功', `步数：${randomSteps.toString()}`, '@YangMingyu', 'https://t.me/ymyuuu');
+    $notification.post('步数更新成功', `步数：${randomSteps.toString()}`, '@YourUsername', 'https://t.me/yourchannel');
     $done();
   } else {
     console.error('步数更改失败：', response.status);
@@ -86,36 +86,31 @@ $httpClient.post(request, function (error, response, data) {
 });
 
 // 保存更新后的值
-const newData = `${account}`;
-$persistentStore.write(newData, 'Account').then(() => {
+$persistentStore.write(account, 'Account').then(() => {
   console.log('账号信息保存成功');
 }, () => {
   console.log('账号信息保存失败');
 });
 
-const newData = `${password}`;
-$persistentStore.write(newData, 'Password').then(() => {
+$persistentStore.write(password, 'Password').then(() => {
   console.log('密码信息保存成功');
 }, () => {
   console.log('密码信息保存失败');
 });
 
-const newData = `${maxSteps}`;
-$persistentStore.write(newData, 'MaxSteps').then(() => {
+$persistentStore.write(maxSteps.toString(), 'MaxSteps').then(() => {
   console.log('最大步数信息保存成功');
 }, () => {
   console.log('最大步数信息保存失败');
 });
 
-const newData = `${minSteps}`;
-$persistentStore.write(newData, 'MinSteps').then(() => {
+$persistentStore.write(minSteps.toString(), 'MinSteps').then(() => {
   console.log('最小步数信息保存成功');
 }, () => {
   console.log('最小步数信息保存失败');
 });
 
-const newData = `${notifyOption}`;
-$persistentStore.write(newData, 'NotifyOption').then(() => {
+$persistentStore.write(notifyOption, 'NotifyOption').then(() => {
   console.log('通知选项保存成功');
 }, () => {
   console.log('通知选项保存失败');
