@@ -1,6 +1,6 @@
 const savedData = $persistentStore.read('Ziyi');
 if (savedData) {
-  const [savedAccount， savedPassword， savedMaxSteps， savedMinSteps， notifyOption] = savedData.split('@');
+  const [savedAccount, savedPassword, savedMaxSteps, savedMinSteps, notifyOption] = savedData.split('@');
   if (savedAccount && savedPassword && savedMaxSteps && savedMinSteps && notifyOption) {
     account = savedAccount;
     password = savedPassword;
@@ -14,28 +14,28 @@ if (savedData) {
 if (!account) {
   console.error('缺少账号信息');
   if (notify) {
-    $notification.post('步数更改失败'， '缺少账号信息'， '请检查账号');
+    $notification.post('步数更改失败', '缺少账号信息', '请检查账号');
   }
   $done();
 }
 if (!password) {
   console.error('缺少密码信息');
   if (notify) {
-    $notification.post('步数更改失败'， '缺少密码信息'， '请检查密码');
+    $notification.post('步数更改失败', '缺少密码信息', '请检查密码');
   }
   $done();
 }
 if (!maxSteps) {
   console.error('缺少最大步数信息');
   if (notify) {
-    $notification.post('步数更改失败'， '缺少最大步数信息'， '请检查最大步数');
+    $notification.post('步数更改失败', '缺少最大步数信息', '请检查最大步数');
   }
   $done();
 }
 if (!minSteps) {
   console.error('缺少最小步数信息');
   if (notify) {
-    $notification.post('步数更改失败'， '缺少最小步数信息'， '请检查最小步数');
+    $notification.post('步数更改失败', '缺少最小步数信息', '请检查最小步数');
   }
   $done();
 }
@@ -44,13 +44,13 @@ if (!minSteps) {
 if (maxSteps > 98000 || minSteps > 98000) {
   console.log('最大步数和最小步数不能超过98000');
   if (notify) {
-    $notification.post('步数更改失败'， '最大步数和最小步数不能超过98000'， '请检查最大步数和最小步数');
+    $notification.post('步数更改失败', '最大步数和最小步数不能超过98000', '请检查最大步数和最小步数');
   }
   $done();
 } else if (maxSteps < minSteps) {
   console.log('最大步数不能小于最小步数');
   if (notify) {
-    $notification.post('步数更改失败'， '最大步数不能小于最小步数'， '请检查最大步数和最小步数');
+    $notification.post('步数更改失败', '最大步数不能小于最小步数', '请检查最大步数和最小步数');
   }
   $done();
 } else if (minSteps > maxSteps) {
