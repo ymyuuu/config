@@ -1,11 +1,11 @@
 const boxjs = require('boxjs');
 
 // 读取BoxJS中的设置值
-const account = boxjs.settings.account;
-const password = boxjs.settings.password;
-const maxSteps = parseInt(boxjs.settings.maxSteps);
-const minSteps = parseInt(boxjs.settings.minSteps);
-const notifyOption = boxjs.settings.notifyOption;
+const account = boxjs.settings。account;
+const password = boxjs.settings。password;
+const maxSteps = parseInt(boxjs.settings。maxSteps);
+const minSteps = parseInt(boxjs.settings。minSteps);
+const notifyOption = boxjs.settings。notifyOption;
 const notify = notifyOption === 'M';
 
 // 判断账号密码最大步数最小步数是否存在
