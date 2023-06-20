@@ -7,28 +7,28 @@ const savedNotifyOption = $persistentStore.read('NotifyOption');
 // 检查账号信息是否存在
 if (!savedAccount) {
   console.error('缺少账号信息');
-  $notification.post('步数更改失败', '缺少账号信息', '请检查账号');
+  $notification.post('步数更改失败'， '缺少账号信息'， '请检查账号');
   $done();
 }
 
 // 检查密码信息是否存在
 if (!savedPassword) {
   console.error('缺少密码信息');
-  $notification.post('步数更改失败', '缺少密码信息', '请检查密码');
+  $notification.post('步数更改失败'， '缺少密码信息'， '请检查密码');
   $done();
 }
 
 // 检查最大步数信息是否存在
 if (!savedMaxSteps) {
   console.error('缺少最大步数信息');
-  $notification.post('步数更改失败', '缺少最大步数信息', '请检查最大步数');
+  $notification.post('步数更改失败'， '缺少最大步数信息'， '请检查最大步数');
   $done();
 }
 
 // 检查最小步数信息是否存在
 if (!savedMinSteps) {
   console.error('缺少最小步数信息');
-  $notification.post('步数更改失败', '缺少最小步数信息', '请检查最小步数');
+  $notification.post('步数更改失败'， '缺少最小步数信息'， '请检查最小步数');
   $done();
 }
 
