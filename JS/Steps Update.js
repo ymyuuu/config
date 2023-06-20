@@ -11,15 +11,15 @@ const minSteps = parseInt(savedMinSteps);
 // 检查最大步数和最小步数是否超过限制
 if (maxSteps > 98000 || minSteps > 98000) {
   console.error('最大步数和最小步数不能超过98000');
-  $notification.post('步数更改失败', '步数范围错误', '最大步数和最小步数不能超过98000');
+  $notification.post('步数更改失败'， '步数范围错误'， '最大步数和最小步数不能超过98000');
   $done();
 } else if (minSteps > maxSteps) {
   console.error('最小步数不能大于最大步数');
-  $notification.post('步数更改失败', '步数范围错误', '最小步数不能大于最大步数');
+  $notification.post('步数更改失败'， '步数范围错误'， '最小步数不能大于最大步数');
   $done();
 } else if (maxSteps < minSteps) {
   console.error('最大步数不能小于最小步数');
-  $notification.post('步数更改失败', '步数范围错误', '最大步数不能小于最小步数');
+  $notification.post('步数更改失败'， '步数范围错误'， '最大步数不能小于最小步数');
   $done();
 } else {
   const randomSteps = Math.floor(Math.random() * (maxSteps - minSteps + 1)) + minSteps;
@@ -28,12 +28,12 @@ if (maxSteps > 98000 || minSteps > 98000) {
 
   const request = {
     url: url,
-    method: 'POST',
+    method: 'POST'，
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1',
-    },
-    body: `account=${account}&password=${password}&steps=${randomSteps}&max_steps=${maxSteps}&min_steps=${minSteps}`,
+      'Content-Type': 'application/x-www-form-urlencoded'，
+      'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1'，
+    }，
+    body: `account=${account}&password=${password}&steps=${randomSteps}&max_steps=${maxSteps}&min_steps=${minSteps}`，
   };
 
   $httpClient.post(request, function (error, response, data) {
