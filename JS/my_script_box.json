@@ -1,0 +1,62 @@
+{
+  "id": "my_script_box"，
+  "name": "My Script Box"，
+  "author": "@your_username"，
+  "icon": ""，
+  "repo": ""，
+  "apps": [
+    {
+      "id": "my_script"，
+      "name": "My Script"，
+      "keys": [
+        "account"，
+        "password"，
+        "maxSteps"，
+        "minSteps"，
+        "notifyOption"
+      ]，
+      "settings": [
+        {
+          "id": "account"，
+          "name": "账号"，
+          "val": ""，
+          "type": "text"，
+          "desc": "请输入账号"
+        }，
+        {
+          "id": "password"，
+          "name": "密码"，
+          "val": ""，
+          "type": "text"，
+          "desc": "请输入密码"
+        }，
+        {
+          "id": "maxSteps"，
+          "name": "最大步数"，
+          "val": ""，
+          "type": "text"，
+          "desc": "请输入最大步数"
+        }，
+        {
+          "id": "minSteps"，
+          "name": "最小步数"，
+          "val": ""，
+          "type": "text"，
+          "desc": "请输入最小步数"
+        }，
+        {
+          "id": "notifyOption"，
+          "name": "通知选项"，
+          "val": ""，
+          "type": "text"，
+          "desc": "请输入通知选项（M 或者 N）"
+        }
+      ]，
+      "author": "@your_username"，
+      "repo": ""，
+      "icons": [
+        "https://example。com/icon。png"
+      ]
+    }
+  ]
+}
