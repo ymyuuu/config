@@ -1,8 +1,8 @@
 #!name=BiliBili
 #!desc=签到
-#!openUrl=https://github.com/Y-7-0101
-#!author=@YangMingyu
-#!homepage=https://github.com/Y-7-0101
+#!openUrl = https://github.com/Y-7-0101
+#!author = @YangMingyu
+#!homepage = https://t.me/ymyuuu
 #!icon=https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/bilibili.png
 
 # 订阅地址：https://raw.githubusercontent.com/ClydeTime/BiliBili/main/boxjs/BiliBili.boxjs.json
