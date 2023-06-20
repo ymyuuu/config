@@ -1,8 +1,8 @@
 #!name = Node detection tool
 #!desc = Loon节点检测
-#!openUrl=https://github.com/Y-7-0101
-#!author=@YangMingyu
-#!homepage=https://github.com/Y-7-0101
+#!openUrl = https://github.com/Y-7-0101
+#!author = @YangMingyu
+#!homepage = https://t.me/ymyuuu
 #!icon = app.connected.to.app.below.fill
 
 [Script]
