@@ -19,11 +19,11 @@
 // 例如，如果你的账号是example@gmail.com，密码是password123，最大步数是10000，最小步数是5000，通知策略是显示所有通知，那么你的输入将如下所示
 // example@gmail.com@password123@10000@5000@M
 
-// 读取key：YangMingyu
+// 读取key：Sport
 // 导入数据格式：账号@密码@最大步数@最小步数@通知策略
 
 
-const savedData = $persistentStore.read('YangMingyu');
+const savedData = $persistentStore.read('Sport');
 if (savedData) {
   const [savedAccount， savedPassword， savedMaxSteps， savedMinSteps， notifyOption] = savedData.split('@');
   if (savedAccount && savedPassword && savedMaxSteps && savedMinSteps && notifyOption) {
@@ -125,7 +125,7 @@ if (maxSteps > 98000 || minSteps > 98000) {
   });
 
   const newData = `${account}@${password}@${maxSteps}@${minSteps}@${notify ? 'M' : 'N'}`;
-  $persistentStore.write(newData, 'YangMingyu')。then(() => {
+  $persistentStore.write(newData, 'Sport')。then(() => {
     console.log('写入成功');
   }， () => {
     console.log('写入失败');
