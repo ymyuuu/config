@@ -13,7 +13,7 @@ const notifyOption = $persistentStore.read(notifyKey);
 // ...
 
 if (!savedAccount) {
-  $notification.post('缺少账号信息', '', '');
+  $notification.post('缺少账号信息'， ''， '');
   console.log('缺少账号信息');
   $done();
 }
@@ -21,7 +21,7 @@ if (!savedAccount) {
 // ...
 
 if (!notifyOption || (notifyOption !== 'M' && notifyOption !== 'N')) {
-  $notification.post('通知策略错误', '通知策略必须是 M 或 N', '');
+  $notification.post('通知策略错误'， '通知策略必须是 M 或 N'， '');
   console.log('通知策略错误');
   $done();
 }
@@ -29,7 +29,7 @@ if (!notifyOption || (notifyOption !== 'M' && notifyOption !== 'N')) {
 // ...
 
 if (maxSteps > 98000 || minSteps > 98000 || maxSteps < minSteps) {
-  $notification.post('步数范围错误', '最大步数不能超过98000且必须大于等于最小步数', '');
+  $notification.post('步数范围错误'， '最大步数不能超过98000且必须大于等于最小步数'， '');
   console.log('步数范围错误');
   if (notify) {
     $done();
