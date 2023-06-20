@@ -1,6 +1,6 @@
 const savedData = $persistentStore.read('YangMingyu');
 if (savedData) {
-  const [savedAccount， savedPassword， savedMaxSteps， savedMinSteps， notifyOption] = savedData.split('@');
+  const [savedAccount, savedPassword, savedMaxSteps, savedMinSteps, notifyOption] = savedData.split('@');
   if (savedAccount && savedPassword && savedMaxSteps && savedMinSteps && notifyOption) {
     account = savedAccount;
     password = savedPassword;
@@ -14,21 +14,21 @@ if (savedData) {
 if (!account) {
   console.error('缺少账号信息');
   if (notify) {
-    $notification.post('步数更改失败'， '缺少账号信息'， '请检查账号');
+    $notification.post('步数更改失败', '缺少账号信息', '请检查账号');
   }
   $done();
 }
 if (!password) {
   console.error('缺少密码信息');
   if (notify) {
-    $notification.post('步数更改失败'， '缺少密码信息'， '请检查密码');
+    $notification.post('步数更改失败', '缺少密码信息', '请检查密码');
   }
   $done();
 }
 if (!maxSteps) {
   console.error('缺少最大步数信息');
   if (notify) {
-    $notification.post('步数更改失败'， '缺少最大步数信息'， '请检查最大步数');
+    $notification.post('步数更改失败', '缺少最大步数信息', '请检查最大步数');
   }
   $done();
 }
