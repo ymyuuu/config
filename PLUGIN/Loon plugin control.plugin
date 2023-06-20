@@ -1,9 +1,9 @@
 #!name=Loon plugin control
-#!desc=Loon插件控制器
-#!openUrl=https://github.com/Y-7-0101
-#!author=@YangMingyu
-#!homepage=https://github.com/Y-7-0101
-#!icon=https://raw.githubusercontent.com/fmz200/wool_scripts/main/icons/apps/Category_Balloon.png
+#!desc=Loon插件控制
+#!openUrl = https://github.com/Y-7-0101
+#!author = @YangMingyu
+#!homepage = https://t.me/ymyuuu
+#!icon= switch.2
 
 # 本插件搬运自https://github.com/chengkongyiban/stash/tree/main/Rewrite_Parser_Wiki
 
