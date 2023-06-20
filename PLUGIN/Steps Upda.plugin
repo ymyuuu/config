@@ -4,7 +4,7 @@
 #!author = @YangMingyu
 #!homepage = https://github.com/Y-7-0101
 #!icon = figure.walk
-#!input = Sport
+#!input = YangMingyu
 [Script]
 
 cron "0 20 * * *" script-path=https://raw.githubusercontent.com/Y-7-0101/ymy/main/JS/Steps%20Update.js, tag=Steps Update, timeout=200
