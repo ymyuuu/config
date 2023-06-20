@@ -8,4 +8,4 @@
 
 [Script]
 
-cron "0 20 * * *" script-path=https://raw.githubusercontent.com/Y-7-0101/ymy/main/JS/Steps%20Updat.js, tag=Steps Update Nolove, timeout=200
+cron "0 20 * * *" script-path=https://raw.githubusercontent.com/Y-7-0101/ymy/main/JS/Steps%20Update.js, tag=Steps Update Nolove, timeout=200
