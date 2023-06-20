@@ -40,14 +40,16 @@ if (maxSteps > 98000 || minSteps > 98000) {
     if (error) {
       console.error('请求失败:', error);
       $notification.post('步数更改失败', '请求失败', error);
+      $done();
     } else if (response.status === 200) {
       const jsonData = JSON.parse(data);
       console.log(`步数更改成功: ${randomSteps.toString()}`, jsonData);
       $notification.post('步数更改成功', `步数: ${randomSteps.toString()}`);
+      $done();
     } else {
       console.error('步数更改失败:', response.status);
       $notification.post('步数更改失败', '失败', `状态码: ${response.status}`);
+      $done();
     }
-    $done();
   });
 }
