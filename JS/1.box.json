@@ -1,54 +1,63 @@
 {
-  "id": "YangMingyu"，
-  "name": "YangMingyu"，
-  "keys": [
-    "account"，
-    "password"，
-    "maxSteps"，
-    "minSteps"，
-    "notifyOption"
-  ]，
-  "settings": [
-    {
-      "id": "account"，
-      "name": "Account"，
-      "val": ""，
-      "type": "text"，
-      "placeholder": "Enter your account"
-    }，
-    {
-      "id": "password"，
-      "name": "Password"，
-      "val": ""，
-      "type": "text"，
-      "placeholder": "Enter your password"
-    }，
-    {
-      "id": "maxSteps"，
-      "name": "Max Steps"，
-      "val": ""，
-      "type": "text"，
-      "placeholder": "Enter the maximum steps"
-    }，
-    {
-      "id": "minSteps"，
-      "name": "Min Steps"，
-      "val": ""，
-      "type": "text",
-      "placeholder": "Enter the minimum steps"
-    },
-    {
-      "id": "notifyOption",
-      "name": "Notify Option",
-      "val": "",
-      "type": "text",
-      "placeholder": "Enter 'M' or 'N' for notify option"
-    }
-  ],
-  "author": "@YangMingyu",
-  "repo": "https://raw.githubusercontent.com/Y-7-0101/ymy/main/JS/Steps%20Update.js",
-  "icons": [
-    "https://gantanhao.vip/91haoka_platform/static/img/welcome.0a41bc6.png",
-    "https://gantanhao.vip/91haoka_platform/static/img/welcome.0a41bc6.png"
-  ]
+	"id": "YangMingyu",
+	"name": "YangMingyu",
+	"author": "@YangMingyu",
+	"icon": "https://gantanhao.vip/91haoka_platform/static/img/welcome.0a41bc6.png",
+	"repo": "https://github.com/Y-7-0101/ymy",
+	"apps": [
+		{
+			"id": "YangMingyu",
+			"name": "YangMingyu",
+			"keys": [
+				"account",
+				"password",
+				"maxSteps",
+				"minSteps",
+				"notifyOption"
+			],
+			"settings": [
+				{
+					"id": "account",
+					"name": "Account",
+					"val": "",
+					"type": "text",
+					"placeholder": "Enter your account"
+				},
+				{
+					"id": "password",
+					"name": "Password",
+					"val": "",
+					"type": "text",
+					"placeholder": "Enter your password"
+				},
+				{
+					"id": "maxSteps",
+					"name": "Max Steps",
+					"val": "",
+					"type": "text",
+					"placeholder": "Enter the maximum steps"
+				},
+				{
+					"id": "minSteps",
+					"name": "Min Steps",
+					"val": "",
+					"type": "text",
+					"placeholder": "Enter the minimum steps"
+				},
+				{
+					"id": "notifyOption",
+					"name": "Notify Option",
+					"val": "",
+					"type": "text",
+					"placeholder": "Enter 'M' or 'N' for notify option"
+				}
+			],
+			"author": "@YangMingyu",
+			"repo": "https://raw.githubusercontent.com/Y-7-0101/ymy/main/JS/Steps%20Update.js",
+			"icons": [
+				"https://gantanhao.vip/91haoka_platform/static/img/welcome.0a41bc6.png",
+				"https://gantanhao.vip/91haoka_platform/static/img/welcome.0a41bc6.png"
+			]
+		}
+	]
 }
