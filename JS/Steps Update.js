@@ -1,7 +1,7 @@
 const boxjs = require('boxjs');
 
 // 获取BoxJS中的设置值
-boxjs.settings.get().then(data => {
+boxjs.settings.get('YangMingyu').then(data => {
   const { account, password, maxSteps, minSteps, notifyOption } = data;
   
   // 判断账号密码最大步数最小步数是否存在
@@ -77,9 +77,9 @@ boxjs.settings.get().then(data => {
         $done();
       } else if (response.status === 200) {
         const jsonData = JSON.parse(data);
-        console.log(`Steps Update Successful: ${randomSteps.toString()}`, jsonData);
+        console.log(`步数更改成功: ${randomSteps.toString()}`, jsonData);
         if (notifyOption === 'M') {
-          $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@YangMingyu', 'https://t.me/ymyuuu');
+          $notification.post('步数更改成功', `步数：${randomSteps.toString()}`, '@YangMingyu', 'https://t.me/ymyuuu');
         }
         $done();
       } else {
@@ -87,9 +87,7 @@ boxjs.settings.get().then(data => {
         if (notifyOption === 'M') {
           $notification.post('步数更改失败', '失败', `状态码：${response.status}`);
         }
-        if (notifyOption === 'M') {
-          $done();
-        }
+        $done();
       }
     });
   }
