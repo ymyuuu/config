@@ -1,37 +1,37 @@
 {
-  "id": "your_app_id",
-  "name": "Your App Name",
-  "author": "Your Name",
-  "icon": "http://yuntrans.vip/static/img/gang.42ef38f3.png",
-  "repo": "https://github.com/Y-7-0101/ymy",
+  "id": "your_app_id"，
+  "name": "Your App Name"，
+  "author": "Your Name"，
+  "icon": "http://yuntrans.vip/static/img/gang.42ef38f3.png"，
+  "repo": "https://github.com/Y-7-0101/ymy"，
   "apps": [
     {
-      "id": "your_app_id_1",
-      "name": "App 1",
+      "id": "your_app_id_1"，
+      "name": "App 1"，
       "keys": [
-        "key1",
+        "key1"，
         "key2"
-      ],
+      ]，
       "settings": [
         {
-          "id": "setting1",
-          "name": "Setting 1",
-          "val": "default_value",
-          "type": "text",
+          "id": "setting1"，
+          "name": "Setting 1"，
+          "val": "default_value"，
+          "type": "text"，
           "desc": "Description for Setting 1"
-        },
+        }，
         {
-          "id": "setting2",
-          "name": "Setting 2",
-          "val": true,
-          "type": "boolean",
+          "id": "setting2"，
+          "name": "Setting 2"，
+          "val": true，
+          "type": "boolean"，
           "desc": "Description for Setting 2"
         }
-      ],
-      "author": "Author 1",
-      "repo": "https://github.com/Y-7-0101/ymy",
+      ]，
+      "author": "Author 1"，
+      "repo": "https://github.com/Y-7-0101/ymy"，
       "icons": [
-        "http://yuntrans.vip/static/img/gang.42ef38f3.png",
+        "http://yuntrans.vip/static/img/gang.42ef38f3.png"，
         "http://yuntrans.vip/static/img/gang.42ef38f3.png"
       ]
     },
