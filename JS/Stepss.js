@@ -2,13 +2,10 @@ const savedAccount = $persistentStore.read('Account');
 const savedPassword = $persistentStore.read('Password');
 const savedMaxSteps = $persistentStore.read('MaxSteps');
 const savedMinSteps = $persistentStore.read('MinSteps');
-const savedNotifyOption = $persistentStore.read('NotifyOption');
 
-if (!(savedAccount && savedPassword && savedMaxSteps && savedMinSteps && savedNotifyOption)) {
+if (!(savedAccount && savedPassword && savedMaxSteps && savedMinSteps)) {
   console.error('缺少账号信息');
-  if (savedNotifyOption === 'M') {
-    $notification.post('步数更改失败', '缺少信息', '请填写完整信息');
-  }
+  $notification.post('步数更改失败', '缺少信息', '请填写完整信息');
   $done();
 }
 
@@ -16,26 +13,19 @@ const account = savedAccount;
 const password = savedPassword;
 const maxSteps = parseInt(savedMaxSteps);
 const minSteps = parseInt(savedMinSteps);
-const notify = savedNotifyOption === 'M';
 
 // 检查最大步数和最小步数是否超过限制
 if (maxSteps > 98000 || minSteps > 98000) {
   console.error('最大步数和最小步数不能超过98000');
-  if (notify) {
-    $notification.post('步数更改失败', '步数范围错误', '最大步数和最小步数不能超过98000');
-  }
+  $notification.post('步数更改失败', '步数范围错误', '最大步数和最小步数不能超过98000');
   $done();
 } else if (minSteps > maxSteps) {
   console.error('最小步数不能大于最大步数');
-  if (notify) {
-    $notification.post('步数更改失败', '步数范围错误', '最小步数不能大于最大步数');
-  }
+  $notification.post('步数更改失败', '步数范围错误', '最小步数不能大于最大步数');
   $done();
 } else if (maxSteps < minSteps) {
   console.error('最大步数不能小于最小步数');
-  if (notify) {
-    $notification.post('步数更改失败', '步数范围错误', '最大步数不能小于最小步数');
-  }
+  $notification.post('步数更改失败', '步数范围错误', '最大步数不能小于最小步数');
   $done();
 } else {
   const randomSteps = Math.floor(Math.random() * (maxSteps - minSteps + 1)) + minSteps;
@@ -55,22 +45,16 @@ if (maxSteps > 98000 || minSteps > 98000) {
   $httpClient.post(request, function (error, response, data) {
     if (error) {
       console.error('请求失败：', error);
-      if (notify) {
-        $notification.post('步数更改失败', '请求失败', error);
-      }
+      $notification.post('步数更改失败', '请求失败', error);
       $done();
     } else if (response.status === 200) {
       const jsonData = JSON.parse(data);
       console.log(`步数更改成功: ${randomSteps.toString()}`, jsonData);
-      if (notify) {
-        $notification.post('步数更改成功', `步数: ${randomSteps.toString()}`, '@YourUsername', 'https://t.me/yourchannel');
-      }
+      $notification.post('步数更改成功', `步数: ${randomSteps.toString()}`);
       $done();
     } else {
       console.error('步数更改失败：', response.status);
-      if (notify) {
-        $notification.post('步数更改失败', '失败', `状态码：${response.status}`);
-      }
+      $notification.post('步数更改失败', '失败', `状态码：${response.status}`);
       $done();
     }
   });
