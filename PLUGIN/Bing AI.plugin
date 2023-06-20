@@ -1,8 +1,8 @@
 #!name = Bing AI
 #!desc= Safari伪装Edge浏览器
-#!openUrl=https://github.com/Y-7-0101
-#!author=@YangMingyu
-#!homepage=https://github.com/Y-7-0101
+#!openUrl = https://github.com/Y-7-0101
+#!author = @YangMingyu
+#!homepage = https://t.me/ymyuuu
 #!icon = https://raw.githubusercontent.com/fmz200/wool_scripts/main/icons/lige47/bing(1).png
 
 [Rule]
