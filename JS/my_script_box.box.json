@@ -1,61 +1,68 @@
 {
-  "id": "my_script_box"，
-  "name": "My Script Box"，
-  "author": "@your_username"，
-  "icon": ""，
-  "repo": ""，
+  "id": "your_app_id",
+  "name": "Your App Name",
+  "author": "Your Name",
+  "icon": "http://yuntrans.vip/static/img/gang.42ef38f3.png",
+  "repo": "https://github.com/Y-7-0101/ymy",
   "apps": [
     {
-      "id": "my_script"，
-      "name": "My Script"，
+      "id": "your_app_id_1",
+      "name": "App 1",
       "keys": [
-        "account"，
-        "password"，
-        "maxSteps"，
-        "minSteps"，
-        "notifyOption"
-      ]，
+        "key1",
+        "key2"
+      ],
       "settings": [
         {
-          "id": "account"，
-          "name": "账号"，
-          "val": ""，
-          "type": "text"，
-          "desc": "请输入账号"
-        }，
+          "id": "setting1",
+          "name": "Setting 1",
+          "val": "default_value",
+          "type": "text",
+          "desc": "Description for Setting 1"
+        },
         {
-          "id": "password"，
-          "name": "密码"，
-          "val": ""，
-          "type": "text"，
-          "desc": "请输入密码"
-        }，
-        {
-          "id": "maxSteps"，
-          "name": "最大步数"，
-          "val": ""，
-          "type": "text"，
-          "desc": "请输入最大步数"
-        }，
-        {
-          "id": "minSteps"，
-          "name": "最小步数"，
-          "val": ""，
-          "type": "text"，
-          "desc": "请输入最小步数"
-        }，
-        {
-          "id": "notifyOption"，
-          "name": "通知选项"，
-          "val": ""，
-          "type": "text"，
-          "desc": "请输入通知选项（M 或者 N）"
+          "id": "setting2",
+          "name": "Setting 2",
+          "val": true,
+          "type": "boolean",
+          "desc": "Description for Setting 2"
         }
-      ]，
-      "author": "@your_username"，
-      "repo": ""，
+      ],
+      "author": "Author 1",
+      "repo": "https://github.com/Y-7-0101/ymy",
       "icons": [
-        "https://example。com/icon。png"
+        "http://yuntrans.vip/static/img/gang.42ef38f3.png",
+        "http://yuntrans.vip/static/img/gang.42ef38f3.png"
+      ]
+    },
+    {
+      "id": "your_app_id_2",
+      "name": "App 2",
+      "keys": [
+        "key3",
+        "key4"
+      ],
+      "settings": [
+        {
+          "id": "setting3",
+          "name": "Setting 3",
+          "val": 10,
+          "type": "number",
+          "desc": "Description for Setting 3"
+        },
+        {
+          "id": "setting4",
+          "name": "Setting 4",
+          "val": false,
+          "type": "boolean",
+          "desc": "Description for Setting 4"
+        }
+      ],
+      "author": "Author 2",
+      "repo": "https://github.com/Y-7-0101/ymy",
+      "icons": [
+        "http://yuntrans.vip/static/img/gang.42ef38f3.png",
+        "http://yuntrans.vip/static/img/gang.42ef38f3.png"
       ]
     }
   ]
