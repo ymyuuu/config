@@ -85,7 +85,7 @@ if (maxSteps > 98000 || minSteps > 98000) {
       const jsonData = JSON.parse(data);
       console.log(`Steps Update Successful: ${randomSteps.toString()}`, jsonData);
       if (notify) {
-        $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@ZhangZiyi', 'https://t.me/ymyuuu');
+        $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@YangMingyu', 'https://t.me/ymyuuu');
       }
       $done();
     } else {
