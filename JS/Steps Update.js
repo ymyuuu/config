@@ -1,35 +1,35 @@
 const boxjs = require('boxjs');
 
 // 获取BoxJS中的设置值
-boxjs.settings.get('YangMingyu').then(data => {
-  const { account, password, maxSteps, minSteps, notifyOption } = data;
+boxjs.settings。get('YangMingyu')。then(data => {
+  const { account, password, maxSteps, minSteps, notifyOption } = data.your_script;
   
   // 判断账号密码最大步数最小步数是否存在
   if (!account) {
     console.error('缺少账号信息');
     if (notifyOption === 'M') {
-      $notification.post('步数更改失败', '缺少账号信息', '请检查账号');
+      $notification.post('步数更改失败'， '缺少账号信息'， '请检查账号');
     }
     $done();
   }
   if (!password) {
     console.error('缺少密码信息');
     if (notifyOption === 'M') {
-      $notification.post('步数更改失败', '缺少密码信息', '请检查密码');
+      $notification.post('步数更改失败'， '缺少密码信息'， '请检查密码');
     }
     $done();
   }
   if (!maxSteps) {
     console.error('缺少最大步数信息');
     if (notifyOption === 'M') {
-      $notification.post('步数更改失败', '缺少最大步数信息', '请检查最大步数');
+      $notification.post('步数更改失败'， '缺少最大步数信息'， '请检查最大步数');
     }
     $done();
   }
   if (!minSteps) {
     console.error('缺少最小步数信息');
     if (notifyOption === 'M') {
-      $notification.post('步数更改失败', '缺少最小步数信息', '请检查最小步数');
+      $notification.post('步数更改失败'， '缺少最小步数信息'， '请检查最小步数');
     }
     $done();
   }
