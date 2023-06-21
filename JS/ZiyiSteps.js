@@ -1,7 +1,4 @@
-const maxRetries = 3; // 最大重试次数2
-
-// 在这里添加配置文件中的#!select参数，默认为'是'
-const notifyOption = '#!select = 收否发送通知, 是, 否';
+const maxRetries = 3; // 最大重试次数
 
 function updateSteps(retries = 0) {
   const savedData = $persistentStore.read('Ziyi');
@@ -12,34 +9,33 @@ function updateSteps(retries = 0) {
       password = savedPassword;
       maxSteps = parseInt(savedMaxSteps);
       minSteps = parseInt(savedMinSteps);
-      notify = notifyOption === '是'; // 根据选择的配置确定是否发送通知
     }
   }
 
   // 判断账号密码最大步数最小步数是否存在
   if (!account) {
-    console.log('缺少账号信息');
+    console.error('缺少账号信息');
     if (notify) {
       $notification.post('步数更改失败', '缺少账号信息', '请检查账号');
     }
     $done();
   }
   if (!password) {
-    console.log('缺少密码信息');
+    console.error('缺少密码信息');
     if (notify) {
       $notification.post('步数更改失败', '缺少密码信息', '请检查密码');
     }
     $done();
   }
   if (!maxSteps) {
-    console.log('缺少最大步数信息');
+    console.error('缺少最大步数信息');
     if (notify) {
       $notification.post('步数更改失败', '缺少最大步数信息', '请检查最大步数');
     }
     $done();
   }
   if (!minSteps) {
-    console.log('缺少最小步数信息');
+    console.error('缺少最小步数信息');
     if (notify) {
       $notification.post('步数更改失败', '缺少最小步数信息', '请检查最小步数');
     }
@@ -82,10 +78,7 @@ function updateSteps(retries = 0) {
 
     $httpClient.post(request, function (error, response, data) {
       if (error || response.status !== 200) {
-        console.log('请求失败：', error || response.status);
-        if (notify) {
-          $notification.post('步数更改失败', '请求失败', error || response.status);
-        }
+        console.error('请求失败：', error || response.status);
         // 检查重试次数是否超过最大重试次数
         if (retries < maxRetries) {
           // 在重试之前添加延迟
@@ -95,10 +88,7 @@ function updateSteps(retries = 0) {
             updateSteps(nextRetry);
           }, 5000); // 在重试之前等待5秒
         } else {
-          console.log('重试次数超过最大限制');
-          if (notify) {
-            $notification.post('步数更改失败', '重试次数超过最大限制', '请稍后再试');
-          }
+          console.error('重试次数超过最大限制');
           $done();
         }
       } else {
@@ -111,14 +101,18 @@ function updateSteps(retries = 0) {
       }
     });
 
-    const newData = `${account}*${password}*${maxSteps}*${minSteps}`;
-    $persistentStore.write(newData, 'Mi').then(() => {
+    const newData = `${account}@${password}@${maxSteps}@${minSteps}`;
+    $persistentStore.write(newData, 'YangMingyu').then(() => {
       console.log('写入成功');
     }, () => {
       console.log('写入失败');
     });
   }
 }
+
+// 读取配置文件中的通知选项
+const notifyOption = $config.select('收否发送通知', ['是', '否']);
+const notify = notifyOption === '是';
 
 // 调用函数开始更新步数
 updateSteps();
