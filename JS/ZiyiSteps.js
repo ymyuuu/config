@@ -1,4 +1,4 @@
-const maxRetries = 3; // 最大重试次数1
+const maxRetries = 3; // 最大重试次数2
 
 // 在这里添加配置文件中的#!select参数，默认为'是'
 const notifyOption = '#!select = 收否发送通知, 是, 否';
