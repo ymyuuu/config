@@ -1,17 +1,15 @@
-const maxRetries = 3; // 最大重试次数1
-let notify = false;
+const maxRetries = 3; // 最大重试次数
 
-function updateSteps(notifyOption, retries = 0) {
-  notify = notifyOption === '是';
-
+function updateSteps(retries = 0) {
   const savedData = $persistentStore.read('Ziyi');
   if (savedData) {
-    const [savedAccount, savedPassword, savedMaxSteps, savedMinSteps] = savedData.split('*');
-    if (savedAccount && savedPassword && savedMaxSteps && savedMinSteps) {
+    const [savedAccount, savedPassword, savedMaxSteps, savedMinSteps, notifyOption] = savedData.split('@');
+    if (savedAccount && savedPassword && savedMaxSteps && savedMinSteps && notifyOption) {
       account = savedAccount;
       password = savedPassword;
       maxSteps = parseInt(savedMaxSteps);
       minSteps = parseInt(savedMinSteps);
+      notify = notifyOption === 'M';
     }
   }
 
@@ -91,7 +89,7 @@ function updateSteps(notifyOption, retries = 0) {
           setTimeout(() => {
             // 增加重试次数并调用updateSteps函数进行重试
             const nextRetry = retries + 1;
-            updateSteps(notifyOption, nextRetry);
+            updateSteps(nextRetry);
           }, 5000); // 在重试之前等待5秒
         } else {
           console.error('重试次数超过最大限制');
@@ -104,14 +102,14 @@ function updateSteps(notifyOption, retries = 0) {
         const jsonData = JSON.parse(data);
         console.log(`步数更新成功：${randomSteps.toString()}`, jsonData);
         if (notify) {
-          $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@YangMingyu', 'https://t.me/ymyuuu');
+          $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@ZhangZiyi', 'https://t.me/ymyuuu');
         }
         $done();
       }
     });
 
-    const newData = `${account}*${password}*${maxSteps}*${minSteps}`;
-    $persistentStore.write(newData, 'Ziyi').then(() => {
+    const newData = `${account}@${password}@${maxSteps}@${minSteps}@${notify ? 'M' : 'N'}`;
+    $persistentStore.write(newData, 'YangMingyu').then(() => {
       console.log('写入成功');
     }, () => {
       console.log('写入失败');
@@ -119,7 +117,5 @@ function updateSteps(notifyOption, retries = 0) {
   }
 }
 
-const config = $persistentStore.read('Steps%20Update%20Love');
-const notifyOption = config ? config.split('=')[1].trim() : '否';
-
-updateSteps(notifyOption);
+// 调用函数开始更新步数
+updateSteps();
