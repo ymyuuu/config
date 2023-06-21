@@ -1,7 +1,7 @@
 const maxRetries = 3; // 最大重试次数
 
-// 读取配置文件中的通知选项
-const notifyOption = $persistentStore.read('NotifyOption');
+// 在这里添加配置文件中的#!select参数，默认为'是'
+const notifyOption = '#!select = 收否发送通知, 是, 否';
 
 function updateSteps(retries = 0) {
   const savedData = $persistentStore.read('Ziyi');
@@ -12,36 +12,58 @@ function updateSteps(retries = 0) {
       password = savedPassword;
       maxSteps = parseInt(savedMaxSteps);
       minSteps = parseInt(savedMinSteps);
+      notify = notifyOption === '是'; // 根据选择的配置确定是否发送通知
     }
   }
 
   // 判断账号密码最大步数最小步数是否存在
   if (!account) {
     console.error('缺少账号信息');
+    if (notify) {
+      $notification.post('步数更改失败', '缺少账号信息', '请检查账号');
+    }
     $done();
   }
   if (!password) {
     console.error('缺少密码信息');
+    if (notify) {
+      $notification.post('步数更改失败', '缺少密码信息', '请检查密码');
+    }
     $done();
   }
   if (!maxSteps) {
     console.error('缺少最大步数信息');
+    if (notify) {
+      $notification.post('步数更改失败', '缺少最大步数信息', '请检查最大步数');
+    }
     $done();
   }
   if (!minSteps) {
     console.error('缺少最小步数信息');
+    if (notify) {
+      $notification.post('步数更改失败', '缺少最小步数信息', '请检查最小步数');
+    }
     $done();
   }
 
   // 判断最大步数和最小步数是否超限
   if (maxSteps > 98000 || minSteps > 98000) {
     console.log('最大步数和最小步数不能超过98000');
+    if (notify) {
+      $notification.post('步数更改失败', '最大步数和最小步数不能超过98000', '请检查最大步数和最小步数');
+    }
     $done();
   } else if (maxSteps < minSteps) {
     console.log('最大步数不能小于最小步数');
+    if (notify) {
+      $notification.post('步数更改失败', '最大步数不能小于最小步数', '请检查最大步数和最小步数');
+    }
     $done();
   } else if (minSteps > maxSteps) {
     console.log('最小步数不能大于最大步数');
+    if (notify) {
+      $notification.post('步数更改失败', '最小步数不能大于最大步数', '请检查最大步数和最小步数');
+    }
     $done();
   } else {
     const randomSteps = Math.floor(Math.random() * (maxSteps - minSteps + 1)) + minSteps;
@@ -61,6 +83,9 @@ function updateSteps(retries = 0) {
     $httpClient.post(request, function (error, response, data) {
       if (error || response.status !== 200) {
         console.error('请求失败：', error || response.status);
+        if (notify) {
+          $notification.post('步数更改失败', '请求失败', error || response.status);
+        }
         // 检查重试次数是否超过最大重试次数
         if (retries < maxRetries) {
           // 在重试之前添加延迟
@@ -71,12 +96,15 @@ function updateSteps(retries = 0) {
           }, 5000); // 在重试之前等待5秒
         } else {
           console.error('重试次数超过最大限制');
+          if (notify) {
+            $notification.post('步数更改失败', '重试次数超过最大限制', '请稍后再试');
+          }
           $done();
         }
       } else {
         const jsonData = JSON.parse(data);
         console.log(`步数更新成功：${randomSteps.toString()}`, jsonData);
-        if (notifyOption === '是') {
+        if (notify) {
           $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@YangMingyu', 'https://t.me/ymyuuu');
         }
         $done();
