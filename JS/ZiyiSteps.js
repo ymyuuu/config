@@ -18,28 +18,28 @@ function updateSteps(retries = 0) {
 
   // 判断账号密码最大步数最小步数是否存在
   if (!account) {
-    console.error('缺少账号信息');
+    console.log('缺少账号信息');
     if (notify) {
       $notification.post('步数更改失败', '缺少账号信息', '请检查账号');
     }
     $done();
   }
   if (!password) {
-    console.error('缺少密码信息');
+    console.log('缺少密码信息');
     if (notify) {
       $notification.post('步数更改失败', '缺少密码信息', '请检查密码');
     }
     $done();
   }
   if (!maxSteps) {
-    console.error('缺少最大步数信息');
+    console.log('缺少最大步数信息');
     if (notify) {
       $notification.post('步数更改失败', '缺少最大步数信息', '请检查最大步数');
     }
     $done();
   }
   if (!minSteps) {
-    console.error('缺少最小步数信息');
+    console.log('缺少最小步数信息');
     if (notify) {
       $notification.post('步数更改失败', '缺少最小步数信息', '请检查最小步数');
     }
@@ -82,7 +82,7 @@ function updateSteps(retries = 0) {
 
     $httpClient.post(request, function (error, response, data) {
       if (error || response.status !== 200) {
-        console.error('请求失败：', error || response.status);
+        console.log('请求失败：', error || response.status);
         if (notify) {
           $notification.post('步数更改失败', '请求失败', error || response.status);
         }
@@ -95,7 +95,7 @@ function updateSteps(retries = 0) {
             updateSteps(nextRetry);
           }, 5000); // 在重试之前等待5秒
         } else {
-          console.error('重试次数超过最大限制');
+          console.log('重试次数超过最大限制');
           if (notify) {
             $notification.post('步数更改失败', '重试次数超过最大限制', '请稍后再试');
           }
@@ -111,7 +111,7 @@ function updateSteps(retries = 0) {
       }
     });
 
-    const newData = `${account}@${password}@${maxSteps}@${minSteps}`;
+    const newData = `${account}*${password}*${maxSteps}*${minSteps}`;
     $persistentStore.write(newData, 'Mi').then(() => {
       console.log('写入成功');
     }, () => {
