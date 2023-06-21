@@ -4,7 +4,7 @@ const maxRetries = 3; // 最大重试次数
 const notifyOption = '#!select = 收否发送通知, 是, 否';
 
 function updateSteps(retries = 0) {
-  const savedData = $persistentStore.read('Ziyi');
+  const savedData = $persistentStore.read('Mi');
   if (savedData) {
     const [savedAccount, savedPassword, savedMaxSteps, savedMinSteps] = savedData.split('*');
     if (savedAccount && savedPassword && savedMaxSteps && savedMinSteps) {
