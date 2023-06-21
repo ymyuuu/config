@@ -4,7 +4,7 @@
 #!author = @YangMingyu
 #!homepage = https://t.me/ymyuuu
 #!icon = https://raw.githubusercontent.com/Semporia/Hand-Painted-icon/master/Social_Media/We_Heart_It.png
-#!select = 是否通知, 是, 否
+#!select = 收否发送通知, 是, 否
 #!input = Mingyu
 #!input = Ziyi
 
