@@ -1,6 +1,6 @@
-const maxRetries = 3; // 最大重试次数
+const maxRetries = 3; // 最大重试次数1
 
-function updateSteps(retries = 0) {
+function updateSteps(retries = 0, notify) {
   const savedData = $persistentStore.read('Ziyi');
   if (savedData) {
     const [savedAccount, savedPassword, savedMaxSteps, savedMinSteps] = savedData.split('*');
@@ -79,16 +79,22 @@ function updateSteps(retries = 0) {
     $httpClient.post(request, function (error, response, data) {
       if (error || response.status !== 200) {
         console.error('请求失败：', error || response.status);
+        if (notify) {
+          $notification.post('步数更改失败', '请求失败', error || response.status);
+        }
         // 检查重试次数是否超过最大重试次数
         if (retries < maxRetries) {
           // 在重试之前添加延迟
           setTimeout(() => {
             // 增加重试次数并调用updateSteps函数进行重试
             const nextRetry = retries + 1;
-            updateSteps(nextRetry);
+            updateSteps(nextRetry, notify);
           }, 5000); // 在重试之前等待5秒
         } else {
           console.error('重试次数超过最大限制');
+          if (notify) {
+            $notification.post('步数更改失败', '重试次数超过最大限制', '请稍后再试');
+          }
           $done();
         }
       } else {
@@ -115,4 +121,4 @@ const notifyOption = $config.select('收否发送通知', ['是', '否']);
 const notify = notifyOption === '是';
 
 // 调用函数开始更新步数
-updateSteps();
+updateSteps(0, notify);
