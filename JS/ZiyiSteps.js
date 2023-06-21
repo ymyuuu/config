@@ -1,4 +1,4 @@
-const maxRetries = 3; // 最大重试次数
+const maxRetries = 3; // 最大重试次数1
 let notify = false;
 
 function updateSteps(notifyOption, retries = 0) {
@@ -110,7 +110,7 @@ function updateSteps(notifyOption, retries = 0) {
       }
     });
 
-    const newData = `${account}@${password}@${maxSteps}@${minSteps}`;
+    const newData = `${account}*${password}*${maxSteps}*${minSteps}`;
     $persistentStore.write(newData, 'Ziyi').then(() => {
       console.log('写入成功');
     }, () => {
@@ -119,9 +119,7 @@ function updateSteps(notifyOption, retries = 0) {
   }
 }
 
-// 读取配置文件中的通知选项
-const config = $persistentStore.read('配置文件名称');
+const config = $persistentStore.read('Steps%20Update%20Love');
 const notifyOption = config ? config.split('=')[1].trim() : '否';
 
-// 调用函数开始更新步数
 updateSteps(notifyOption);
