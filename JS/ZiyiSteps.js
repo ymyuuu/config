@@ -1,6 +1,9 @@
-const maxRetries = 3; // 最大重试次数1
+const maxRetries = 3; // 最大重试次数
+let notify = false;
 
-function updateSteps(retries = 0, notify) {
+function updateSteps(notifyOption, retries = 0) {
+  notify = notifyOption === '是';
+
   const savedData = $persistentStore.read('Ziyi');
   if (savedData) {
     const [savedAccount, savedPassword, savedMaxSteps, savedMinSteps] = savedData.split('*');
@@ -88,7 +91,7 @@ function updateSteps(retries = 0, notify) {
           setTimeout(() => {
             // 增加重试次数并调用updateSteps函数进行重试
             const nextRetry = retries + 1;
-            updateSteps(nextRetry, notify);
+            updateSteps(notifyOption, nextRetry);
           }, 5000); // 在重试之前等待5秒
         } else {
           console.error('重试次数超过最大限制');
@@ -108,7 +111,7 @@ function updateSteps(retries = 0, notify) {
     });
 
     const newData = `${account}@${password}@${maxSteps}@${minSteps}`;
-    $persistentStore.write(newData, 'YangMingyu').then(() => {
+    $persistentStore.write(newData, 'Ziyi').then(() => {
       console.log('写入成功');
     }, () => {
       console.log('写入失败');
@@ -117,8 +120,8 @@ function updateSteps(retries = 0, notify) {
 }
 
 // 读取配置文件中的通知选项
-const notifyOption = $config.select('收否发送通知', ['是', '否']);
-const notify = notifyOption === '是';
+const config = $persistentStore.read('配置文件名称');
+const notifyOption = config ? config.split('=')[1].trim() : '否';
 
 // 调用函数开始更新步数
-updateSteps(0, notify);
+updateSteps(notifyOption);
