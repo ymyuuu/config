@@ -6,13 +6,9 @@
 #!icon = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/CrossWall.png
 
 [Script]
+http-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig|basicConfig) script-path=https://raw.githubusercontent.com/deezertidal/private/main/jdprice.js, requires-body=true, timeout=10, tag=jd_price
 
-# 京东比价
-http-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig|basicConfig) script-path=https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js, requires-body=true, timeout=10, tag=jd_price
-# 淘宝比价
-http-request ^http://.+/amdc/mobileDispatch script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js, requires-body=true, timeout=10, tag=tb_price
-http-response ^https?://trade-acs\.m\.taobao\.com/gw/mtop\.taobao\.detail\.getdetail script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js, requires-body=true, timeout=10, tag=tb_price
 
 [MITM]
 
-hostname = api.m.jd.com, trade-acs.m.taobao.com
+hostname = api.m.jd.com
