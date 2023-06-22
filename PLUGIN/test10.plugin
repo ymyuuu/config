@@ -9,7 +9,7 @@
 # https://raw.githubusercontent.com/songyangzz/QuantumultX/master/syzzzf.box.json
 
 [Script]
-cron "0 */20 * * * *" script-path=https://raw.githubusercontent.com/Y-7-0101/ymy/main/JS/test1.js,tag=TF monitoring,timeout=180
+cron "0 */20 * * * *" script-path=https://raw.githubusercontent.com/Y-7-0101/ymy/main/JS/test10.js,tag=TF monitoring,timeout=180
 
 [MITM]
 hostname = testflight.apple.com
