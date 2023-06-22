@@ -2,7 +2,8 @@ const maxRetries = 3; // 最大重试次数
 
 function updateSteps(retries = 0) {
   const savedData = $persistentStore.read('Mingyu');
-  const bstz = $.getdata('是否通知') === '是' = notify
+  const bstz = $.getdata('是否通知') === '是'
+  notify = bstz
   if (savedData) {
     const [savedAccount, savedPassword, savedMaxSteps, savedMinSteps] = savedData.split('@');
       account = savedAccount;
