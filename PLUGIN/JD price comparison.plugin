@@ -7,9 +7,11 @@
 
 [Script]
 
-http-response ^https?:\/\/api\.m\.jd\.com\/client\.action\?functionId=(wareBusiness|serverConfig|basicConfig) script-path=https://raw.githubusercontent.com/githubdulong/Script/master/jd_price.js,requires-body=1, tag=京东比价 
-http-request ^http:\/\/.+\/amdc\/mobileDispatch script-path=https://raw.githubusercontent.com/githubdulong/Script/master/tb_price.js,requires-body=1, tag=淘宝比价 
-http-response ^https?:\/\/trade-acs\.m\.taobao\.com\/gw\/mtop\.taobao\.detail\.getdetail script-path=https://raw.githubusercontent.com/githubdulong/Script/master/tb_price.js,requires-body=1, tag=淘宝比价 
+# 京东比价
+http-response ^https?://api\.m\.jd\.com/client\.action\?functionId=(wareBusiness|serverConfig|basicConfig) script-path=https://raw.githubusercontent.com/yichahucha/surge/master/jd_price.js, requires-body=true, timeout=10, tag=jd_price
+# 淘宝比价
+http-request ^http://.+/amdc/mobileDispatch script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js, requires-body=true, timeout=10, tag=tb_price
+http-response ^https?://trade-acs\.m\.taobao\.com/gw/mtop\.taobao\.detail\.getdetail script-path=https://raw.githubusercontent.com/yichahucha/surge/master/tb_price.js, requires-body=true, timeout=10, tag=tb_price
 
 [MITM]
 
