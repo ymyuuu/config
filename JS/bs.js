@@ -2,18 +2,15 @@ const maxRetries = 3; // 最大重试次数
 
 function updateSteps(retries = 0) {
   const savedData = $persistentStore.read('Mingyu');
-  const notifyOption = $.getdata('是否通知') === '是'
+  const bstz = $.getdata('是否通知') === '是' = notify
   if (savedData) {
     const [savedAccount, savedPassword, savedMaxSteps, savedMinSteps] = savedData.split('@');
-    if (savedAccount && savedPassword && savedMaxSteps && savedMinSteps && notifyOption) {
       account = savedAccount;
       password = savedPassword;
       maxSteps = parseInt(savedMaxSteps);
       minSteps = parseInt(savedMinSteps);
-      notify = notifyOption === '是';
-    }
   }
-
+    
   // 判断账号密码最大步数最小步数是否存在
   if (!account) {
     console.error('缺少账号信息');
