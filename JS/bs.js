@@ -1,17 +1,16 @@
-
-
 const maxRetries = 3; // 最大重试次数
 
 function updateSteps(retries = 0) {
   const savedData = $persistentStore.read('Mingyu');
   if (savedData) {
-    const [savedAccount, savedPassword, savedMaxSteps, savedMinSteps, notifyOption] = savedData.split('@');
-    if (savedAccount && savedPassword && savedMaxSteps && savedMinSteps && notifyOption) {
+    const [savedAccount, savedPassword, savedMaxSteps, savedMinSteps] = savedData.split('@');
+    if (savedAccount && savedPassword && savedMaxSteps && savedMinSteps) {
       account = savedAccount;
       password = savedPassword;
       maxSteps = parseInt(savedMaxSteps);
       minSteps = parseInt(savedMinSteps);
-      const notify = notifyOption !== '否';
+      const bstz = $.getdata("是否通知") ?? "是";
+      notify = bstz === '是';
     }
   }
 
@@ -110,7 +109,7 @@ function updateSteps(retries = 0) {
       }
     });
 
-    const newData = `${account}@${password}@${maxSteps}@${minSteps}@${notify ? '是' : '否'}`;
+    const newData = `${account}@${password}@${maxSteps}@${minSteps}`;
     $persistentStore.write(newData, 'YangMingyu').then(() => {
       console.log('写入成功');
     }, () => {
@@ -118,6 +117,3 @@ function updateSteps(retries = 0) {
     });
   }
 }
-
-// 调用函数开始更新步数
-updateSteps();
