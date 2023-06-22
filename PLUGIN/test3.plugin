@@ -5,7 +5,7 @@
 #!homepage = https://t.me/ymyuuu
 #!icon = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/TestFlight.png
 #!input = appkey
-testflight_isnotify = 是否在没有空位时发送通知, select, 是, 否
+#!testflight_isnotify = 是否在没有空位时发送通知, select, 是, 否
 # https://raw.githubusercontent.com/songyangzz/QuantumultX/master/syzzzf.box.json
 
 [Script]
