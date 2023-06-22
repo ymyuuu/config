@@ -50,7 +50,7 @@ const isNotify = $.getdata('是否在没有空位时仍然发送通知') === '�
         if (!fullstr.test(dataStr)) {
           result[name] = {
             has: true,
-            context: upstr  + req.url 
+            context: upstr  +  req.url + '\n\n'
           }
         } else {
           result[name] = {
