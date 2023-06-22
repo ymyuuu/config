@@ -1,8 +1,4 @@
-/**
- * 参考chavyleung和NobyDa的写法
- * 写入要监测的公测tf appkey，当有空位的时候会弹出通知。
- * 建议task时间间隔小点。
- */
+
 const title = 'TestFilght'
 const $ = new Env('TestFilght监控')
 
@@ -26,12 +22,12 @@ let isNotify = $.getdata('testflight_isnotify') || '是'
         let req = {
             url: url + app,
             headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2357.130 Safari/537.36 qblink wegame.exe QBCore/3.70.66.400 QQBrowser/9.0.2524.400',
+                'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2357.130 Safari/537.36 qblink wegame.exe QBCore/3.70.66.400 QQBrowser/9.0.2524.400'，
                 'X-Requested-With': 'XMLHttpRequest'
             }
         }
         return new Promise(function (resolve) {
-            $.get(req, (error, response, data) => {
+            $.get(req, (error， response， data) => {
                 let upstr = '已有空位，抓紧上车'
                 let result = {}
                 let dataStr = JSON.stringify(data)
