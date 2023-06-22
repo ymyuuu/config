@@ -1,10 +1,8 @@
 /**
- * 参考chavyleung和NobyDa的写法
- * 写入要监测的公测tf appkey，当有空位的时候会弹出通知。
- * 建议task时间间隔小点。
+
  */
-const title = 'TestFilght'
-const $ = new Env('TestFilght监控')
+const title = 'TestFlight'
+const $ = new Env('TestFlight监控')
 
 const appkey = $.getdata('appkey')
 let isNotify = $.getdata('testflight_isnotify') || '是'
@@ -107,6 +105,7 @@ function selectNotify(notify) {
 }
 
 selectNotify($.arg[0])
+
 
 
 
