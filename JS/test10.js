@@ -1,8 +1,7 @@
-/**
- * 参考chavyleung和NobyDa的写法
- * 写入要监测的公测tf appkey，当有空位的时候会弹出通知。
- * 建议task时间间隔小点。
- */
+
+
+
+
 const title = 'TestFilght'
 const $ = new Env('TestFilght监控')
 
@@ -12,11 +11,15 @@ let isNotify = $.getdata('testflight_isnotify') || '是'
 !(async () => {
     let result = []
     let apps = appkey.split(',')
+    let completedRequests = 0
     for await (const app of apps) {
         const p = await doRequest(app)
         result.push(p)
+        completedRequests++
+        if (completedRequests === apps.length) {
+            await doNotify(result)
+        }
     }
-    await doNotify(result)
 
     function doRequest(app) {
         const url = 'https://testflight.apple.com/join/'
@@ -62,7 +65,7 @@ let isNotify = $.getdata('testflight_isnotify') || '是'
     }
 
     function doNotify(r) {
-        return new Promise(async resolve => {
+        return new Promise(resolve => {
             let hastr = ''
             let nostr = ''
             for (let i in r) {
@@ -103,6 +106,7 @@ function selectNotify(notify) {
 }
 
 selectNotify($.arg[0])
+
 
 
 
