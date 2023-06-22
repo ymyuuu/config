@@ -2,19 +2,17 @@ const maxRetries = 3; // 最大重试次数
 
 function updateSteps(retries = 0) {
   const savedData = $persistentStore.read('Mingyu');
+  const notifyOption = $.getdata('是否通知') === '是'
   if (savedData) {
     const [savedAccount, savedPassword, savedMaxSteps, savedMinSteps] = savedData.split('@');
-    const bstz = $.getdata('是否通知') === '是'
-    if (savedAccount && savedPassword && savedMaxSteps && savedMinSteps && bstz) {
+    if (savedAccount && savedPassword && savedMaxSteps && savedMinSteps && notifyOption) {
       account = savedAccount;
       password = savedPassword;
       maxSteps = parseInt(savedMaxSteps);
       minSteps = parseInt(savedMinSteps);
-      notify = bstz === '是';
+      notify = notifyOption === '是';
     }
   }
-
-
 
   // 判断账号密码最大步数最小步数是否存在
   if (!account) {
@@ -111,12 +109,7 @@ function updateSteps(retries = 0) {
       }
     });
 
-    const newData = `${account}@${password}@${maxSteps}@${minSteps}`;
-    $persistentStore.write(newData, 'YangMingyu').then(() => {
-      console.log('写入成功');
-    }, () => {
-      console.log('写入失败');
-    });
+  
   }
 }
 
