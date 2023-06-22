@@ -10,7 +10,7 @@ function updateSteps(retries = 0) {
       maxSteps = parseInt(savedMaxSteps);
       minSteps = parseInt(savedMinSteps);
       const bstz = $.getdata("是否通知") ?? "是";
-      notify = bstz === '是';
+      const notify = bstz === '是';
     }
   }
 
