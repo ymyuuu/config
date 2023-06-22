@@ -34,7 +34,7 @@ const isNotify = $.getdata('是否在没有空位时仍然发送通知') === '�
     }
     return new Promise(function (resolve) {
       $.get(req, (error, response, data) => {
-        let upstr = '已有空位，抓紧上车'
+        let upstr = '有位，冲'
         let result = {}
         let dataStr = JSON.stringify(data)
         let appName
@@ -50,12 +50,12 @@ const isNotify = $.getdata('是否在没有空位时仍然发送通知') === '�
         if (!fullstr.test(dataStr)) {
           result[name] = {
             has: true,
-            context: upstr + '👉:' + '\n' + req.url + '\n\n'
+            context: upstr  + req.url 
           }
         } else {
           result[name] = {
             has: false,
-            context: '暂无车位' + '\n\n'
+            context: '无位' 
           }
         }
         resolve(result)
