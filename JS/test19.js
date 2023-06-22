@@ -1,3 +1,5 @@
+
+
 const title = 'TestFilght'
 const $ = new Env('TestFilght监控')
 
@@ -7,11 +9,8 @@ const $ = new Env('TestFilght监控')
  */
 const appkey = $.getdata('appkey')
 
-/**
- * 是否在没有tf位置的时候仍然发送通知，默认为是（true）
- * 可选值: 是 (true) 或 否 (false)
- */
-const isNotify = $.getdata('是否在没有空位时仍然发送通知') || '是'
+// 是否在没有tf位置的时候仍然发送通知，默认为是（true）
+const isNotify = $.getdata('是否在没有空位时仍然发送通知') === '是'
 
 !(async () => {
   let result = []
@@ -83,7 +82,7 @@ const isNotify = $.getdata('是否在没有空位时仍然发送通知') || '是
           } else {
             let nostr =
               '[' + name + ']' + '\n' + result[name].context
-            if (isNotify === 'true') {
+            if (isNotify) {
               $.msg('TestFilght监控', '', nostr)
             } else {
               $.log('TestFilght监控', '', nostr)
