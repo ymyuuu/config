@@ -1,4 +1,8 @@
-
+/**
+ * 参考chavyleung和NobyDa的写法
+ * 写入要监测的公测tf appkey，当有空位的时候会弹出通知。
+ * 建议task时间间隔小点。
+ */
 const title = 'TestFilght'
 const $ = new Env('TestFilght监控')
 
@@ -44,12 +48,12 @@ let isNotify = $.getdata('testflight_isnotify') || '是'
                 if (!fullstr.test(dataStr)) {
                     result[name] = {
                         has: true,
-                        context: upstr + '👉:' + `[${name}](${req.url+app})`
+                        context: upstr + '👉: [' + name + '](' + req.url + app + ')'
                     }
                 } else {
                     result[name] = {
                         has: false,
-                        context: fullstr.test(dataStr) ? '无空位👉:' + `[${name}](${req.url+app})` : '访问失败👉:' + `[${name}](${req.url+app})`
+                        context: fullstr.test(dataStr) ? '无空位👉: [' + name + '](' + req.url + app + ')' : '访问失败👉: [' + name + '](' + req.url + app + ')'
                     }
                 }
                 resolve(result)
