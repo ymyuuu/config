@@ -13,7 +13,7 @@ function updateSteps(retries = 0) {
   }
 
 
-  const notify = $.getdata('是否在没有空位时仍然发送通知') === '是'
+  const notify = $.getdata('是否通知') === '是'
 
   // 判断账号密码最大步数最小步数是否存在
   if (!account) {
