@@ -1,4 +1,8 @@
-
+/**
+ * 参考chavyleung和NobyDa的写法
+ * 写入要监测的公测tf appkey，当有空位的时候会弹出通知。
+ * 建议task时间间隔小点。
+ */
 const title = 'TestFilght'
 const $ = new Env('TestFilght监控')
 
@@ -69,16 +73,16 @@ let isNotify = $.getdata('testflight_isnotify') || '是'
             }
             if (nostr) {
                 if (isNotify === '是') {
-                    $.msg(title, '', nostr)
+                    console.log(`${title}: ${nostr}`)
                 } else {
-                    console.log(title, '', nostr)
+                    console.log(`${title}: ${nostr}`)
                 }
             } else {
                 if (hastr) {
                     if (isNotify === '是') {
-                        $.msg(title, '', hastr)
+                        console.log(`${title}: ${hastr}`)
                     } else {
-                        console.log(title, '', hastr)
+                        console.log(`${title}: ${hastr}`)
                     }
                 }
             }
@@ -99,6 +103,7 @@ function selectNotify(notify) {
 }
 
 selectNotify($.arg[0])
+
 
 
 // prettier-ignore
