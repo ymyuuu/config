@@ -4,12 +4,13 @@ function updateSteps(retries = 0) {
   const savedData = $persistentStore.read('Mingyu');
   if (savedData) {
     const [savedAccount, savedPassword, savedMaxSteps, savedMinSteps] = savedData.split('@');
-    if (savedAccount && savedPassword && savedMaxSteps && savedMinSteps ) {
+    const bstz = $.getdata('是否通知') === '是'
+    if (savedAccount && savedPassword && savedMaxSteps && savedMinSteps && bstz) {
       account = savedAccount;
       password = savedPassword;
       maxSteps = parseInt(savedMaxSteps);
       minSteps = parseInt(savedMinSteps);
-      const notify = $.getdata('是否通知') === '是'
+      notify = bstz === '是';
     }
   }
 
