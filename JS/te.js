@@ -5,7 +5,7 @@ const $ = new Env('TF Detection')
  * 填入要监测的appkey。从testfligt地址获取。
  * 例如"VCIvwk2g/wArXdacJ/2vnRvOTX/LzjySbQx/IdFRwmNy/qDkBu2ur/4Qt2lIm5/ZzqOu8tX/ftCqFe6F/fy7LvHVA/QKqitFwc"
  */
-const appkeys = $.getdata('appkeys')
+const appkeys = $.getdata('appkey')
 
 // 是否删除已检测到的appkey，默认为不删除（false）
 const shouldDeleteKeys = $.getdata('是否删除已检测到的appkey') === '是'
