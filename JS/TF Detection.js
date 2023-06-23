@@ -7,8 +7,8 @@ const $ = new Env('TF Detection')
  */
 const appkey = $.getdata('appkey')
 
-// 是否在没有tf位置的时候仍然发送通知，默认为是（true）
-const isNotify = $.getdata('是否在没有空位时仍然发送通知') === '是'
+// 是否通知未检测到的appkey，默认为是（true）
+const isNotify = $.getdata('是否通知未检测到的appkey') === '是'
 
 // 是否删除已检测到的appkey，默认为不删除（false）
 const shouldDeleteKeys = $.getdata('是否删除已检测到的appkey') === '是'
