@@ -4,8 +4,9 @@
 #!author = @YangMingyu
 #!homepage = https://t.me/ymyuuu
 #!icon = https://raw.githubusercontent.com/Koolson/Qure/master/IconSet/mini/TestFlight.png
-#!input = appkey
 #!select = 是否在没有空位时仍然发送通知, 是, 否
+#!select = 是否删除已检测到的appkey, 是, 否
+#!input = appkey
 
 /**
  * 填入要监测的appkey。从testfligt地址获取。
