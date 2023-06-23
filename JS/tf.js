@@ -56,12 +56,12 @@ const shouldDeleteKeys = $.getdata('是否删除已检测到的appkey') === '是
         if (!fullstr.test(dataStr)) {
           result[name] = {
             has: true,
-            context: '抢到👆点击立刻跳转TestFlight'
+            context: '🈶️👆点击立刻跳转TestFlight'
           }
         } else {
           result[name] = {
             has: false,
-            context: '无位' 
+            context: '🈚️👆' 
           }
         }
         resolve(result)
