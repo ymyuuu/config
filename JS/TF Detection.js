@@ -2,13 +2,16 @@ const title = 'TF Detection'
 const $ = new Env('TF Detection')
 
 /**
- * 填入要监测的appkey。从testfligt地址获取。
+ * 填入要监测的appkey，从testfligt地址获取
  * 例如"VCIvwk2g/wArXdacJ/2vnRvOTX/LzjySbQx/IdFRwmNy/qDkBu2ur/4Qt2lIm5/ZzqOu8tX/ftCqFe6F/fy7LvHVA/QKqitFwc"
  */
 const appkey = $.getdata('appkey')
 
 // 是否在没有tf位置的时候仍然发送通知，默认为是（true）
 const isNotify = $.getdata('是否在没有空位时仍然发送通知') === '是'
+
+// 是否删除已检测到的appkey，默认为不删除（false）
+const shouldDeleteKeys = $.getdata('是否删除已检测到的appkey') === '是'
 
 !(async () => {
   let result = []
@@ -18,6 +21,10 @@ const isNotify = $.getdata('是否在没有空位时仍然发送通知') === '�
     result.push(p)
   }
   await doNotify(result)
+
+  if (shouldDeleteKeys) {
+    deleteDetectedKeys(result)
+  }
 
   function doRequest(app) {
     const url = 'https://testflight.apple.com/join/'
@@ -34,7 +41,6 @@ const isNotify = $.getdata('是否在没有空位时仍然发送通知') === '�
     }
     return new Promise(function (resolve) {
       $.get(req, (error, response, data) => {
-        let upstr = '有位，冲'
         let result = {}
         let dataStr = JSON.stringify(data)
         let appName
@@ -50,12 +56,12 @@ const isNotify = $.getdata('是否在没有空位时仍然发送通知') === '�
         if (!fullstr.test(dataStr)) {
           result[name] = {
             has: true,
-            context: upstr + '👉:' + '\n' + req.url + '\n\n'
+            context: '🈶️👆点击立刻跳转TestFlight'
           }
         } else {
           result[name] = {
             has: false,
-            context: '无位' 
+            context: '🈚️👆' 
           }
         }
         resolve(result)
@@ -76,7 +82,7 @@ const isNotify = $.getdata('是否在没有空位时仍然发送通知') === '�
           if (has) {
             let hastr =
               '[' + name + ']' + '\n' + result[name].context
-            $.msg('TF Detection', '', hastr)
+            $.msg('TF Detection', '', hastr, { openUrl: 'https://testflight.apple.com/join/' + apps[i] })
           } else {
             let nostr =
               '[' + name + ']' + '\n' + result[name].context
@@ -90,9 +96,34 @@ const isNotify = $.getdata('是否在没有空位时仍然发送通知') === '�
       }
     })
   }
+
+  function deleteDetectedKeys(res) {
+    let detectedKeys = []
+    for (let i in res) {
+      let result = res[i]
+      if (JSON.stringify(result) == '{}') {
+        continue
+      }
+      for (name in result) {
+        let has = result[name].has
+        if (has) {
+          detectedKeys.push(apps[i])
+        }
+      }
+    }
+    if (detectedKeys.length > 0) {
+      let updatedAppKeys = appkey
+      for (let i in detectedKeys) {
+        updatedAppKeys = updatedAppKeys.replace(detectedKeys[i], '')
+      }
+      $.setdata(updatedAppKeys, 'appkey')
+    }
+  }
 })()
   .catch((e) => $.logErr(e))
   .finally(() => $.done())
+
+
 
 
 // prettier-ignore
