@@ -2,7 +2,7 @@ const title = 'TF Detection'
 const $ = new Env('TF Detection')
 
 /**
- * 填入要监测的appkey。从testfligt地址获取。
+ * 填入要监测的appkey，从testfligt地址获取
  * 例如"VCIvwk2g/wArXdacJ/2vnRvOTX/LzjySbQx/IdFRwmNy/qDkBu2ur/4Qt2lIm5/ZzqOu8tX/ftCqFe6F/fy7LvHVA/QKqitFwc"
  */
 const appkey = $.getdata('appkey')
@@ -57,7 +57,7 @@ const shouldDeleteKeys = $.getdata('是否删除已检测到的appkey') === '是
         if (!fullstr.test(dataStr)) {
           result[name] = {
             has: true,
-            context: upstr + '👉:' + '\n' + req.url + '\n\n'
+            context: '已抢到👇点击立刻跳转TestFlight' + '\n' + upstr 
           }
         } else {
           result[name] = {
