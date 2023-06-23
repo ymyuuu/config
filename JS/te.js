@@ -84,7 +84,7 @@ const shouldDeleteKeys = $.getdata('是否删除已检测到的appkey') === '是
       }
       // 根据是否删除的选择性更新appkeys
       if (shouldDeleteKeys) {
-        $.setdata(newAppkeys.join('/'), 'appkeys')
+        $.setdata(newAppkeys.join('/'), 'appkey')
       }
     })
   }
