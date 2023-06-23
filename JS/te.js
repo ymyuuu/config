@@ -5,28 +5,35 @@ const $ = new Env('TF Detection')
  * 填入要监测的appkey。从testfligt地址获取。
  * 例如"VCIvwk2g/wArXdacJ/2vnRvOTX/LzjySbQx/IdFRwmNy/qDkBu2ur/4Qt2lIm5/ZzqOu8tX/ftCqFe6F/fy7LvHVA/QKqitFwc"
  */
-const appkeys = $.getdata('appkey')
+const appkey = $.getdata('appkey')
+
+// 是否在没有tf位置的时候仍然发送通知，默认为是（true）
+const isNotify = $.getdata('是否在没有空位时仍然发送通知') === '是'
 
 // 是否删除已检测到的appkey，默认为不删除（false）
 const shouldDeleteKeys = $.getdata('是否删除已检测到的appkey') === '是'
 
 !(async () => {
   let result = []
-  let keys = appkeys.split('/') // 使用斜杠进行分割
-  for await (const key of keys) {
-    const p = await doRequest(key)
+  let apps = appkey.split('/') // 使用斜杠进行分割
+  for await (const app of apps) {
+    const p = await doRequest(app)
     result.push(p)
   }
   await doNotify(result)
 
-  function doRequest(key) {
+  if (shouldDeleteKeys) {
+    deleteDetectedKeys(result)
+  }
+
+  function doRequest(app) {
     const url = 'https://testflight.apple.com/join/'
     const fullstr =
       /版本的测试员已满|此Beta版本目前不接受任何新测试员|Not Found|This beta is full|This beta isn't accepting any new testers right now/
     const appNameReg = /Join the (.+) beta - TestFlight - Apple/
     const appNameRegCh = /加入 Beta 版“(.+)” - TestFlight - Apple/
     let req = {
-      url: url + key,
+      url: url + app,
       headers: {
         'User-Agent':
           '[{"key":"User-Agent","value":" Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2357.130 Safari/537.36 qblink wegame.exe QBCore/3.70.66.400 QQBrowser/9.0.2524.400","type":"text","enabled":true,"description":""},{"key":"X-Requested-With","value":" XMLHttpRequest","type":"text","enabled":false,"description":""}]'
@@ -66,11 +73,9 @@ const shouldDeleteKeys = $.getdata('是否删除已检测到的appkey') === '是
   function doNotify(res) {
     return Promise.all(res).then((results) => {
       $.log(JSON.stringify(results))
-      let newAppkeys = []
       for (let i in results) {
         let result = results[i]
         if (JSON.stringify(result) == '{}') {
-          newAppkeys.push(keys[i])
           continue
         }
         for (name in result) {
@@ -79,18 +84,46 @@ const shouldDeleteKeys = $.getdata('是否删除已检测到的appkey') === '是
             let hastr =
               '[' + name + ']' + '\n' + result[name].context
             $.msg('TF Detection', '', hastr)
+          } else {
+            let nostr =
+              '[' + name + ']' + '\n' + result[name].context
+            if (isNotify) {
+              $.msg('TF Detection', '', nostr)
+            } else {
+              $.log('TF Detection', '', nostr)
+            }
           }
         }
       }
-      // 根据是否删除的选择性更新appkeys
-      if (shouldDeleteKeys) {
-        $.setdata(newAppkeys.join('/'), 'appkey')
-      }
     })
+  }
+
+  function deleteDetectedKeys(res) {
+    let detectedKeys = []
+    for (let i in res) {
+      let result = res[i]
+      if (JSON.stringify(result) == '{}') {
+        continue
+      }
+      for (name in result) {
+        let has = result[name].has
+        if (has) {
+          detectedKeys.push(apps[i])
+        }
+      }
+    }
+    if (detectedKeys.length > 0) {
+      let updatedAppKeys = appkey
+      for (let i in detectedKeys) {
+        updatedAppKeys = updatedAppKeys.replace(detectedKeys[i], '')
+      }
+      $.setdata(updatedAppKeys, 'appkey')
+    }
   }
 })()
   .catch((e) => $.logErr(e))
   .finally(() => $.done())
+
 
 
 // prettier-ignore
