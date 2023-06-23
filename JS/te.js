@@ -1,6 +1,3 @@
-const title = 'TF Detection'
-const $ = new Env('TF Detection')
-
 /**
  * 填入要监测的appkey，从testfligt地址获取
  * 例如"VCIvwk2g/wArXdacJ/2vnRvOTX/LzjySbQx/IdFRwmNy/qDkBu2ur/4Qt2lIm5/ZzqOu8tX/ftCqFe6F/fy7LvHVA/QKqitFwc"
@@ -41,7 +38,6 @@ const shouldDeleteKeys = $.getdata('是否删除已检测到的appkey') === '是
     }
     return new Promise(function (resolve) {
       $.get(req, (error, response, data) => {
-        let upstr = '有位，冲'
         let result = {}
         let dataStr = JSON.stringify(data)
         let appName
@@ -54,7 +50,7 @@ const shouldDeleteKeys = $.getdata('是否删除已检测到的appkey') === '是
           return
         }
         let name = appName[1]
-        if (!fullstr.test(dataStr)) {'抢到'
+        if (!fullstr.test(dataStr)) {
           result[name] = {
             has: true,
             context: '抢到👆点击立刻跳转TestFlight'
