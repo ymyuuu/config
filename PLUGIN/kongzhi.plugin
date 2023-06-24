@@ -11,7 +11,7 @@
  */
 
 [Script]
-http-request ^https:\/\/raw\.githubusercontent\.com\/.*\.pluginloon$|^https:\/\/.*\.pluginloon\?.* script-path=https://raw.githubusercontent.com/Y-7-0101/ymy/main/JS/tes.js, requires-body=true, tag=Loon
+http-request ^https:\/\/raw\.githubusercontent\.com\/.*\.pluginloon$|^https:\/\/.*\.pluginloon\?.* script-path=https://raw.githubusercontent.com/Y-7-0101/ymy/main/JS/test.js, requires-body=true, tag=Loon
 
 [MITM]
 hostname = raw.githubusercontent.com, *.pluginloon,github.com,raw.githubusercontent.com,gist.githubusercontent.com,gitlab.com,yfamily.ml
