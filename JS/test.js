@@ -683,9 +683,9 @@ ${MITM}`
 
 
 if (isStashiOS || isSurgeiOS) {
-           others !="" && $notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看跳过行",{url:req});
+           others !="" 
         } else if (isLooniOS || isShadowrocket) {
-       others !="" && $notification.post("不支持的类型已跳过","第" + others,"点击查看原文，长按可展开查看跳过行",req);};
+       others !="" && };
 
  $done({ response: { status: 200 ,body:body ,headers: {'Content-Type': 'text/plain; charset=utf-8'} } });
 }//判断是否断网的反括号
@@ -693,7 +693,7 @@ if (isStashiOS || isSurgeiOS) {
 
 })()
 .catch((e) => {
-		$notification.post(`${e}`,'','');
+		
 		$done()
 	})
 
