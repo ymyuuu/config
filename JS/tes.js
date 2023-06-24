@@ -1,53 +1,34 @@
-var url = $request.url;
+const url = decodeURIComponent($request.url);
+const x = $request.x;
+const y = $request.y;
 
-// 解析 URL 参数
-var params = getUrlParams(url);
+const keywordsToExclude = x ? x.split('+') : [];
+const keywordsToInclude = y ? y.split('+') : [];
 
-// 获取 x 参数，排除脚本关键词
-var excludeKeywords = params["x"] ? params["x"].split("+") : [];
-
-// 获取 y 参数，保留脚本关键词
-var includeKeywords = params["y"] ? params["y"].split("+") : [];
-
-// 根据关键词进行处理
-if (excludeKeywords.length > 0 || includeKeywords.length > 0) {
-  // 获取插件脚本内容
-  var pluginContent = $response.body;
-
-  // 根据关键词排除脚本
-  if (excludeKeywords.length > 0) {
-    var excludeRegex = new RegExp(excludeKeywords.join("|"), "i");
-    pluginContent = pluginContent.replace(excludeRegex, function (match) {
-      return "#" + match;
-    });
-  }
-
-  // 根据关键词保留脚本
-  if (includeKeywords.length > 0) {
-    var includeRegex = new RegExp(includeKeywords.join("|"), "i");
-    pluginContent = pluginContent.replace(includeRegex, function (match) {
-      return match.replace("#", "");
-    });
-  }
-
-  // 更新插件脚本内容
-  $done({ body: pluginContent });
+if (shouldExcludeScript(url, keywordsToExclude)) {
+  // 添加注释符号#来排除脚本
+  $done({ response: { body: `#${url}` } });
+} else if (shouldIncludeScript(url, keywordsToInclude)) {
+  // 去除注释符号#来保留脚本
+  $done({ response: { body: url.replace(/^#/, '') } });
 } else {
   $done({});
 }
 
-// 解析 URL 参数的函数
-function getUrlParams(url) {
-  var params = {};
-  var paramString = url.split("?")[1];
-  if (paramString) {
-    var paramPairs = paramString.split("&");
-    for (var i = 0; i < paramPairs.length; i++) {
-      var pair = paramPairs[i].split("=");
-      var key = decodeURIComponent(pair[0]);
-      var value = decodeURIComponent(pair[1]);
-      params[key] = value;
+function shouldExcludeScript(url, keywordsToExclude) {
+  for (const keyword of keywordsToExclude) {
+    if (url.includes(keyword)) {
+      return true;
     }
   }
-  return params;
+  return false;
+}
+
+function shouldIncludeScript(url, keywordsToInclude) {
+  for (const keyword of keywordsToInclude) {
+    if (url.includes(keyword)) {
+      return true;
+    }
+  }
+  return false;
 }
