@@ -1,4 +1,5 @@
 const url = decodeURIComponent($request.url);
+
 const x = $request.x;
 const y = $request.y;
 
@@ -6,11 +7,9 @@ const keywordsToExclude = x ? x.split('+') : [];
 const keywordsToInclude = y ? y.split('+') : [];
 
 if (shouldExcludeScript(url, keywordsToExclude)) {
-  // 添加注释符号#来排除脚本
-  $done({ response: { body: `#${url}` } });
+  $done({ response: { body: JSON.stringify({ disabled: true }) } });
 } else if (shouldIncludeScript(url, keywordsToInclude)) {
-  // 去除注释符号#来保留脚本
-  $done({ response: { body: url.replace(/^#/, '') } });
+  $done({ response: { body: JSON.stringify({ disabled: false }) } });
 } else {
   $done({});
 }
