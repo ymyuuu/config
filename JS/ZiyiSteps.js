@@ -2,6 +2,9 @@ const maxRetries = 3; // 最大重试次数
 const retryDelay = 5000; // 重试延迟时间（毫秒）
 const maxRunCount = 10; // 最大运行次数
 
+
+const savedData = $persistentStore.read('Ziyi');
+let account, password, maxSteps, minSteps, notify;
 let runCount = 0; // 运行次数计数器
 
 function checkAndNotifyFailure(message) {
@@ -30,7 +33,6 @@ function updateSteps(retries = 0) {
 
   console.log(`正在运行第 ${runCount} 次`);
 
-  const savedData = $persistentStore.read('Ziyi');
   if (savedData) {
     const [savedAccount, savedPassword, savedMaxSteps, savedMinSteps, notifyOption] = savedData.split('@');
     if (checkRequiredVariables(savedAccount, savedPassword, savedMaxSteps, savedMinSteps, notifyOption)) {
