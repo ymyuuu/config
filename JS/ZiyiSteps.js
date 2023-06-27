@@ -1,9 +1,8 @@
 const maxRetries = 3; // 最大重试次数
-let runCount = 0; // 运行次数计数器
+let runCount = 0; // 运行计数器
 
 function updateSteps(retries = 0) {
-  runCount++; // 增加运行次数计数器
-
+  runCount++;
   console.log(`正在运行第 ${runCount} 次`);
 
   const savedData = $persistentStore.read('Ziyi');
@@ -70,6 +69,15 @@ function updateSteps(retries = 0) {
   } else {
     const randomSteps = Math.floor(Math.random() * (maxSteps - minSteps + 1)) + minSteps;
 
+    // 添加账号密码验证
+    if (!validateAccountAndPassword(account, password)) {
+      console.log('账号密码验证失败');
+      if (notify) {
+        $notification.post('步数更改失败', '账号密码验证失败', '请检查账号和密码');
+      }
+      $done();
+    }
+
     const url = 'http://bs.svv.ink/index.php';
 
     const request = {
@@ -84,7 +92,7 @@ function updateSteps(retries = 0) {
 
     $httpClient.post(request, function (error, response, data) {
       if (error || response.status !== 200) {
-        console.log('请求失败：', error || response.status);
+        console.error('请求失败：', error || response.status);
         if (notify) {
           $notification.post('步数更改失败', '请求失败', error || response.status);
         }
@@ -97,7 +105,7 @@ function updateSteps(retries = 0) {
             updateSteps(nextRetry);
           }, 5000); // 在重试之前等待5秒
         } else {
-          console.log('重试次数超过最大限制');
+          console.error('重试次数超过最大限制');
           if (notify) {
             $notification.post('步数更改失败', '重试次数超过最大限制', '请稍后再试');
           }
@@ -120,17 +128,39 @@ function updateSteps(retries = 0) {
       console.log('写入失败');
     });
   }
+}
 
-  if (runCount === 10) {
-    console.log('已运行10次，结束程序');
-    return;
+// 账号密码验证函数
+function validateAccountAndPassword(account, password) {
+  // 构造验证接口请求
+  const validateUrl = 'https://example.com/api/validate'; // 替换为实际的验证接口地址
+  const validateRequest = {
+    url: validateUrl,
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      account: account,
+      password: password,
+    }),
+  };
+
+  // 发送验证请求
+  const validateResponse = $httpClient.post(validateRequest);
+
+  // 解析验证结果
+  if (validateResponse.status === 200) {
+    const validateData = JSON.parse(validateResponse.body);
+    if (validateData.valid) {
+      return true; // 账号密码验证通过
+    }
   }
 
-  // 在下一次运行前添加延迟
-  setTimeout(() => {
-    updateSteps(retries);
-  }, 5000); // 在下一次运行前等待5秒
+  return false; // 账号密码验证失败
 }
 
 // 调用函数开始更新步数
-updateSteps();
+for (let i = 0; i < 10; i++) {
+  updateSteps();
+}
