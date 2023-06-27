@@ -1,9 +1,6 @@
 const maxRunCount = 10; // 最大运行次数
 let runCount = 0; // 运行次数计数器
 
-
-
-
 function updateSteps() {
   runCount++; // 增加运行次数计数器
 
