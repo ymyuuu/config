@@ -1,12 +1,25 @@
 const maxRetries = 3; // 最大重试次数
+const savedDataKey = 'Ziyi';
+const newDataKey = 'YangMingyu';
+const retryDelay = 5000; // 重试延迟时间（毫秒）
+const maxRunCount = 10; // 最大运行次数
+
 let runCount = 0; // 运行次数计数器
+
+function checkAndNotifyFailure(message) {
+  console.log(message);
+  if (notify) {
+    $notification.post('步数更改失败', message, '请检查相应信息');
+  }
+  $done();
+}
 
 function updateSteps(retries = 0) {
   runCount++; // 增加运行次数计数器
 
   console.log(`正在运行第 ${runCount} 次`);
 
-  const savedData = $persistentStore.read('Ziyi');
+  const savedData = $persistentStore.read(savedDataKey);
   if (savedData) {
     const [savedAccount, savedPassword, savedMaxSteps, savedMinSteps, notifyOption] = savedData.split('@');
     if (savedAccount && savedPassword && savedMaxSteps && savedMinSteps && notifyOption) {
@@ -20,53 +33,25 @@ function updateSteps(retries = 0) {
 
   // 判断账号密码最大步数最小步数是否存在
   if (!account) {
-    console.log('缺少账号信息');
-    if (notify) {
-      $notification.post('步数更改失败', '缺少账号信息', '请检查账号');
-    }
-    $done();
+    checkAndNotifyFailure('缺少账号信息');
   }
   if (!password) {
-    console.log('缺少密码信息');
-    if (notify) {
-      $notification.post('步数更改失败', '缺少密码信息', '请检查密码');
-    }
-    $done();
+    checkAndNotifyFailure('缺少密码信息');
   }
   if (!maxSteps) {
-    console.log('缺少最大步数信息');
-    if (notify) {
-      $notification.post('步数更改失败', '缺少最大步数信息', '请检查最大步数');
-    }
-    $done();
+    checkAndNotifyFailure('缺少最大步数信息');
   }
   if (!minSteps) {
-    console.log('缺少最小步数信息');
-    if (notify) {
-      $notification.post('步数更改失败', '缺少最小步数信息', '请检查最小步数');
-    }
-    $done();
+    checkAndNotifyFailure('缺少最小步数信息');
   }
 
   // 判断最大步数和最小步数是否超限
   if (maxSteps > 98000 || minSteps > 98000) {
-    console.log('最大步数和最小步数不能超过98000');
-    if (notify) {
-      $notification.post('步数更改失败', '最大步数和最小步数不能超过98000', '请检查最大步数和最小步数');
-    }
-    $done();
+    checkAndNotifyFailure('最大步数和最小步数不能超过98000');
   } else if (maxSteps < minSteps) {
-    console.log('最大步数不能小于最小步数');
-    if (notify) {
-      $notification.post('步数更改失败', '最大步数不能小于最小步数', '请检查最大步数和最小步数');
-    }
-    $done();
+    checkAndNotifyFailure('最大步数不能小于最小步数');
   } else if (minSteps > maxSteps) {
-    console.log('最小步数不能大于最大步数');
-    if (notify) {
-      $notification.post('步数更改失败', '最小步数不能大于最大步数', '请检查最大步数和最小步数');
-    }
-    $done();
+    checkAndNotifyFailure('最小步数不能大于最大步数');
   } else {
     const randomSteps = Math.floor(Math.random() * (maxSteps - minSteps + 1)) + minSteps;
 
@@ -95,7 +80,7 @@ function updateSteps(retries = 0) {
             // 增加重试次数并调用updateSteps函数进行重试
             const nextRetry = retries + 1;
             updateSteps(nextRetry);
-          }, 500); // 在重试之前等待5秒
+          }, retryDelay);
         } else {
           console.log('重试次数超过最大限制');
           if (notify) {
@@ -114,14 +99,14 @@ function updateSteps(retries = 0) {
     });
 
     const newData = `${account}@${password}@${maxSteps}@${minSteps}@${notify ? 'M' : 'N'}`;
-    $persistentStore.write(newData, 'YangMingyu').then(() => {
+    $persistentStore.write(newData, newDataKey).then(() => {
       console.log('写入成功');
     }, () => {
       console.log('写入失败');
     });
   }
 
-  if (runCount === 10) {
+  if (runCount === maxRunCount) {
     console.log('已运行10次，结束程序');
     return;
   }
@@ -129,7 +114,7 @@ function updateSteps(retries = 0) {
   // 在下一次运行前添加延迟
   setTimeout(() => {
     updateSteps(retries);
-  }, 500); // 在下一次运行前等待5秒
+  }, retryDelay);
 }
 
 // 调用函数开始更新步数
