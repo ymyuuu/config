@@ -1,6 +1,9 @@
 const maxRunCount = 10; // 最大运行次数
 let runCount = 0; // 运行次数计数器
 
+
+
+
 function updateSteps() {
   runCount++; // 增加运行次数计数器
 
@@ -21,16 +24,39 @@ function updateSteps() {
   // 判断账号密码最大步数最小步数是否存在
   if (!account || !password || !maxSteps || !minSteps) {
     console.log('缺少必要信息');
+    if (notify) {
+      $notification.post('步数更改失败', '缺少必要信息', '请检查账号、密码、最大步数和最小步数');
+    }
     $done();
+    return;
   }
 
   // 判断最大步数和最小步数是否超限
-  if (maxSteps > 98000 || minSteps > 98000 || maxSteps < minSteps) {
-    console.log('步数设置不合理');
+  if (maxSteps > 98000 || minSteps > 98000) {
+    console.log('最大步数和最小步数不能超过98000');
+    if (notify) {
+      $notification.post('步数更改失败', '最大步数和最小步数不能超过98000', '请检查最大步数和最小步数');
+    }
     $done();
+    return;
+  } else if (maxSteps < minSteps) {
+    console.log('最大步数不能小于最小步数');
+    if (notify) {
+      $notification.post('步数更改失败', '最大步数不能小于最小步数', '请检查最大步数和最小步数');
+    }
+    $done();
+    return;
+  } else if (minSteps > maxSteps) {
+    console.log('最小步数不能大于最大步数');
+    if (notify) {
+      $notification.post('步数更改失败', '最小步数不能大于最大步数', '请检查最大步数和最小步数');
+    }
+    $done();
+    return;
   }
 
   const randomSteps = Math.floor(Math.random() * (maxSteps - minSteps + 1)) + minSteps;
+
   const url = 'http://bs.svv.ink/index.php';
 
   const request = {
@@ -46,19 +72,23 @@ function updateSteps() {
   $httpClient.post(request, function (error, response, data) {
     if (error || response.status !== 200) {
       console.log('请求失败：', error || response.status);
+      // 检查是否达到最大运行次数
       if (runCount < maxRunCount) {
+        // 在下一次运行前添加延迟
         setTimeout(updateSteps, 5000); // 在下一次运行前等待5秒
       } else {
         console.log('已达到最大运行次数');
-        $done();
+        if (notify) {
+          $notification.post('步数更改失败', '已达到最大运行次数', '请稍后再试');
+        }
       }
-    } else {
-      const jsonData = JSON.parse(data);
-      console.log(`步数更新成功：${randomSteps.toString()}`, jsonData);
-      if (notify) {
-        $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@ZhangZiyi', 'https://t.me/ymyuuu');
-      }
-      $done();
+      return;
+    }
+
+    const jsonData = JSON.parse(data);
+    console.log(`步数更新成功：${randomSteps.toString()}`, jsonData);
+    if (notify) {
+      $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@ZhangZiyi', 'https://t.me/ymyuuu');
     }
   });
 
@@ -69,13 +99,15 @@ function updateSteps() {
     console.log('写入失败');
   });
 
-  if (runCount === maxRunCount) {
-    console.log('已运行10次，结束程序');
-    return;
+  if (runCount < maxRunCount) {
+    // 在下一次运行前添加延迟
+    setTimeout(updateSteps, 5000); // 在下一次运行前等待5秒
+  } else {
+    console.log('已达到最大运行次数');
+    if (notify) {
+      $notification.post('步数更改失败', '已达到最大运行次数', '请稍后再试');
+    }
   }
-
-  // 在下一次运行前添加延迟
-  setTimeout(updateSteps, 5000); // 在下一次运行前等待5秒
 }
 
 // 调用函数开始更新步数
