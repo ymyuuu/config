@@ -1,5 +1,6 @@
 const maxRetries = 10; // 最大运行次数
 let runCount = 0; // 运行次数计数器
+
 function updateSteps(retries = 0) {
   runCount++; // 增加运行次数计数器
 
@@ -49,7 +50,7 @@ function updateSteps(retries = 0) {
     body: `account=${account}&password=${password}&steps=${randomSteps}&max_steps=${maxSteps}&min_steps=${minSteps}`,
   };
 
-  $httpClient.postAsync(request)
+  $httpClient.post(request)
     .then((response) => {
       if (response.status !== 200) {
         console.log('请求失败：', response.status);
@@ -92,11 +93,13 @@ function updateSteps(retries = 0) {
     });
 
   const newData = `${account}@${password}@${maxSteps}@${minSteps}@${notify ? 'M' : 'N'}`;
-  $persistentStore.write(newData, 'YangMingyu').then(() => {
-    console.log('写入成功');
-  }).catch(() => {
-    console.log('写入失败');
-  });
+  $persistentStore.write(newData, 'Ziyi')
+    .then(() => {
+      console.log('写入成功');
+    })
+    .catch(() => {
+      console.log('写入失败');
+    });
 
   if (runCount === 10) {
     console.log('已运行10次，结束程序');
