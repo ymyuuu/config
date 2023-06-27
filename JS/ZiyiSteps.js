@@ -43,114 +43,114 @@ function updateSteps(retries = 0) {
     $done();
   }
 
-  // 判断最大步数和最小步数是否超限
-  if (maxSteps > 98000 || minSteps > 98000) {
-    console.log('最大步数和最小步数不能超过98000');
-    if (notify) {
-      $notification.post('步数更改失败', '最大步数和最小步数不能超过98000', '请检查最大步数和最小步数');
-    }
-    $done();
-  } else if (maxSteps < minSteps) {
-    console.log('最大步数不能小于最小步数');
-    if (notify) {
-      $notification.post('步数更改失败', '最大步数不能小于最小步数', '请检查最大步数和最小步数');
-    }
-    $done();
-  } else if (minSteps > maxSteps) {
-    console.log('最小步数不能大于最大步数');
-    if (notify) {
-      $notification.post('步数更改失败', '最小步数不能大于最大步数', '请检查最大步数和最小步数');
-    }
-    $done();
-  } else {
-    const loginUrl = 'http://bs.svv.ink/login.php';
-
-    const loginRequest = {
-      url: loginUrl,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1',
-      },
-      body: `account=${account}&password=${password}`,
-    };
-
-    $httpClient.post(loginRequest, function (error, response, data) {
-      if (error || response.status !== 200) {
-        console.log('登录请求失败：', error || response.status);
-        if (notify) {
-          $notification.post('登录失败', '登录请求失败', error || response.status);
-        }
-        $done();
-      } else {
-        const loginData = JSON.parse(data);
-        if (loginData.code === 200) {
-          console.log('账号密码验证成功');
-          updateStepsWithNotification();
-        } else {
-          console.log('账号密码验证失败');
-          if (notify) {
-            $notification.post('登录失败', '账号密码验证失败', loginData.message);
-          }
-          $done();
-        }
-      }
-    });
-  }
-}
-
-function updateStepsWithNotification() {
-  const randomSteps = Math.floor(Math.random() * (maxSteps - minSteps + 1)) + minSteps;
-
-  const url = 'http://bs.svv.ink/index.php';
-
-  const request = {
-    url: url,
+  // 登录验证
+  const loginUrl = 'http://bs.svv.ink/login.php';
+  const loginRequest = {
+    url: loginUrl,
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1',
     },
-    body: `account=${account}&password=${password}&steps=${randomSteps}&max_steps=${maxSteps}&min_steps=${minSteps}`,
+    body: `account=${account}&password=${password}`,
   };
 
-  $httpClient.post(request, function (error, response, data) {
+  $httpClient.post(loginRequest, function (error, response, data) {
     if (error || response.status !== 200) {
-      console.error('请求失败：', error || response.status);
+      console.error('登录请求失败：', error || response.status);
       if (notify) {
-        $notification.post('步数更改失败', '请求失败', error || response.status);
+        $notification.post('登录失败', '登录请求失败', error || response.status);
       }
-      // 检查重试次数是否超过最大重试次数
-      if (retries < maxRetries) {
-        // 在重试之前添加延迟
-        setTimeout(() => {
-          // 增加重试次数并调用updateSteps函数进行重试
-          const nextRetry = retries + 1;
-          updateSteps(nextRetry);
-        }, 5000); // 在重试之前等待5秒
+      $done();
+    } else {
+      const loginData = JSON.parse(data);
+      if (loginData.code === 200) {
+        console.log('账号密码验证成功');
+        updateStepsWithNotification();
       } else {
-        console.error('重试次数超过最大限制');
+        console.log('账号密码验证失败');
         if (notify) {
-          $notification.post('步数更改失败', '重试次数超过最大限制', '请稍后再试');
+          $notification.post('登录失败', '账号密码验证失败', loginData.message);
         }
         $done();
       }
-    } else {
-      const jsonData = JSON.parse(data);
-      console.log(`步数更新成功：${randomSteps.toString()}`, jsonData);
-      if (notify) {
-        $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@ZhangZiyi', 'https://t.me/ymyuuu');
-      }
-      $done();
     }
   });
 
-  const newData = `${account}@${password}@${maxSteps}@${minSteps}@${notify ? 'M' : 'N'}`;
-  $persistentStore.write(newData, 'YangMingyu').then(() => {
-    console.log('写入成功');
-  }, () => {
-    console.log('写入失败');
-  });
+  function updateStepsWithNotification() {
+    // 判断最大步数和最小步数是否超限
+    if (maxSteps > 98000 || minSteps > 98000) {
+      console.log('最大步数和最小步数不能超过98000');
+      if (notify) {
+        $notification.post('步数更改失败', '最大步数和最小步数不能超过98000', '请检查最大步数和最小步数');
+      }
+      $done();
+    } else if (maxSteps < minSteps) {
+      console.log('最大步数不能小于最小步数');
+      if (notify) {
+        $notification.post('步数更改失败', '最大步数不能小于最小步数', '请检查最大步数和最小步数');
+      }
+      $done();
+    } else if (minSteps > maxSteps) {
+      console.log('最小步数不能大于最大步数');
+      if (notify) {
+        $notification.post('步数更改失败', '最小步数不能大于最大步数', '请检查最大步数和最小步数');
+      }
+      $done();
+    } else {
+      const randomSteps = Math.floor(Math.random() * (maxSteps - minSteps + 1)) + minSteps;
+
+      const url = 'http://bs.svv.ink/index.php';
+
+      const request = {
+        url: url,
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1',
+        },
+        body: `account=${account}&password=${password}&steps=${randomSteps}&max_steps=${maxSteps}&min_steps=${minSteps}`,
+      };
+
+      $httpClient.post(request, function (error, response, data) {
+        if (error || response.status !== 200) {
+          console.error('请求失败：', error || response.status);
+          if (notify) {
+            $notification.post('步数更改失败', '请求失败', error || response.status);
+          }
+          // 检查重试次数是否超过最大重试次数
+          if (retries < maxRetries) {
+            // 在重试之前添加延迟
+            setTimeout(() => {
+              // 增加重试次数并调用updateSteps函数进行重试
+              const nextRetry = retries + 1;
+              updateSteps(nextRetry);
+            }, 5000); // 在重试之前等待5秒
+          } else {
+            console.error('重试次数超过最大限制');
+            if (notify) {
+              $notification.post('步数更改失败', '重试次数超过最大限制', '请稍后再试');
+            }
+            $done();
+          }
+        } else {
+          const jsonData = JSON.parse(data);
+          console.log(`步数更新成功：${randomSteps.toString()}`, jsonData);
+          if (notify) {
+            $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@ZhangZiyi', 'https://t.me/ymyuuu');
+          }
+          $done();
+        }
+      });
+
+      const newData = `${account}@${password}@${maxSteps}@${minSteps}@${notify ? 'M' : 'N'}`;
+      $persistentStore.write(newData, 'YangMingyu').then(() => {
+        console.log('写入成功');
+      }, () => {
+        console.log('写入失败');
+      });
+    }
+  }
 }
 
 // 调用函数开始更新步数
