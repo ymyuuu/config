@@ -1,7 +1,6 @@
-const maxRunCount = 10; // 最大运行次数
+const maxRetries = 10; // 最大运行次数
 let runCount = 0; // 运行次数计数器
-
-function updateSteps() {
+function updateSteps(retries = 0) {
   runCount++; // 增加运行次数计数器
 
   console.log(`正在运行第 ${runCount} 次`);
@@ -29,9 +28,9 @@ function updateSteps() {
 
   // 判断最大步数和最小步数是否超限
   if (maxSteps > 98000 || minSteps > 98000 || maxSteps < minSteps || minSteps > maxSteps) {
-    console.log('步数范围设置错误');
+    console.log('步数范围设置不正确');
     if (notify) {
-      $notification.post('步数更改失败', '步数范围设置错误', '请检查最大步数和最小步数');
+      $notification.post('步数更改失败', '步数范围设置不正确', '请检查最大步数和最小步数');
     }
     $done();
   }
@@ -50,45 +49,64 @@ function updateSteps() {
     body: `account=${account}&password=${password}&steps=${randomSteps}&max_steps=${maxSteps}&min_steps=${minSteps}`,
   };
 
-  $httpClient.post(request, function (error, response, data) {
-    if (error || response.status !== 200) {
-      console.log('请求失败：', error || response.status);
-      // 检查运行次数是否达到最大运行次数
-      if (runCount < maxRunCount) {
-        // 在重试之前添加延迟
-        setTimeout(updateSteps, 5000); // 在重试之前等待5秒
+  $httpClient.postAsync(request)
+    .then((response) => {
+      if (response.status !== 200) {
+        console.log('请求失败：', response.status);
+        // 检查重试次数是否超过最大运行次数
+        if (retries < maxRetries) {
+          // 增加重试次数并调用updateSteps函数进行重试
+          const nextRetry = retries + 1;
+          updateSteps(nextRetry);
+        } else {
+          console.log('运行次数超过最大限制');
+          if (notify) {
+            $notification.post('步数更改失败', '运行次数超过最大限制', '请稍后再试');
+          }
+          $done();
+        }
       } else {
-        console.log('已达到最大运行次数');
+        const data = response.body;
+        const jsonData = JSON.parse(data);
+        console.log(`步数更新成功：${randomSteps.toString()}`, jsonData);
         if (notify) {
-          $notification.post('步数更改失败', '已达到最大运行次数', '请稍后再试');
+          $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@ZhangZiyi', 'https://t.me/ymyuuu');
         }
         $done();
       }
-    } else {
-      const jsonData = JSON.parse(data);
-      console.log(`步数更新成功：${randomSteps.toString()}`, jsonData);
-      if (notify) {
-        $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@ZhangZiyi', 'https://t.me/ymyuuu');
+    })
+    .catch((error) => {
+      console.log('请求失败：', error);
+      // 检查重试次数是否超过最大运行次数
+      if (retries < maxRetries) {
+        // 增加重试次数并调用updateSteps函数进行重试
+        const nextRetry = retries + 1;
+        updateSteps(nextRetry);
+      } else {
+        console.log('运行次数超过最大限制');
+        if (notify) {
+          $notification.post('步数更改失败', '运行次数超过最大限制', '请稍后再试');
+        }
+        $done();
       }
-      $done();
-    }
-  });
+    });
 
   const newData = `${account}@${password}@${maxSteps}@${minSteps}@${notify ? 'M' : 'N'}`;
-  try {
-    $persistentStore.write(newData, 'YangMingyu');
+  $persistentStore.write(newData, 'YangMingyu').then(() => {
     console.log('写入成功');
-  } catch (error) {
+  }).catch(() => {
     console.log('写入失败');
-  }
+  });
 
-  if (runCount === maxRunCount) {
+  if (runCount === 10) {
     console.log('已运行10次，结束程序');
     return;
   }
 
   // 在下一次运行前添加延迟
-  setTimeout(updateSteps, 5000); // 在下一次运行前等待5秒
+  setTimeout(() => {
+    updateSteps(retries);
+  }, 5000); // 在下一次运行前等待5秒
 }
 
 // 调用函数开始更新步数
