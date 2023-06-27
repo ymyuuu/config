@@ -85,7 +85,7 @@ function updateSteps() {
     const jsonData = JSON.parse(data);
     console.log(`步数更新成功：${randomSteps.toString()}`, jsonData);
     if (notify) {
-      $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@ZhangZiyi', 'https://t.me/ymyuuu');
+      $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@YangMingyu', 'https://t.me/ymyuuu');
     }
   });
 
