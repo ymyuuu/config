@@ -1,6 +1,8 @@
 const maxRunCount = 10; // 最大运行次数
 let runCount = 0; // 运行次数计数器
 
+
+
 function updateSteps() {
   runCount++; // 增加运行次数计数器
 
@@ -66,28 +68,29 @@ function updateSteps() {
     body: `account=${account}&password=${password}&steps=${randomSteps}&max_steps=${maxSteps}&min_steps=${minSteps}`,
   };
 
-  $httpClient.post(request, function (error, response, data) {
-    if (error || response.status !== 200) {
-      console.log('请求失败：', error || response.status);
-      if (notify && runCount === maxRunCount) {
-        $notification.post('步数更改失败', '重试次数超过最大限制', '请稍后再试');
-      }
-      // 继续下一次运行，除非达到最大运行次数
-      if (runCount < maxRunCount) {
-        setTimeout(updateSteps, 5000); // 等待5秒后进行下一次运行
-      } else {
-        console.log('已运行10次，结束程序');
-        $done();
-      }
+$http.request(request, function (error, response, data) {
+  if (error || response.statusCode !== 200) {
+    console.log('请求失败：', error || response.statusCode);
+    if (notify && runCount === maxRunCount) {
+      $notification.post('步数更改失败', '重试次数超过最大限制', '请稍后再试');
+    }
+    // 继续下一次运行，除非达到最大运行次数
+    if (runCount < maxRunCount) {
+      setTimeout(updateSteps, 5000); // 等待5秒后进行下一次运行
     } else {
-      const jsonData = JSON.parse(data);
-      console.log(`步数更新成功：${randomSteps.toString()}`, jsonData);
-      if (notify) {
-        $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@ZhangZiyi', 'https://t.me/ymyuuu');
-      }
+      console.log('已运行10次，结束程序');
       $done();
     }
-  });
+  } else {
+    const jsonData = JSON.parse(data);
+    console.log(`步数更新成功：${randomSteps.toString()}`, jsonData);
+    if (notify) {
+      $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@ZhangZiyi', 'https://t.me/ymyuuu');
+    }
+    $done();
+  }
+});
+
 
   const newData = `${account}@${password}@${maxSteps}@${minSteps}@${notify ? 'M' : 'N'}`;
   $persistentStore.write(newData, 'YangMingyu').then(() => {
