@@ -1,7 +1,6 @@
 const maxRunCount = 10; // 最大运行次数
 let runCount = 0; // 运行次数计数器
 
-
 function updateSteps() {
   runCount++; // 增加运行次数计数器
 
@@ -76,11 +75,12 @@ function updateSteps() {
   });
 
   const newData = `${account}@${password}@${maxSteps}@${minSteps}@${notify ? 'M' : 'N'}`;
-  $persistentStore.write(newData, 'YangMingyu').then(() => {
+  try {
+    $persistentStore.write(newData, 'YangMingyu');
     console.log('写入成功');
-  }, () => {
+  } catch (error) {
     console.log('写入失败');
-  });
+  }
 
   if (runCount === maxRunCount) {
     console.log('已运行10次，结束程序');
