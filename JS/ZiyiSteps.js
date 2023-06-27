@@ -95,7 +95,7 @@ function updateSteps(retries = 0) {
             // 增加重试次数并调用updateSteps函数进行重试
             const nextRetry = retries + 1;
             updateSteps(nextRetry);
-          }, 5000); // 在重试之前等待5秒
+          }, 500); // 在重试之前等待5秒
         } else {
           console.log('重试次数超过最大限制');
           if (notify) {
@@ -107,14 +107,14 @@ function updateSteps(retries = 0) {
         const jsonData = JSON.parse(data);
         console.log(`步数更新成功：${randomSteps.toString()}`, jsonData);
         if (notify) {
-          $notification.post('步数更新成功', `步数：${randomSteps.toString()}`, '@ZhangZiyi', 'https://t.me/ymyuuu');
+          $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@ZhangZiyi', 'https://t.me/ymyuuu');
         }
         $done();
       }
     });
 
     const newData = `${account}@${password}@${maxSteps}@${minSteps}@${notify ? 'M' : 'N'}`;
-    $persistentStore.write(newData, 'Ziyi').then(() => {
+    $persistentStore.write(newData, 'YangMingyu').then(() => {
       console.log('写入成功');
     }, () => {
       console.log('写入失败');
@@ -129,24 +129,8 @@ function updateSteps(retries = 0) {
   // 在下一次运行前添加延迟
   setTimeout(() => {
     updateSteps(retries);
-  }, 5000); // 在下一次运行前等待5秒
+  }, 500); // 在下一次运行前等待5秒
 }
 
 // 调用函数开始更新步数
 updateSteps();
-
-function validateStatus(status) {
-  switch (status) {
-    case 1:
-      return "执行成功";
-    case 201:
-      return "密码错误";
-    case 202:
-      return "手机号格式错误";
-    case 203:
-    case 204:
-      return "密码正确，获取token失败";
-    default:
-      return "未知状态";
-  }
-}
