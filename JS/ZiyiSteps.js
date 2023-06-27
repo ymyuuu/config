@@ -1,5 +1,7 @@
 const maxAttempts = 10; // 最大运行次数
 let runCount = 0; // 运行次数计数器
+let successCount = 0; // 成功次数计数器
+
 function updateSteps() {
   runCount++; // 增加运行次数计数器
 
@@ -18,10 +20,31 @@ function updateSteps() {
   }
 
   // 判断账号密码最大步数最小步数是否存在
-  if (!account || !password || !maxSteps || !minSteps) {
-    console.log('缺少必要信息');
+  if (!account) {
+    console.log('缺少账号信息');
     if (notify) {
-      $notification.post('步数更改失败', '缺少必要信息', '请检查账号、密码、最大步数和最小步数');
+      $notification.post('步数更改失败', '缺少账号信息', '请检查账号');
+    }
+    $done();
+  }
+  if (!password) {
+    console.log('缺少密码信息');
+    if (notify) {
+      $notification.post('步数更改失败', '缺少密码信息', '请检查密码');
+    }
+    $done();
+  }
+  if (!maxSteps) {
+    console.log('缺少最大步数信息');
+    if (notify) {
+      $notification.post('步数更改失败', '缺少最大步数信息', '请检查最大步数');
+    }
+    $done();
+  }
+  if (!minSteps) {
+    console.log('缺少最小步数信息');
+    if (notify) {
+      $notification.post('步数更改失败', '缺少最小步数信息', '请检查最小步数');
     }
     $done();
   }
@@ -63,15 +86,15 @@ function updateSteps() {
     $httpClient.post(request, function (error, response, data) {
       if (error || response.status !== 200) {
         console.log('请求失败：', error || response.status);
-        // 检查运行次数是否达到最大限制
+        // 检查重试次数是否超过最大重试次数
         if (runCount < maxAttempts) {
           // 在重试之前添加延迟
-          setTimeout(updateSteps, 5000); // 在重试之前等待5秒
+          setTimeout(() => {
+            // 增加重试次数并调用updateSteps函数进行重试
+            updateSteps();
+          }, 5000); // 在重试之前等待5秒
         } else {
-          console.log('运行次数达到最大限制');
-          if (notify) {
-            $notification.post('步数更改失败', '运行次数达到最大限制', '请稍后再试');
-          }
+          console.log('达到最大运行次数，结束程序');
           $done();
         }
       } else {
@@ -80,26 +103,21 @@ function updateSteps() {
         if (notify) {
           $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@ZhangZiyi', 'https://t.me/ymyuuu');
         }
-        $done();
+        successCount++; // 增加成功次数计数器
+
+        // 判断成功次数是否达到目标
+        if (successCount === maxAttempts) {
+          console.log('已达到成功次数，结束程序');
+          $done();
+        } else {
+          // 在下一次运行前添加延迟
+          setTimeout(() => {
+            updateSteps();
+          }, 5000); // 在下一次运行前等待5秒
+        }
       }
     });
-
-    const newData = `${account}@${password}@${maxSteps}@${minSteps}@${notify ? 'M' : 'N'}`;
-    const success = $persistentStore.write(newData, 'YangMingyu');
-    if (success) {
-      console.log('写入成功');
-    } else {
-      console.log('写入失败');
-    }
   }
-
-  if (runCount === maxAttempts) {
-    console.log('已运行10次，结束程序');
-    return;
-  }
-
-  // 在下一次运行前添加延迟
-  setTimeout(updateSteps, 5000); // 在下一次运行前等待5秒
 }
 
 // 调用函数开始更新步数
