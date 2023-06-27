@@ -1,6 +1,5 @@
 const maxAttempts = 10; // 最大运行次数
 let runCount = 0; // 运行次数计数器
-
 function updateSteps() {
   runCount++; // 增加运行次数计数器
 
@@ -86,11 +85,12 @@ function updateSteps() {
     });
 
     const newData = `${account}@${password}@${maxSteps}@${minSteps}@${notify ? 'M' : 'N'}`;
-    $persistentStore.write(newData, 'YangMingyu').then(() => {
+    const success = $persistentStore.write(newData, 'YangMingyu');
+    if (success) {
       console.log('写入成功');
-    }, () => {
+    } else {
       console.log('写入失败');
-    });
+    }
   }
 
   if (runCount === maxAttempts) {
