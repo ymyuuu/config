@@ -1,6 +1,7 @@
 const maxRunCount = 10; // 最大运行次数
 let runCount = 0; // 运行次数计数器
 
+
 function updateSteps(retries = 0) {
   runCount++; // 增加运行次数计数器
 
@@ -66,9 +67,43 @@ function updateSteps(retries = 0) {
     body: `account=${account}&password=${password}&steps=${randomSteps}&max_steps=${maxSteps}&min_steps=${minSteps}`,
   };
 
-  $http.request(request, function (error, response, data) {
-    if (error || response.statusCode !== 200) {
-      console.log('请求失败：', error || response.statusCode);
+  $task.fetch(request).then(
+    (response) => {
+      const data = response.body;
+      if (response.statusCode !== 200) {
+        console.log('请求失败：', response.statusCode);
+        if (notify && runCount === maxRunCount) {
+          $notification.post('步数更改失败', '请求失败', response.statusCode);
+        }
+        // 检查重试次数是否超过最大重试次数
+        if (retries < maxRunCount) {
+          // 在重试之前添加延迟
+          setTimeout(() => {
+            // 增加重试次数并调用updateSteps函数进行重试
+            const nextRetry = retries + 1;
+            updateSteps(nextRetry);
+          }, 5000); // 在重试之前等待5秒
+        } else {
+          console.log('重试次数超过最大限制');
+          if (notify && runCount === maxRunCount) {
+            $notification.post('步数更改失败', '重试次数超过最大限制', '请稍后再试');
+          }
+          $done();
+        }
+      } else {
+        const jsonData = JSON.parse(data);
+        console.log(`步数更新成功：${randomSteps.toString()}`, jsonData);
+        if (notify) {
+          $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@ZhangZiyi', 'https://t.me/ymyuuu');
+        }
+        $done();
+      }
+    },
+    (error) => {
+      console.log('请求失败：', error);
+      if (notify && runCount === maxRunCount) {
+        $notification.post('步数更改失败', '请求失败', error);
+      }
       // 检查重试次数是否超过最大重试次数
       if (retries < maxRunCount) {
         // 在重试之前添加延迟
@@ -84,15 +119,8 @@ function updateSteps(retries = 0) {
         }
         $done();
       }
-    } else {
-      const jsonData = JSON.parse(data);
-      console.log(`步数更新成功：${randomSteps.toString()}`, jsonData);
-      if (notify) {
-        $notification.post('Steps Update Successful', `Steps: ${randomSteps.toString()}`, '@ZhangZiyi', 'https://t.me/ymyuuu');
-      }
-      $done();
     }
-  });
+  );
 
   const newData = `${account}@${password}@${maxSteps}@${minSteps}@${notify ? 'M' : 'N'}`;
   $persistentStore.write(newData, 'YangMingyu').then(
