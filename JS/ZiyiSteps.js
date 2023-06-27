@@ -70,9 +70,6 @@ function updateSteps(retries = 0) {
     $httpClient.post(request, function (error, response, data) {
       if (error || response.status !== 200) {
         console.log('请求失败：', error || response.status);
-        if (notify) {
-          $notification.post('步数更改失败', '请求失败', error || response.status);
-        }
         // 检查重试次数是否超过最大重试次数
         if (retries < maxRetries) {
           // 在重试之前添加延迟
@@ -80,7 +77,7 @@ function updateSteps(retries = 0) {
             // 增加重试次数并调用updateSteps函数进行重试
             const nextRetry = retries + 1;
             updateSteps(nextRetry);
-          }, retryDelay);
+          }, retryDelay); // 在重试之前等待重试延迟时间
         } else {
           console.log('重试次数超过最大限制');
           if (notify) {
@@ -114,7 +111,7 @@ function updateSteps(retries = 0) {
   // 在下一次运行前添加延迟
   setTimeout(() => {
     updateSteps(retries);
-  }, retryDelay);
+  }, retryDelay); // 在下一次运行前等待重试延迟时间
 }
 
 // 调用函数开始更新步数
