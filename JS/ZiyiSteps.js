@@ -1,6 +1,11 @@
 const maxRetries = 3; // 最大重试次数
+let runCount = 0; // 运行次数计数器
 
 function updateSteps(retries = 0) {
+  runCount++; // 增加运行次数计数器
+
+  console.log(`正在运行第 ${runCount} 次`);
+
   const savedData = $persistentStore.read('Ziyi');
   if (savedData) {
     const [savedAccount, savedPassword, savedMaxSteps, savedMinSteps, notifyOption] = savedData.split('@');
@@ -115,6 +120,16 @@ function updateSteps(retries = 0) {
       console.log('写入失败');
     });
   }
+
+  if (runCount === 10) {
+    console.log('已运行10次，结束程序');
+    return;
+  }
+
+  // 在下一次运行前添加延迟
+  setTimeout(() => {
+    updateSteps(retries);
+  }, 500); // 在下一次运行前等待5秒
 }
 
 // 调用函数开始更新步数
