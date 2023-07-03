@@ -259,8 +259,8 @@ let npluginDesc = name + "\n" + desc;
 
 if(isLooniOS && iconStatus == "启用" && iconLibrary2 != "Pokemon"){
 	const stickerStartNum = 1001;
-const stickerSum = iconLibrary1.split("(")[1]。split("P")[0];
-let randomStickerNum = parseInt(stickerStartNum + Math.random() * stickerSum)。toString();
+const stickerSum = iconLibrary1.split("(")[1].split("P")[0];
+let randomStickerNum = parseInt(stickerStartNum + Math.random() * stickerSum).toString();
    icon = "#!icon=" + "https://github.com/Toperlock/Quantumult/raw/main/icon/" + iconLibrary2 + "/" + iconLibrary2 + "-" + randomStickerNum + ".png";
 }else if (isLooniOS && iconStatus == "启用" && iconLibrary2 == "Pokemon"){
     icon = "#!icon=" + pluginPokemonIcon;
@@ -274,14 +274,16 @@ console.log("插件图标：" + pluginIcon);
 //判断是否断网
 if(body == null || body == ""){if(isStashiOS || isSurgeiOS){
     console.log("Loon转换：未获取到body的链接为" + $request.url)
- $done({ response: { status: 404 ，body:{} } });}else{
+	
+ $done({ response: { status: 404 ,body:{} } });}else{
     console.log("Loon转换：未获取到body的链接为" + $request.url)
- $done({ response: { status: 404 ，body:{} } });
+    
+ $done({ response: { status: 404 ,body:{} } });
 }//识别客户端通知
 }else{//以下开始重写及脚本转换
 
 if (body.match(/\/\*+\n[\s\S]*\n\*+\/\n/)){
-body = body.replace(/[\s\S]*(\/\*+\n[\s\S]*\n\*+\/\n)[\s\S]*/，"$1")。match(/[^\r\n]+/g);
+body = body.replace(/[\s\S]*(\/\*+\n[\s\S]*\n\*+\/\n)[\s\S]*/,"$1").match(/[^\r\n]+/g);
 }else{
     body = body.match(/[^\r\n]+/g);};
 
@@ -319,8 +321,8 @@ let Urx2Reject = "";   //URL-REGEX转reject
 let rewType = "";      //302/307/header重写类型
 
 
-body.forEach((x， y， z) => {
-	x = x.replace(/^ *(#|;|\/\/)/，'#')。replace(/, *REJECT/i，',REJECT')。replace(/ reject/i，' reject')。replace(/(^[^#].+)\x20+\/\/.+/，"$1")。replace(/(hostname|force-http-engine-hosts|skip-proxy|always-real-ip)\x20*=/，'$1=')。replace(/ *, *enabled *= *false/，"");
+body.forEach((x, y, z) => {
+	x = x.replace(/^ *(#|;|\/\/)/,'#').replace(/, *REJECT/i,',REJECT').replace(/ reject/i,' reject').replace(/(^[^#].+)\x20+\/\/.+/,"$1").replace(/(hostname|force-http-engine-hosts|skip-proxy|always-real-ip)\x20*=/,'$1=').replace(/ *, *enabled *= *false/,"");
 //去掉注释
 if(Pin0 != null)	{
 	for (let i=0; i < Pin0.length; i++) {
