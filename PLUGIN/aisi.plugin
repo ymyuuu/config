@@ -15,4 +15,4 @@ http-request ^https?:\/\/(search|list)-app-m\.i4\.cn\/(getHotSearchList|getAppLi
 
 
 [MITM]
-hostname = list-app-m。i4。cn，search-app-m。i4。cn
+hostname = list-app-m.i4.cn,search-app-m.i4.cn
