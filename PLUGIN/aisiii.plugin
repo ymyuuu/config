@@ -11,7 +11,7 @@
 
 [Script]
 
-http-request ^https?:\/\/(search|list)-app-m\.i4\.cn\/(getHotSearchList|getAppList)\.xhtml  script-path=https://github.com/chengkongyiban/Quantumultx/raw/main/js/i4AdBlock.j, requires-body = false， tag = 爱思
+http-request ^https?:\/\/(search|list)-app-m\.i4\.cn\/(getHotSearchList|getAppList)\.xhtml  script-path=https://github.com/chengkongyiban/Quantumultx/raw/main/js/i4AdBlock.js, requires-body = false， tag = 爱思
 
 
 [MITM]
