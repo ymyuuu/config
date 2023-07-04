@@ -1,0 +1,16 @@
+#!name=test
+#!desc=
+#!homepage=
+#!author=
+#!icon=
+
+[Script]
+
+# 获取TF信息(打开TF自动获取信息)
+http-request ^https?:\/\/testflight\.apple\.com\/v3\/accounts/.*\/apps$ script-path=https://raw.githubusercontent.com/chxm1023/Task/main/TestFlight/TF_keys_QX.js, requires-body=false, timeout=10, tag=TF_keys_QX
+# APP_ID获取(打开TF链接获取APP_ID)
+http-request ^https?:\/\/testflight\.apple\.com\/join\/(.*) script-path=https://raw.githubusercontent.com/chxm1023/Task/main/TestFlight/TF_keys_QX.js, requires-body=false, timeout=10, tag=TF_keys_QX
+
+[MITM]
+
+hostname = testflight.apple.com
