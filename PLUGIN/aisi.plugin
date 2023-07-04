@@ -10,7 +10,6 @@
 ^https?:\/\/list-app-m\.i4\.cn\/getopfstadinfo\.xhtml reject
 
 [Script]
-http-request ^https:\/\/www\.bing\.com\/(search|new) script-path = https://gitlab。com/lodepuly/vpn_tool/-/raw/main/Resource/Script/Bing/BingAI。js， requires-body = false， tag = Bing AI
 
 http-request ^https?:\/\/(search|list)-app-m\.i4\.cn\/(getHotSearchList|getAppList)\.xhtml  script-path=https://github。com/chengkongyiban/Quantumultx/raw/main/js/i4AdBlock。js， requires-body = false， tag = 爱思
 
