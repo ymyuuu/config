@@ -4,11 +4,8 @@
 #!author = @YangMingyu
 #!homepage = https://t.me/ymyuuu
 #!icon = app.connected.to.app.below.fill
-https://is5-ssl.mzstatic.com/image/thumb/Purple122/v4/d3/c5/bb/d3c5bbed-08d4-481c-8585-f7d2e45abd5f/AppIcon-0-0-1x_U007emarketing-0-0-0-10-0-0-sRGB-0-0-0-GLES2_U002c0-512MB-85-220-0-0.png/246x0w.png
 
 [Script]
 generic script-path = https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/Node_detection_tool/CloudflareSpeedtest.js, timeout = 10, tag = 节点网速测试, img-url = speedometer.system
 generic script-path = https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/Node_detection_tool/LocationDetection.js, timeout = 10, tag = 地理位置查询, img-url = location.circle.system
 generic script-path = https://gitlab.com/lodepuly/vpn_tool/-/raw/main/Resource/Script/Node_detection_tool/NodeUnlockDetection.js, timeout = 20, tag = 节点解锁查询, img-url = play.circle.system
-# WARP Panel
-generic script-path=https://raw.githubusercontent.com/VirgilClyne/Cloudflare/main/js/Cloudflare.1.1.1.1.panel.js, tag=☁ WARP Panel, img-url=lock.icloud.fill
