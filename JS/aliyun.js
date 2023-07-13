@@ -28,8 +28,122 @@ const joinTeamRepeatKey = 'aliYunPanJoinTeamRepeat'
 const joinTeamRepeat = lk.getVal(joinTeamRepeatKey, -1)
 lk.userAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 D/C501C6D2-FAF6-4DA8-B65B-7B8B392901EB"
 
+if(!lk.isExecComm) {
+    if (lk.isRequest()) {
+        getCookie()
+        lk.done()
+    } else {
+        lk.boxJsJsonBuilder({
+            "icons": [
+                "https://raw.githubusercontent.com/lowking/Scripts/master/doc/icon/aliYunPana.png",
+                "https://raw.githubusercontent.com/lowking/Scripts/master/doc/icon/aliYunPan.png"
+            ],
+            "settings": [
+                {
+                    "id": aliYunPanTokenKey,
+                    "name": "阿里云盘token",
+                    "val": "",
+                    "type": "text",
+                    "desc": "阿里云盘token"
+                }, {
+                    "id": aliYunPanRefreshTokenKey,
+                    "name": "阿里云盘refresh_token",
+                    "val": "",
+                    "type": "text",
+                    "desc": "阿里云盘refresh_token"
+                }
+            ],
+            "keys": [aliYunPanTokenKey, aliYunPanRefreshTokenKey]
+        }, {
+            "script_url": "https://github.com/lowking/Scripts/blob/master/ali/aliYunPanCheckIn.js",
+            "author": "@lowking",
+            "repo": "https://github.com/lowking/Scripts",
+        })
+        all()
+    }
+}
 
+function getCookie() {
+    if (lk.isGetCookie(/\/v2\/account\/token/)) {
+        lk.log(`开始获取cookie`)
+        let data = lk.getResponseBody()
+        // lk.log(`获取到的cookie：${data}`)
+        try {
+            data = JSON.parse(data)
+            let refreshToken = data["refresh_token"]
+            if (refreshToken) {
+                lk.setVal(aliYunPanRefreshTokenKey, refreshToken)
+               
+            } else {
+                lk.execFail()
+                lk.appendNotifyInfo('❌获取阿里云盘token失败，请稍后再试')
+            }
+        } catch (e) {
+            lk.execFail()
+            lk.appendNotifyInfo('❌获取阿里云盘token失败')
+        }
+        lk.msg('')
+    }
+}
 
+async function all() {
+    let hasNeedSendNotify = true
+    if (aliYunPanRefreshToken == '') {
+        lk.execFail()
+        lk.appendNotifyInfo(`⚠️请先打开阿里云盘登录获取refresh_token`)
+    } else {
+        await refreshToken()
+        let hasAlreadySignIn = await signIn()
+        await joinTeam()
+    }
+    if (hasNeedSendNotify) {
+        lk.msg(``)
+    }
+    lk.done()
+}
+
+function refreshToken() {
+    return new Promise((resolve, _reject) => {
+        const t = '获取token'
+        let url = {
+            url: 'https://auth.aliyundrive.com/v2/account/token',
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+            },
+            body: JSON.stringify({
+                "grant_type": "refresh_token",
+                "app_id": "pJZInNHN2dZWk8qg",
+                "refresh_token": aliYunPanRefreshToken
+            })
+        }
+        lk.post(url, (error, _response, data) => {
+            try {
+                if (error) {
+                    lk.execFail()
+                    lk.appendNotifyInfo(`❌${t}失败，请稍后再试`)
+                } else {
+                    let dataObj = JSON.parse(data)
+                    if (dataObj.hasOwnProperty("refresh_token")) {
+                        aliYunPanToken = `Bearer ${dataObj["access_token"]}`
+                        aliYunPanRefreshToken = dataObj["refresh_token"]
+                        lk.setVal(aliYunPanTokenKey, aliYunPanToken)
+                        lk.setVal(aliYunPanRefreshTokenKey, aliYunPanRefreshToken)
+                    } else {
+                        lk.execFail()
+                        lk.appendNotifyInfo(dataObj.message)
+                    }
+                }
+            } catch (e) {
+                lk.logErr(e)
+                lk.log(`阿里云盘${t}返回数据：${data}`)
+                lk.execFail()
+                lk.appendNotifyInfo(`❌${t}错误，请带上日志联系作者，或稍后再试`)
+            } finally {
+                resolve()
+            }
+        })
+    })
+}
 
 function getReward(day) {
     return new Promise((resolve, _reject) => {
