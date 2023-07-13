@@ -1,4 +1,3 @@
-
 const lk = new ToolKit(`阿里云盘签到`, `AliYunPanCheckIn`, {"httpApi": "ffff@10.0.0.19:6166"})
 const aliYunPanTokenKey = 'lkAliYunPanTokenKey'
 let aliYunPanToken = lk.getVal(aliYunPanTokenKey, '')
