@@ -30,64 +30,6 @@ lk.userAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_2 like Mac OS X) AppleWebK
 
 
 
-async function all() {
-    let hasNeedSendNotify = true
-    if (aliYunPanRefreshToken == '') {
-        lk.execFail()
-        lk.appendNotifyInfo(`⚠️请先打开阿里云盘登录获取refresh_token`)
-    } else {
-        await refreshToken()
-        let hasAlreadySignIn = await signIn()
-        await joinTeam()
-    }
-    if (hasNeedSendNotify) {
-        lk.msg(``)
-    }
-    lk.done()
-}
-
-function refreshToken() {
-    return new Promise((resolve, _reject) => {
-        const t = '获取token'
-        let url = {
-            url: 'https://auth.aliyundrive.com/v2/account/token',
-            headers: {
-                "Content-Type": "application/json; charset=utf-8",
-            },
-            body: JSON.stringify({
-                "grant_type": "refresh_token",
-                "app_id": "pJZInNHN2dZWk8qg",
-                "refresh_token": aliYunPanRefreshToken
-            })
-        }
-        lk.post(url, (error, _response, data) => {
-            try {
-                if (error) {
-                    lk.execFail()
-                    lk.appendNotifyInfo(`❌${t}失败，请稍后再试`)
-                } else {
-                    let dataObj = JSON.parse(data)
-                    if (dataObj.hasOwnProperty("refresh_token")) {
-                        aliYunPanToken = `Bearer ${dataObj["access_token"]}`
-                        aliYunPanRefreshToken = dataObj["refresh_token"]
-                        lk.setVal(aliYunPanTokenKey, aliYunPanToken)
-                        lk.setVal(aliYunPanRefreshTokenKey, aliYunPanRefreshToken)
-                    } else {
-                        lk.execFail()
-                        lk.appendNotifyInfo(dataObj.message)
-                    }
-                }
-            } catch (e) {
-                lk.logErr(e)
-                lk.log(`阿里云盘${t}返回数据：${data}`)
-                lk.execFail()
-                lk.appendNotifyInfo(`❌${t}错误，请带上日志联系作者，或稍后再试`)
-            } finally {
-                resolve()
-            }
-        })
-    })
-}
 
 function getReward(day) {
     return new Promise((resolve, _reject) => {
