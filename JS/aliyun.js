@@ -1,22 +1,4 @@
-/*
-阿里云盘签到-lowking-v1.1.0
 
-按下面配置完之后，打开阿里云盘获取token（如获取不到，等一段时间再打开），下面配置只验证过surge的，其他的自行测试
-⚠️只测试过surge没有其他app自行测试
-
-************************
-Surge 4.2.0+ 脚本配置(其他APP自行转换配置):
-************************
-
-[Script]
-# > 阿里云盘签到
-https://auth.aliyundrive.com/v2/account/token
-阿里云盘签到cookie = requires-body=1,type=http-response,pattern=https:\/\/auth.aliyundrive.com\/v2\/account\/token,script-path=https://raw.githubusercontent.com/lowking/Scripts/master/ali/aliYunPanCheckIn.js
-阿里云盘签到 = type=cron,cronexp="0 10 0 * * ?",wake-system=1,script-path=https://raw.githubusercontent.com/lowking/Scripts/master/ali/aliYunPanCheckIn.js
-
-[MITM]
-hostname = %APPEND% auth.aliyundrive.com
-*/
 const lk = new ToolKit(`阿里云盘签到`, `AliYunPanCheckIn`, {"httpApi": "ffff@10.0.0.19:6166"})
 const aliYunPanTokenKey = 'lkAliYunPanTokenKey'
 let aliYunPanToken = lk.getVal(aliYunPanTokenKey, '')
