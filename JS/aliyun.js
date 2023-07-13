@@ -1,4 +1,31 @@
-
+[MITM]
+hostname = %APPEND% auth.aliyundrive.com
+*/
+const lk = new ToolKit(`阿里云盘签到`, `AliYunPanCheckIn`, {"httpApi": "ffff@10.0.0.19:6166"})
+const aliYunPanTokenKey = 'lkAliYunPanTokenKey'
+let aliYunPanToken = lk.getVal(aliYunPanTokenKey, '')
+const aliYunPanRefreshTokenKey = 'lkAliYunPanRefreshTokenKey'
+let aliYunPanRefreshToken = lk.getVal(aliYunPanRefreshTokenKey, '')
+const checkSignInRepeatKey = 'aliYunPanSignInRepeat'
+const checkSignInRepeat = lk.getVal(checkSignInRepeatKey, '')
+const joinTeamRepeatKey = 'aliYunPanJoinTeamRepeat'
+const joinTeamRepeat = lk.getVal(joinTeamRepeatKey, -1)
+lk.userAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 D/C501C6D2-FAF6-4DA8-B65B-7B8B392901EB"
+async function all() {
+    let hasNeedSendNotify = true
+    if (aliYunPanRefreshToken == '') {
+        lk.execFail()
+        lk.appendNotifyInfo(`⚠️请先打开阿里云盘登录获取refresh_token`)
+    } else {
+        await refreshToken()
+        let hasAlreadySignIn = await signIn()
+        await joinTeam()
+    }
+    if (hasNeedSendNotify) {
+        lk.msg(``)
+    }
+    lk.done()
+}
 function refreshToken() {
     const t = '获取token'
     let url = {
