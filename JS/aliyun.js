@@ -1,3 +1,19 @@
+/*
+阿里云盘签到-lowking-v1.1.0
+
+按下面配置完之后，打开阿里云盘获取token（如获取不到，等一段时间再打开），下面配置只验证过surge的，其他的自行测试
+⚠️只测试过surge没有其他app自行测试
+
+************************
+Surge 4.2.0+ 脚本配置(其他APP自行转换配置):
+************************
+
+[Script]
+# > 阿里云盘签到
+https://auth.aliyundrive.com/v2/account/token
+阿里云盘签到cookie = requires-body=1,type=http-response,pattern=https:\/\/auth.aliyundrive.com\/v2\/account\/token,script-path=https://raw.githubusercontent.com/lowking/Scripts/master/ali/aliYunPanCheckIn.js
+阿里云盘签到 = type=cron,cronexp="0 10 0 * * ?",wake-system=1,script-path=https://raw.githubusercontent.com/lowking/Scripts/master/ali/aliYunPanCheckIn.js
+
 [MITM]
 hostname = %APPEND% auth.aliyundrive.com
 */
@@ -11,6 +27,9 @@ const checkSignInRepeat = lk.getVal(checkSignInRepeatKey, '')
 const joinTeamRepeatKey = 'aliYunPanJoinTeamRepeat'
 const joinTeamRepeat = lk.getVal(joinTeamRepeatKey, -1)
 lk.userAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 15_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 D/C501C6D2-FAF6-4DA8-B65B-7B8B392901EB"
+
+
+
 async function all() {
     let hasNeedSendNotify = true
     if (aliYunPanRefreshToken == '') {
@@ -18,68 +37,6 @@ async function all() {
         lk.appendNotifyInfo(`⚠️请先打开阿里云盘登录获取refresh_token`)
     } else {
         await refreshToken()
-        let hasAlreadySignIn = await signIn()
-        await joinTeam()
-    }
-    if (hasNeedSendNotify) {
-        lk.msg(``)
-    }
-    lk.done()
-}
-function refreshToken() {
-    const t = '获取token'
-    let url = {
-        url: 'https://auth.aliyundrive.com/v2/account/token',
-        headers: {
-            "Content-Type": "application/json; charset=utf-8",
-        },
-        body: JSON.stringify({
-            "grant_type": "refresh_token",
-            "app_id": "pJZInNHN2dZWk8qg",
-            "refresh_token": aliYunPanRefreshToken
-        })
-    }
-    lk.post(url, (error, _response, data) => {
-        try {
-            if (error) {
-                lk.execFail()
-                lk.appendNotifyInfo(`❌${t}失败，请稍后再试`)
-            } else {
-                let dataObj = JSON.parse(data)
-                if (dataObj.hasOwnProperty("refresh_token")) {
-                    let newToken = `Bearer ${dataObj["access_token"]}`
-                    let newRefreshToken = dataObj["refresh_token"]
-                    if (newToken !== aliYunPanToken) {
-                        aliYunPanToken = newToken
-                        aliYunPanRefreshToken = newRefreshToken
-                        lk.setVal(aliYunPanTokenKey, aliYunPanToken)
-                        lk.setVal(aliYunPanRefreshTokenKey, aliYunPanRefreshToken)
-                        lk.appendNotifyInfo('🎉成功获取新的阿里云盘token')
-                    } else {
-                        lk.appendNotifyInfo('已存在有效的阿里云盘token')
-                    }
-                } else {
-                    lk.execFail()
-                    lk.appendNotifyInfo(dataObj.message)
-                }
-            }
-        } catch (e) {
-            lk.logErr(e)
-            lk.log(`阿里云盘${t}返回数据：${data}`)
-            lk.execFail()
-            lk.appendNotifyInfo(`❌${t}错误，请带上日志联系作者，或稍后再试`)
-        } finally {
-            lk.done()
-        }
-    })
-}
-
-async function all() {
-    let hasNeedSendNotify = true
-    if (aliYunPanToken === '') {
-        lk.execFail()
-        lk.appendNotifyInfo(`⚠️请先打开阿里云盘登录获取refresh_token`)
-    } else {
         let hasAlreadySignIn = await signIn()
         await joinTeam()
     }
