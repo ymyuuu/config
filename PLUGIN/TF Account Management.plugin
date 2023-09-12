@@ -9,7 +9,7 @@
 # skip-proxy = iosapps.itunes.apple.com
 
 [Script]
-http-request ^https:\/\/testflight\.apple\.com\/v\d\/(app|account|invite)s\/ requires-body=1,script-path=https://raw.githubusercontent.com/Y-7-0101/ymy/main/JS/TF%20Account%20Management.js,tag=TF Account Management
+http-request ^https:\/\/testflight\.apple\.com\/v\d\/(app|account|invite)s\/ requires-body=1,script-path=https://raw.githubusercontent.com/ymyuuu/config/main/JS/TF%20Account%20Management.js,tag=TF Account Management
 
 [MITM]
 hostname = testflight.apple.com
