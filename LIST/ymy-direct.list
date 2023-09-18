@@ -8,8 +8,8 @@ DOMAIN-KEYWORD,vocalremover.org
 DOMAIN-SUFFIX,erp.86899.xyz
 DOMAIN-SUFFIX,chat.zhile.io
 DOMAIN-SUFFIX,chatgpt.ymyuuu.fun
-DOMAIN-SUFFIX,cloudflare.com
-DOMAIN-SUFFIX,gitlab.com
+# DOMAIN-SUFFIX,cloudflare.com
+# DOMAIN-SUFFIX,gitlab.com
 
 # Apple
 DOMAIN-KEYWORD,testfligth
