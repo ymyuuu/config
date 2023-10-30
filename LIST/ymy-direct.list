@@ -12,8 +12,8 @@ DOMAIN-SUFFIX,erp.86899.xyz
 DOMAIN-SUFFIX,alist-doc.nn.ci
 # DOMAIN-SUFFIX,cloudflare.com
 # DOMAIN-SUFFIX,gitlab.com
-DOMAIN-SUFFIX,onecf.eu.org
-DOMAIN-SUFFIX,onecn.eu.org
+DOMAIN-KEYWORD,onecf.eu.org
+DOMAIN-KEYWORD,onecn.eu.org
 
 # Apple
 DOMAIN-KEYWORD,testfligth
