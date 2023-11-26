@@ -14,11 +14,13 @@ DOMAIN-KEYWORD,ipv6.ddnspod.com
 DOMAIN-KEYWORD,030101
 
 # Apple
-DOMAIN-KEYWORD,testfligth
-DOMAIN-KEYWORD,icloud
-DOMAIN-KEYWORD,apple
-DOMAIN-KEYWORD,mail
-DOMAIN-KEYWORD,ctgpt2
+DOMAIN-KEYWORD,apple-support.akadns.net
+DOMAIN-KEYWORD,apple.com.akadns.net
+DOMAIN-KEYWORD,apple.com.edgekey.net
+DOMAIN-KEYWORD,buy.itunes.apple.com
+DOMAIN-KEYWORD,smp-device
+DOMAIN-KEYWORD,testflight
+DOMAIN-KEYWORD,icloud.com.akadns.net
 IP-CIDR,139.178.128.0/18,no-resolve
 IP-CIDR,144.178.0.0/19,no-resolve
 IP-CIDR,144.178.36.0/22,no-resolve
@@ -29,6 +31,36 @@ IP-CIDR,198.183.17.0/24,no-resolve
 IP-CIDR,205.180.175.0/24,no-resolve
 IP-CIDR,63.92.224.0/19,no-resolve
 IP-CIDR,65.199.22.0/23,no-resolve
+USER-AGENT,*FindMyiPhone?
+USER-AGENT,*Music?
+USER-AGENT,*WeatherFoundation*
+USER-AGENT,*com.apple.Maps?
+USER-AGENT,*com.apple.mobileme.fmip1
+USER-AGENT,FMDClient*
+USER-AGENT,FMFD*
+USER-AGENT,FindMyFriends*
+USER-AGENT,FindMyiPhone*
+USER-AGENT,Maps*
+USER-AGENT,Wallet*
+USER-AGENT,com.apple.Maps
+USER-AGENT,com.apple.appstored*
+USER-AGENT,fmflocatord*
+USER-AGENT,geod*
+USER-AGENT,locationd*
+USER-AGENT,passd*
+USER-AGENT,Music*
+USER-AGENT,AppleNews*
+USER-AGENT,com.apple.news*
+USER-AGENT,com.apple.trustd*
+USER-AGENT,AppleTV*
+USER-AGENT,com.apple.tv*
+PROCESS-NAME,/System/Library/PrivateFrameworks/Lookup.framework/Versions/A/XPCServices/LookupViewService.xpc/Contents/MacOS/LookupViewService
+PROCESS-NAME,storedownloadd
+PROCESS-NAME,com.apple.geod
+PROCESS-NAME,Music
+PROCESS-NAME,News
+PROCESS-NAME,LookupViewService
+PROCESS-NAME,TV
 
 # gitlab
 DOMAIN-SUFFIX,gitlab-assets.oss-cn-hongkong.aliyuncs.com
