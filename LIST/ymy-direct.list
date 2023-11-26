@@ -12,6 +12,7 @@ DOMAIN-SUFFIX,alist-doc.nn.ci
 # DOMAIN-SUFFIX,gitlab.com
 DOMAIN-KEYWORD,ipv6.ddnspod.com
 DOMAIN-KEYWORD,030101
+DOMAIN-SUFFIX,chat.zhile.io
 
 # Apple
 DOMAIN-KEYWORD,apple-support.akadns.net
