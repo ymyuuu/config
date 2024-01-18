@@ -1,0 +1,13 @@
+#!name = Go-Beta
+#!desc = go-beta.030101.xyz
+#!openUrl = https://github.com/Y-7-0101
+#!author = @Mingyu
+#!homepage = https://t.me/ymyuuu
+#!icon = https://gitlab.com/lodepuly/iconlibrary/-/raw/main/App_icon/120px/GitHub.png
+#!date = 2024-01-18
+
+[Rewrite]
+^https:\/\/(raw\.githubusercontent\.com|whatshub\.top|gitlab\.com) 302 https://go-beta.030101.xyz/$1
+
+[Mitm]
+hostname = raw.githubusercontent.com, whatshub.top, gitlab.com
