@@ -7,7 +7,7 @@
 #!date = 2024-01-18
 
 [Rewrite]
-^https:\/\/(raw\.githubusercontent\.com|whatshub\.top|gitlab\.com) 302 https://եգ.հայ/$1
+^https:\/\/raw\.githubusercontent\.com\/(.*) 302 https://եգ.հայ/raw.githubusercontent.com/$1
 
 [Mitm]
-hostname = raw.githubusercontent.com, whatshub.top, gitlab.com
+hostname = raw.githubusercontent.com
