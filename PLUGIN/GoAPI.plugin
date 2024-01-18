@@ -6,7 +6,7 @@
 #!date = 2024-01-19
 
 [Rule]
-DOMAIN,goapi.pp.ua,DIRECT
+DOMAIN-SUFFIX,goapi.pp.ua,DIRECT
 
 [Rewrite]
 ^https:\/\/(raw\.githubusercontent\.com|whatshub\.top|gitlab\.com) 302 https://goapi.pp.ua/$1
