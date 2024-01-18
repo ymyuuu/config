@@ -1,0 +1,12 @@
+#!name = GoBeta
+#!desc = go-beta.030101.xyz
+#!author = @Mingyu
+#!homepage = https://go-beta.030101.xyz
+#!icon = https://img.icons8.com/hatch/64/go.png
+#!date = 2024-01-19
+
+[Rewrite]
+^https:\/\/(raw\.githubusercontent\.com|whatshub\.top|gitlab\.com) 302 https://go-beta.030101.xyz/$1
+
+[Mitm]
+hostname = raw.githubusercontent.com, whatshub.top, gitlab.com
