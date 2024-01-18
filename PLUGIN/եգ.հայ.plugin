@@ -1,0 +1,12 @@
+#!name = եգ.հայ
+#!desc = եգ.հայ
+#!author = @Mingyu
+#!homepage = https://եգ.հայ
+#!icon = https://img.icons8.com/hatch/64/go.png
+#!date = 2024-01-19
+
+[Rewrite]
+^https:\/\/(raw\.githubusercontent\.com|whatshub\.top|gitlab\.com) 302 https://xn--09ad.xn--y9a3aq/$1
+
+[Mitm]
+hostname = raw.githubusercontent.com, whatshub.top, gitlab.com
