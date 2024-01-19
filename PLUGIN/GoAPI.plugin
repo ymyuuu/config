@@ -1,15 +1,15 @@
 #!name = GoAPI
-#!desc = goapi.pp.ua
+#!desc = goapi.cloudns.biz
 #!author = @Mingyu
-#!homepage = https://goapi.pp.ua
+#!homepage = https://goapi.cloudns.biz
 #!icon = https://img.icons8.com/hatch/64/go.png
 #!date = 2024-01-19
 
 [Rule]
-DOMAIN-SUFFIX,goapi.pp.ua,DIRECT
+DOMAIN-SUFFIX,goapi.cloudns.biz,DIRECT
 
 [Rewrite]
-^https:\/\/(raw\.githubusercontent\.com|whatshub\.top|gitlab\.com) 302 https://goapi.pp.ua/$1
+^https:\/\/(raw\.githubusercontent\.com|whatshub\.top|gitlab\.com) 302 https://goapi.cloudns.biz/$1
 
 [Mitm]
 hostname = raw.githubusercontent.com, whatshub.top, gitlab.com
