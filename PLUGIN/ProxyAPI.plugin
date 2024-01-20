@@ -1,0 +1,16 @@
+#!name = ProxyAPI
+#!desc = proxyapi.workers.dedyn.io
+#!openUrl = https://raw.githubusercontent.com/ymyuuu/config/main/PLUGIN/ProxyAPI.plugin
+#!author = @Mingyu
+#!homepage = https://t.me/ymyuuu
+#!icon = https://img.icons8.com/external-flat-berkahicon/64/external-Speed-love-flat-berkahicon.png
+#!date = 2024-01-21
+
+[Rule]
+DOMAIN-SUFFIX,proxyapi.workers.dedyn.io,DIRECT
+
+[Rewrite]
+^https:\/\/(raw\.githubusercontent\.com|whatshub\.top|gitlab\.com) 302 https://proxyapi.workers.dedyn.io/$1
+
+[Mitm]
+hostname = raw.githubusercontent.com, whatshub.top, gitlab.com
