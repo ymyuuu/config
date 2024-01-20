@@ -1,16 +1,16 @@
-#!name = ProxyAPI
-#!desc = 不许调皮o
+#!name = GlobalProxy API
+#!desc = եգ.հայ
 #!openUrl = https://raw.githubusercontent.com/ymyuuu/config/main/PLUGIN/ProxyAPI.plugin
 #!author = @Mingyu
 #!homepage = https://t.me/ymyuuu
 #!icon = https://img.icons8.com/external-flat-berkahicon/64/external-Speed-love-flat-berkahicon.png
-#!date = 2024-01-19
+#!date = 2024-01-20
 
 [Rule]
-DOMAIN-SUFFIX,proxyapi.sdk.cloudns.biz,DIRECT
+DOMAIN-SUFFIX,xn--09ad.xn--y9a3aq,DIRECT
 
 [Rewrite]
-^https:\/\/(raw\.githubusercontent\.com|whatshub\.top|gitlab\.com) 302 https://proxyapi.sdk.cloudns.biz/$1
+^https:\/\/(raw\.githubusercontent\.com|whatshub\.top|gitlab\.com) 302 https://xn--09ad.xn--y9a3aq/$1
 
 [Mitm]
 hostname = raw.githubusercontent.com, whatshub.top, gitlab.com
