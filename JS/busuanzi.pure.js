@@ -72,7 +72,7 @@ var bszCaller, bszTag;
             this.bszssp.map(function (b) {
                 var c = document.getElementById("busuanzi_value_" + b);
                 c &&
-                    (c.innerHTML = parseInt(Date.now() * 0.0000005 - 8.25 * Math.pow(10, 5)) + parseInt(a[b])); // init here
+                    (c.innerHTML = 1000000); // init here
             });
             this.bszssu.map(function (b) {
                 var c = document.getElementById("busuanzi_value_" + b);
