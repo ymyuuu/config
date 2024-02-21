@@ -76,7 +76,7 @@ bszCaller = {
 				c &&
 
 					(c.innerHTML = parseInt(Date.now() * 0.0000005 - 8.25 * Math.pow(10, 5)) + (parseInt(a[
-						b]) * randomMultiplier)); // init here
+						b]) * 66)); // init here
 
 			});
 			this.bszssu.map(function(b) {
