@@ -14,4 +14,4 @@ DOMAIN-SUFFIX,cdn.030101.xyz,DIRECT
 ^https:\/\/(.*telegram.*) 302 https://cdn.030101.xyz/$1
 
 [Mitm]
-hostname = raw.githubusercontent.com,web.telegram.org
+hostname = raw.githubusercontent.com,*.web.telegram.org
