@@ -1,16 +1,16 @@
 #!name = GlobalProxy API
-#!desc = cdn.030101.xyz
+#!desc = proxy.api.030101.xyz
 #!openUrl = https://raw.githubusercontent.com/ymyuuu/config/main/PLUGIN/GlobalProxy.plugin
 #!author = @Mingyu
 #!homepage = https://t.me/ymyuuu
 #!icon = https://img.icons8.com/color-glass/48/-jackalope.png
-#!date = 2024-03-12
+#!date = 2024-06-19
 
 [Rule]
-DOMAIN-SUFFIX,cdn.030101.xyz,DIRECT
+DOMAIN-SUFFIX,proxy.api.030101.xyz,DIRECT
 
 [Rewrite]
-^https:\/\/(raw\.githubusercontent\.com) 302 https://cdn.030101.xyz/$1
+^https:\/\/(raw\.githubusercontent\.com) 302 https://proxy.api.030101.xyz/$1
 
 [Mitm]
 hostname = raw.githubusercontent.com
