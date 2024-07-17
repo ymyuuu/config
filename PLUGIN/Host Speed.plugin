@@ -9,3 +9,4 @@ linux.do = bestcf.030101.xyz
 *.cloudflare.com = bestcf.030101.xyz
 *.cloudflare.com = bestcf.030101.xyz
 *.workers.dev = bestcf.030101.xyz
+*.nodeseek.com = bestcf.030101.xyz
