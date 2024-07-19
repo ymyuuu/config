@@ -1,4 +1,4 @@
-#!name = GlobalProxy API
+#!name = 333
 #!desc = proxy.030101.xyz
 #!openUrl = https://raw.githubusercontent.com/ymyuuu/config/main/PLUGIN/GlobalProxy.plugin
 #!author = @Mingyu
@@ -10,7 +10,7 @@
 DOMAIN-SUFFIX,proxy.030101.xyz,DIRECT
 
 [Rewrite]
-^https:\/\/(erp\.86899\.xyz) 302 https://gentle-king-84da.ymyuuu.workers.dev/$1
+^https:\/\/(ss190529\.jnruiying\.com) 302 https://src.f5.si/$1
 
 [Mitm]
-hostname = erp.86899.xyz
+hostname = ss190529.jnruiying.com
