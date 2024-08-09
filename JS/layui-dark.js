@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // 动态引入 layui-theme-dark.css
         var link = document.createElement('link');
         link.rel = 'stylesheet';
-        link.href = 'https://unpkg.com/layui-theme-dark/dist/layui-theme-dark.css';
+        link.href = 'https://cdn.jsdelivr.net/gh/Sight-wcg/layui-theme-dark@master/dist/layui-theme-dark.css';
         document.head.appendChild(link);
     }
 });
