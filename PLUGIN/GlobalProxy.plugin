@@ -4,13 +4,14 @@
 #!author = @Mingyu
 #!homepage = https://t.me/ymyuuu
 #!icon = https://img.icons8.com/color-glass/48/-jackalope.png
-#!date = 2024-07-05
+#!date = 2024-08-11
 
 [Rule]
 DOMAIN-SUFFIX,proxy.030101.xyz,DIRECT
 
 [Rewrite]
 ^https:\/\/(raw\.githubusercontent\.com) 302 https://proxy.030101.xyz/$1
+^https:\/\/(gitlab\.com) 302 https://proxy.030101.xyz/$1
 
 [Mitm]
-hostname = raw.githubusercontent.com
+hostname = raw.githubusercontent.com, gitlab.com
