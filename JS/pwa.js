@@ -39,7 +39,7 @@ self.addEventListener('fetch', (event) => {
 
 	// 定义需要跳过缓存的路径
 	const skipCachePaths = [
-		'/api', // API 请求
+		// '/api', // API 请求
 		'/auth', // 认证请求
 		'/admin', // 管理后台
 		'/login', // 登录
