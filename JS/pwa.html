@@ -1,0 +1,17 @@
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport"
+	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+<link rel="manifest" href="/manifest.json">
+<script>
+	if ('serviceWorker' in navigator) {
+		window.addEventListener('load', function() {
+			navigator.serviceWorker.register('/pwa.js')
+				.then(function(registration) {
+					console.log('Service Worker 已成功注册，作用域为: ', registration.scope);
+				})
+				.catch(function(err) {
+					console.log('Service Worker 注册失败: ', err);
+				});
+		});
+	}
+</script>
