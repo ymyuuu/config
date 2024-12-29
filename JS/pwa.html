@@ -1,6 +1,20 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="/manifest.json">
 <script>
+	// 注册 Service Worker
+	if ('serviceWorker' in navigator) {
+		window.addEventListener('load', function() {
+			navigator.serviceWorker.register('/pwa.js')
+				.then(function(registration) {
+					console.log('Service Worker 已成功注册，作用域为: ', registration.scope);
+				})
+				.catch(function(err) {
+					console.log('Service Worker 注册失败: ', err);
+				});
+		});
+	}
+</script>
+<script>
 	// 动态创建或更新 meta viewport 标签
 	function setViewportMeta() {
 		let viewportMeta = document.querySelector('meta[name="viewport"]');
@@ -28,17 +42,4 @@
 		childList: true, // 监控子节点的增加或删除
 		subtree: true // 监控整个 <head> 树
 	});
-
-	// 注册 Service Worker
-	if ('serviceWorker' in navigator) {
-		window.addEventListener('load', function() {
-			navigator.serviceWorker.register('/pwa.js')
-				.then(function(registration) {
-					console.log('Service Worker 已成功注册，作用域为: ', registration.scope);
-				})
-				.catch(function(err) {
-					console.log('Service Worker 注册失败: ', err);
-				});
-		});
-	}
 </script>
