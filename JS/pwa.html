@@ -1,8 +1,22 @@
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport"
-	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-<link rel="manifest" href="/manifest.json">
 <script>
+	// 动态创建或更新 meta viewport 标签
+	function setViewportMeta() {
+		let viewportMeta = document.querySelector('meta[name="viewport"]');
+		if (!viewportMeta) {
+			// 如果没有找到 viewport meta 标签，则创建一个新的
+			viewportMeta = document.createElement('meta');
+			viewportMeta.name = 'viewport';
+			document.head.appendChild(viewportMeta);
+		}
+		// 强制更新或设置 content 属性
+		viewportMeta.content =
+			'width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0';
+	}
+
+	// 设置 viewport 标签
+	setViewportMeta();
+
+	// 注册 Service Worker
 	if ('serviceWorker' in navigator) {
 		window.addEventListener('load', function() {
 			navigator.serviceWorker.register('/pwa.js')
