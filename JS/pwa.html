@@ -1,4 +1,14 @@
 <script>
+	// 设置 Pace.js 参数
+	window.paceOptions = {
+		ajax: false,
+		restartOnRequestAfter: false,
+		elements: true,
+		eventLag: true,
+		document: true,
+		minTime: 500
+	};
+
 	// 动态加载 Pace.js 和 CSS
 	const paceScript = document.createElement('script');
 	paceScript.src = 'https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js';
@@ -9,7 +19,7 @@
 	paceCSS.href = 'https://cdn.jsdelivr.net/npm/pace-js@latest/pace-theme-default.min.css';
 	document.head.appendChild(paceCSS);
 
-	// 等待 Pace.js 加载完成
+	// 等待 Pace.js 加载完成后设置随机颜色切换
 	paceScript.onload = () => {
 		// 随机生成一个更加丰富的颜色（HSL）
 		function getRandomColor() {
@@ -23,10 +33,7 @@
 
 		// 每 500 毫秒切换 Pace 进度条颜色
 		setInterval(() => {
-			// 获取一个随机颜色
 			const randomColor = getRandomColor();
-
-			// 更新 Pace 进度条的颜色，添加 !important 确保优先级最高
 			const paceProgress = document.querySelector('.pace .pace-progress');
 			if (paceProgress) {
 				paceProgress.style.setProperty('background', randomColor, 'important');
@@ -34,6 +41,8 @@
 		}, 500); // 每 500 毫秒切换一次颜色
 	};
 </script>
+
+
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="/manifest.json">
 <script>
