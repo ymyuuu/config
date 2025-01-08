@@ -86,16 +86,15 @@
 // });
 
 
-
 // 安装阶段
 self.addEventListener('install', (event) => {
-	console.log('%cService Worker 安装完成', 'color: #4caf50;'); // 绿色
+	console.log('%c[Service Worker] 安装完成', 'color: #4caf50; font-weight: bold;'); // 绿色
 	self.skipWaiting(); // 跳过等待，立即激活
 });
 
 // 激活阶段
 self.addEventListener('activate', (event) => {
-	console.log('%cService Worker 激活完成', 'color: #2196f3;'); // 蓝色
+	console.log('%c[Service Worker] 激活完成', 'color: #2196f3; font-weight: bold;'); // 蓝色
 	self.clients.claim(); // 取得控制权
 });
 
@@ -116,13 +115,13 @@ self.addEventListener('fetch', (event) => {
 
 	// 1. 如果 Cache-Control 中包含 no-store 或 Pragma 中包含 no-cache，跳过缓存
 	if ((cacheControl && cacheControl.includes('no-store')) || pragma === 'no-cache') {
-		console.log(`%c${logMessage} - 跳过缓存（no-store/no-cache）`, 'color: #9e9e9e;'); // 灰色
+		console.log(`%c${logMessage} - 跳过缓存（no-store/no-cache）`, 'color: #9c27b0;'); // 紫色
 		return;
 	}
 
 	// 2. 如果请求中包含 Authorization 头，跳过缓存
 	if (authorization) {
-		console.log(`%c${logMessage} - 跳过缓存（Authorization 头）`, 'color: #9e9e9e;'); // 灰色
+		console.log(`%c${logMessage} - 跳过缓存（Authorization 头）`, 'color: #795548;'); // 棕色
 		return;
 	}
 
@@ -137,7 +136,7 @@ self.addEventListener('fetch', (event) => {
 
 	// 3. 跳过指定路径的请求
 	if (skipCachePaths.some(path => url.pathname.includes(path))) {
-		console.log(`%c${logMessage} - 跳过缓存（指定路径）`, 'color: #9e9e9e;'); // 灰色
+		console.log(`%c${logMessage} - 跳过缓存（指定路径）`, 'color: #607d8b;'); // 蓝灰色
 		return;
 	}
 
@@ -151,11 +150,9 @@ self.addEventListener('fetch', (event) => {
 					event.waitUntil(
 						fetch(event.request).then((networkResponse) => {
 							return caches.open('dynamic-cache').then((cache) => {
-								cache.put(event.request, networkResponse.clone()).then(
-									() => {
-										console.log(`%c${logMessage} - 缓存已更新`,
-											'color: #4caf50;'); // 绿色（缓存更新）
-									});
+								cache.put(event.request, networkResponse.clone()).then(() => {
+									console.log(`%c${logMessage} - 缓存已更新`, 'color: #00bcd4;'); // 青色
+								});
 							});
 						}).catch((error) => {
 							console.log(`%c${logMessage} - 缓存更新失败`, 'color: #f44336;'); // 红色
@@ -165,7 +162,7 @@ self.addEventListener('fetch', (event) => {
 				}
 
 				// 如果缓存中没有，进行网络请求
-				console.log(`%c${logMessage} - 网络请求`, 'color: #2196f3;'); // 蓝色
+				console.log(`%c${logMessage} - 网络请求`, 'color: #3f51b5;'); // 靛蓝色
 				return fetch(event.request).then((response) => {
 					// 克隆响应，因为响应只能读取一次
 					const responseClone = response.clone();
@@ -173,18 +170,17 @@ self.addEventListener('fetch', (event) => {
 					// 缓存新响应
 					caches.open('dynamic-cache').then((cache) => {
 						cache.put(event.request, responseClone).then(() => {
-							console.log(`%c${logMessage} - 缓存完成`,
-								'color: #4caf50;'); // 绿色（缓存完成）
+							console.log(`%c${logMessage} - 缓存完成`, 'color: #4caf50;'); // 绿色
 						});
 					});
 
 					return response;
 				}).catch(() => {
-					console.log(`%c${logMessage} - 网络失败`, 'color: #f44336;'); // 红色
+					console.log(`%c${logMessage} - 网络失败`, 'color: #d32f2f;'); // 深红色
 				});
 			})
 		);
 	} else {
-		console.log(`%c${logMessage} - 跳过缓存`, 'color: #9e9e9e'); // 灰色
+		console.log(`%c${logMessage} - 跳过缓存`, 'color: #607d8b;'); // 蓝灰色
 	}
 });
