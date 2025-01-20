@@ -10,12 +10,18 @@ self.addEventListener('activate', (event) => {
 	self.clients.claim(); // 取得控制权
 });
 
-// 静态文件扩展名列表
-const staticFileExtensions = ['.js', '.css', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.woff', '.woff2', '.ttf', '.eot'];
+// 允许缓存的路径前缀
+const cachePaths = [
+	'/_avatars',
+	'/_assets',
+	'/_private-user-images',
+	'/_camo',
+	'/_raw',
+];
 
-// 判断是否为静态资源
-function isStaticResource(url) {
-	return staticFileExtensions.some((ext) => url.pathname.endsWith(ext));
+// 检查路径是否匹配缓存规则
+function shouldCachePath(url) {
+	return cachePaths.some((path) => url.pathname.startsWith(path));
 }
 
 // 拦截请求并缓存
@@ -28,58 +34,48 @@ self.addEventListener('fetch', (event) => {
 	// 构建日志前缀
 	const logMessage = `${event.request.method} ${url.pathname}`;
 
-	// 判断是否需要缓存
-	const shouldCache = url.pathname.startsWith('/_assets') || isStaticResource(url);
-
-	if (!shouldCache) {
-		// 不符合缓存条件的请求
+	// 检查是否符合缓存条件
+	if (!shouldCachePath(url)) {
 		console.log(`%c跳过缓存: ${logMessage}`, 'color: #607d8b;'); // 蓝灰色
 		return;
 	}
 
-	// 处理 GET 请求
-	if (event.request.method === 'GET') {
-		event.respondWith(
-			caches.match(event.request).then((cachedResponse) => {
-				if (cachedResponse) {
-					// 缓存命中
-					console.log(`%c缓存命中: ${logMessage}`, 'color: #ff9800;'); // 橙色
-					// 后台更新缓存
-					event.waitUntil(
-						fetch(event.request).then((networkResponse) => {
-							return caches.open('dynamic-cache').then((cache) => {
-								cache.put(event.request, networkResponse.clone()).then(() => {
-									console.log(`%c缓存已更新: ${logMessage}`, 'color: #00bcd4;'); // 青色
-								});
+	// 缓存匹配或更新逻辑
+	event.respondWith(
+		caches.match(event.request).then((cachedResponse) => {
+			if (cachedResponse) {
+				// 缓存命中
+				console.log(`%c缓存命中: ${logMessage}`, 'color: #ff9800;'); // 橙色
+				// 后台更新缓存
+				event.waitUntil(
+					fetch(event.request).then((networkResponse) => {
+						return caches.open('dynamic-cache').then((cache) => {
+							cache.put(event.request, networkResponse.clone()).then(() => {
+								console.log(`%c缓存已更新: ${logMessage}`, 'color: #00bcd4;'); // 青色
 							});
-						}).catch(() => {
-							console.log(`%c缓存更新失败: ${logMessage}`, 'color: #f44336;'); // 红色
-						})
-					);
-					return cachedResponse;
-				}
-
-				// 缓存未命中，请求网络
-				console.log(`%c网络请求: ${logMessage}`, 'color: #3f51b5;'); // 靛蓝色
-				return fetch(event.request).then((response) => {
-					// 克隆响应，因为响应只能读取一次
-					const responseClone = response.clone();
-
-					// 缓存新响应
-					caches.open('dynamic-cache').then((cache) => {
-						cache.put(event.request, responseClone).then(() => {
-							console.log(`%c缓存完成: ${logMessage}`, 'color: #4caf50;'); // 绿色
 						});
-					});
+					}).catch(() => {
+						console.log(`%c缓存更新失败: ${logMessage}`, 'color: #f44336;'); // 红色
+					})
+				);
+				return cachedResponse;
+			}
 
-					return response;
-				}).catch(() => {
-					console.log(`%c网络请求失败: ${logMessage}`, 'color: #d32f2f;'); // 深红色
+			// 缓存未命中，请求网络
+			console.log(`%c网络请求: ${logMessage}`, 'color: #3f51b5;'); // 靛蓝色
+			return fetch(event.request).then((response) => {
+				const responseClone = response.clone();
+
+				// 缓存新响应
+				caches.open('dynamic-cache').then((cache) => {
+					cache.put(event.request, responseClone).then(() => {
+						console.log(`%c缓存完成: ${logMessage}`, 'color: #4caf50;'); // 绿色
+					});
 				});
-			})
-		);
-	} else {
-		// 非 GET 请求跳过
-		console.log(`%c跳过非 GET 请求: ${logMessage}`, 'color: #795548;'); // 棕色
-	}
+				return response;
+			}).catch(() => {
+				console.log(`%c网络请求失败: ${logMessage}`, 'color: #d32f2f;'); // 深红色
+			});
+		})
+	);
 });
