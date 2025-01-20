@@ -19,7 +19,7 @@ const cachePaths = [
 	'/_raw',
 ];
 
-// 检查路径是否匹配缓存规则
+// 检查路径是否符合缓存规则
 function shouldCachePath(url) {
 	return cachePaths.some((path) => url.pathname.startsWith(path));
 }
@@ -34,13 +34,13 @@ self.addEventListener('fetch', (event) => {
 	// 构建日志前缀
 	const logMessage = `${event.request.method} ${url.pathname}`;
 
-	// 检查是否符合缓存条件
+	// 检查是否需要缓存
 	if (!shouldCachePath(url)) {
 		console.log(`%c跳过缓存: ${logMessage}`, 'color: #607d8b;'); // 蓝灰色
 		return;
 	}
 
-	// 缓存匹配或更新逻辑
+	// 缓存逻辑（适用于所有请求方法）
 	event.respondWith(
 		caches.match(event.request).then((cachedResponse) => {
 			if (cachedResponse) {
@@ -72,6 +72,7 @@ self.addEventListener('fetch', (event) => {
 						console.log(`%c缓存完成: ${logMessage}`, 'color: #4caf50;'); // 绿色
 					});
 				});
+
 				return response;
 			}).catch(() => {
 				console.log(`%c网络请求失败: ${logMessage}`, 'color: #d32f2f;'); // 深红色
