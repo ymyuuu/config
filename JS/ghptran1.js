@@ -82,10 +82,7 @@
 		const pathname = url.pathname;
 		const isLogin = document.body.classList.contains('logged-in');
 		const analyticsLocation = document.head.querySelector('meta[name="analytics-location"]')?.content || '';
-		const isOrganization = /\\<org-login\\>/.test(analyticsLocation) || /^\/(?:orgs|organizations)/.test(analyticsLocation);
 
-		const isRepository = /\\/\\ < user - name\\ > \\/\\<repo-name\\>/.test(analyticsLocation);
-		const isProfile = document.body.classList.contains('page-profile') || analyticsLocation === '/<user-name>';
 		const isSession = document.body.classList.contains('session-authentication');
 
 		const {
