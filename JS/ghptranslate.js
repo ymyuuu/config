@@ -1,12 +1,15 @@
 (function() {
-	'\x75\x73\x65 \x73\x74\x72\x69\x63\x74';
+	'use strict';
+
 	const DICT_URL =
-		'\x2f\x5f\x72\x61\x77\x2f\x6d\x61\x62\x6f\x6c\x6f\x73\x68\x69\x2f\x67\x69\x74\x68\x75\x62\x2d\x63\x68\x69\x6e\x65\x73\x65\x2f\x72\x65\x66\x73\x2f\x68\x65\x61\x64\x73\x2f\x67\x68\x2d\x70\x61\x67\x65\x73\x2f\x6c\x6f\x63\x61\x6c\x73\x2e\x6a\x73';
-	const LANG = '\x7a\x68\x2d\x43\x4e';
-	const STORAGE_KEY_REGEXP =
-		'\x67\x69\x74\x68\x75\x62\x5f\x63\x68\x69\x6e\x65\x73\x65\x5f\x65\x6e\x61\x62\x6c\x65\x5f\x72\x65\x67\x65\x78\x70';
-	let enable_RegExp = (localStorage['\x67\x65\x74\x49\x74\x65\x6d'](STORAGE_KEY_REGEXP) === null) ? true : (
-		localStorage['\x67\x65\x74\x49\x74\x65\x6d'](STORAGE_KEY_REGEXP) === '\x74\x72\x75\x65');
+		'/_raw/maboloshi/github-chinese/gh-pages/locals.js?v1.9.3-2025-01-19';
+	const LANG = 'zh-CN';
+	const STORAGE_KEY_REGEXP = 'github_chinese_enable_regexp';
+
+	let enable_RegExp = (localStorage.getItem(STORAGE_KEY_REGEXP) === null) ?
+		true :
+		(localStorage.getItem(STORAGE_KEY_REGEXP) === 'true');
+
 	let page = false;
 	let cachedPage = null;
 	let characterData = null;
@@ -14,127 +17,109 @@
 	let ignoreSelectors = [];
 	let tranSelectors = [];
 	let regexpRules = [];
-	loadDictionary(DICT_URL)['\x74\x68\x65\x6e'](() => {
-		init()
-	})['\x63\x61\x74\x63\x68'](() => {});
-	async function loadDictionary(CjNDRIfw1) {
-		const res = await fetch(CjNDRIfw1);
-		if (!res['\x6f\x6b']) return;
-		const scriptText = await res['\x74\x65\x78\x74']();
-		window['\x65\x76\x61\x6c'](scriptText);
-		if (!window['\x49\x31\x38\x4e']) return
+
+	// 加载词典
+	loadDictionary(DICT_URL).then(() => {
+		init();
+	}).catch(() => {
+		// 这里不输出任何错误
+	});
+
+	async function loadDictionary(url) {
+		const res = await fetch(url);
+		if (!res.ok) return; // 不输出错误
+		const scriptText = await res.text();
+		window.eval(scriptText); // 生成 window.I18N
+		if (!window.I18N) return; // 也不输出错误
 	}
 
 	function init() {
-		window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"]['\x64\x6f\x63\x75\x6d\x65\x6e\x74\x45\x6c\x65\x6d\x65\x6e\x74'][
-			'\x6c\x61\x6e\x67'
-		] = LANG;
+		document.documentElement.lang = LANG;
 		new MutationObserver(() => {
-			if (window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"][
-					'\x64\x6f\x63\x75\x6d\x65\x6e\x74\x45\x6c\x65\x6d\x65\x6e\x74'
-				]['\x6c\x61\x6e\x67'] === '\x65\x6e') {
-				window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"][
-					'\x64\x6f\x63\x75\x6d\x65\x6e\x74\x45\x6c\x65\x6d\x65\x6e\x74'
-				]['\x6c\x61\x6e\x67'] = LANG
+			if (document.documentElement.lang === 'en') {
+				document.documentElement.lang = LANG;
 			}
-		})['\x6f\x62\x73\x65\x72\x76\x65'](window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"][
-			'\x64\x6f\x63\x75\x6d\x65\x6e\x74\x45\x6c\x65\x6d\x65\x6e\x74'
-		], {
-			attributeFilter: ['\x6c\x61\x6e\x67']
+		}).observe(document.documentElement, {
+			attributeFilter: ['lang']
 		});
+
 		page = initPage();
 		if (page) {
-			traverseNode(window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"]['\x62\x6f\x64\x79'])
+			traverseNode(document.body);
 		}
 		watchUpdate();
-		window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"][
-			'\x61\x64\x64\x45\x76\x65\x6e\x74\x4c\x69\x73\x74\x65\x6e\x65\x72'
-		]('\x74\x75\x72\x62\x6f\x3a\x6c\x6f\x61\x64', () => {
+
+		document.addEventListener('turbo:load', () => {
 			if (!page) return;
 			transTitle();
 			transBySelector();
-			if (page === '\x72\x65\x70\x6f\x73\x69\x74\x6f\x72\x79') {
-				transDesc('\x2e\x66\x34\x2e\x6d\x79\x2d\x33')
-			} else if (page === '\x67\x69\x73\x74') {
-				transDesc(
-					'\x2e\x67\x69\x73\x74\x2d\x63\x6f\x6e\x74\x65\x6e\x74 \x5b\x69\x74\x65\x6d\x70\x72\x6f\x70\x3d\x22\x61\x62\x6f\x75\x74\x22\x5d'
-				)
+			if (page === 'repository') {
+				transDesc('.f4.my-3');
+			} else if (page === 'gist') {
+				transDesc('.gist-content [itemprop="about"]');
 			}
-		})
+		});
 	}
 
 	function initPage() {
 		const p = getPage();
 		updateConfig(p);
-		return p
+		return p;
 	}
 
-	function getPage(P2 = window['\x6c\x6f\x63\x61\x74\x69\x6f\x6e']) {
-		if (!window['\x49\x31\x38\x4e'] || !window['\x49\x31\x38\x4e'][LANG]) {
-			return false
+	function getPage(url = window.location) {
+		if (!window.I18N || !window.I18N[LANG]) {
+			return false; // 不输出警告
 		}
+
 		const siteMapping = {
-			'\x67\x69\x73\x74\x2e\x67\x69\x74\x68\x75\x62\x2e\x63\x6f\x6d': '\x67\x69\x73\x74',
-			'\x77\x77\x77\x2e\x67\x69\x74\x68\x75\x62\x73\x74\x61\x74\x75\x73\x2e\x63\x6f\x6d': '\x73\x74\x61\x74\x75\x73',
-			'\x73\x6b\x69\x6c\x6c\x73\x2e\x67\x69\x74\x68\x75\x62\x2e\x63\x6f\x6d': '\x73\x6b\x69\x6c\x6c\x73',
-			'\x65\x64\x75\x63\x61\x74\x69\x6f\x6e\x2e\x67\x69\x74\x68\x75\x62\x2e\x63\x6f\x6d': '\x65\x64\x75\x63\x61\x74\x69\x6f\x6e',
+			'gist.github.com': 'gist',
+			'www.githubstatus.com': 'status',
+			'skills.github.com': 'skills',
+			'education.github.com': 'education',
 		};
-		const site = siteMapping[P2['\x68\x6f\x73\x74\x6e\x61\x6d\x65']] || '\x67\x69\x74\x68\x75\x62';
-		const pathname = P2['\x70\x61\x74\x68\x6e\x61\x6d\x65'];
-		const isLogin = window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"]['\x62\x6f\x64\x79'][
-			'\x63\x6c\x61\x73\x73\x4c\x69\x73\x74'
-		]['\x63\x6f\x6e\x74\x61\x69\x6e\x73']('\x6c\x6f\x67\x67\x65\x64\x2d\x69\x6e');
-		const analyticsLocation = window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"]['\x68\x65\x61\x64'][
-			'\x71\x75\x65\x72\x79\x53\x65\x6c\x65\x63\x74\x6f\x72'
-		](
-			'\x6d\x65\x74\x61\x5b\x6e\x61\x6d\x65\x3d\x22\x61\x6e\x61\x6c\x79\x74\x69\x63\x73\x2d\x6c\x6f\x63\x61\x74\x69\x6f\x6e\x22\x5d'
-		) ? ['\x63\x6f\x6e\x74\x65\x6e\x74'] || '';
-		const isOrganization = /\\/\\ < org - login\\ > /['\x74\x65\x73\x74'](analyticsLocation)||/ ^ \\
-			/(?:orgs|organizations)/ ['\x74\x65\x73\x74'](pathname);
-		const isRepository = /\\/\\ < user - name\\ > \\/\\<repo-name\\>/ ['\x74\x65\x73\x74'](analyticsLocation);
-		const isProfile = window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"]['\x62\x6f\x64\x79'][
-				'\x63\x6c\x61\x73\x73\x4c\x69\x73\x74'
-			]['\x63\x6f\x6e\x74\x61\x69\x6e\x73']('\x70\x61\x67\x65\x2d\x70\x72\x6f\x66\x69\x6c\x65') ||
-			analyticsLocation === '\x2f\x3c\x75\x73\x65\x72\x2d\x6e\x61\x6d\x65\x3e';
-		const isSession = window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"]['\x62\x6f\x64\x79'][
-			'\x63\x6c\x61\x73\x73\x4c\x69\x73\x74'
-		]['\x63\x6f\x6e\x74\x61\x69\x6e\x73'](
-			'\x73\x65\x73\x73\x69\x6f\x6e\x2d\x61\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x69\x6f\x6e');
+		const site = siteMapping[url.hostname] || 'github';
+		const pathname = url.pathname;
+		const isLogin = document.body.classList.contains('logged-in');
+		const analyticsLocation = document.head.querySelector('meta[name="analytics-location"]')?.content || '';
+		const isOrganization = /\\/\\ < org - login\\ > /.test(analyticsLocation) || / ^ \\/(?:orgs|organizations)/
+			.test(pathname);
+		const isRepository = /\\/\\ < user - name\\ > \\/\\<repo-name\\>/.test(analyticsLocation);
+		const isProfile = document.body.classList.contains('page-profile') || analyticsLocation === '/<user-name>';
+		const isSession = document.body.classList.contains('session-authentication');
+
 		const {
 			rePagePathRepo,
 			rePagePathOrg,
 			rePagePath
-		} = window['\x49\x31\x38\x4e']['\x63\x6f\x6e\x66'];
+		} = window.I18N.conf;
 		let t, pageType = false;
+
 		if (isSession) {
-			pageType = '\x73\x65\x73\x73\x69\x6f\x6e\x2d\x61\x75\x74\x68\x65\x6e\x74\x69\x63\x61\x74\x69\x6f\x6e'
-		} else if (site === '\x67\x69\x73\x74' || site === '\x73\x74\x61\x74\x75\x73' || site ===
-			'\x73\x6b\x69\x6c\x6c\x73' || site === '\x65\x64\x75\x63\x61\x74\x69\x6f\x6e') {
-			pageType = site
+			pageType = 'session-authentication';
+		} else if (site === 'gist' || site === 'status' || site === 'skills' || site === 'education') {
+			pageType = site;
 		} else if (isProfile) {
-			t = P2['\x73\x65\x61\x72\x63\x68']['\x6d\x61\x74\x63\x68'](/tab=([^&]+)/);
-			pageType = t ? '\x70\x61\x67\x65\x2d\x70\x72\x6f\x66\x69\x6c\x65\x2f' + t[1] : pathname[
-					'\x69\x6e\x63\x6c\x75\x64\x65\x73']('\x2f\x73\x74\x61\x72\x73') ?
-				'\x70\x61\x67\x65\x2d\x70\x72\x6f\x66\x69\x6c\x65\x2f\x73\x74\x61\x72\x73' :
-				'\x70\x61\x67\x65\x2d\x70\x72\x6f\x66\x69\x6c\x65'
-		} else if (pathname === '\x2f' && site === '\x67\x69\x74\x68\x75\x62') {
-			pageType = isLogin ? '\x70\x61\x67\x65\x2d\x64\x61\x73\x68\x62\x6f\x61\x72\x64' :
-				'\x68\x6f\x6d\x65\x70\x61\x67\x65'
+			t = url.search.match(/tab=([^&]+)/);
+			pageType = t ? 'page-profile/' + t[1] : pathname.includes('/stars') ? 'page-profile/stars' :
+				'page-profile';
+		} else if (pathname === '/' && site === 'github') {
+			pageType = isLogin ? 'page-dashboard' : 'homepage';
 		} else if (isRepository) {
-			t = pathname['\x6d\x61\x74\x63\x68'](rePagePathRepo);
-			pageType = t ? '\x72\x65\x70\x6f\x73\x69\x74\x6f\x72\x79\x2f' + t[1] :
-				'\x72\x65\x70\x6f\x73\x69\x74\x6f\x72\x79'
+			t = pathname.match(rePagePathRepo);
+			pageType = t ? 'repository/' + t[1] : 'repository';
 		} else if (isOrganization) {
-			t = pathname['\x6d\x61\x74\x63\x68'](rePagePathOrg);
-			pageType = t ? '\x6f\x72\x67\x73\x2f' + (t[1] || t['\x73\x6c\x69\x63\x65'](-1)[0]) : '\x6f\x72\x67\x73'
+			t = pathname.match(rePagePathOrg);
+			pageType = t ? 'orgs/' + (t[1] || t.slice(-1)[0]) : 'orgs';
 		} else {
-			t = pathname['\x6d\x61\x74\x63\x68'](rePagePath);
-			pageType = t ? (t[1] || t['\x73\x6c\x69\x63\x65'](-1)[0]) : false
+			t = pathname.match(rePagePath);
+			pageType = t ? (t[1] || t.slice(-1)[0]) : false;
 		}
-		if (!pageType || !window['\x49\x31\x38\x4e'][LANG][pageType]) {
-			return false
+
+		if (!pageType || !window.I18N[LANG][pageType]) {
+			return false; // 不输出日志
 		}
-		return pageType
+		return pageType;
 	}
 
 	function updateConfig(p) {
@@ -144,226 +129,198 @@
 				characterDataPage,
 				ignoreMutationSelectorPage,
 				ignoreSelectorPage
-			} = window['\x49\x31\x38\x4e']['\x63\x6f\x6e\x66'];
-			characterData = characterDataPage['\x69\x6e\x63\x6c\x75\x64\x65\x73'](p);
-			ignoreMutationSelectors = ignoreMutationSelectorPage['\x2a']['\x63\x6f\x6e\x63\x61\x74'](
-				ignoreMutationSelectorPage[p] || []);
-			ignoreSelectors = ignoreSelectorPage['\x2a']['\x63\x6f\x6e\x63\x61\x74'](ignoreSelectorPage[p] || []);
-			tranSelectors = (window['\x49\x31\x38\x4e'][LANG][p] ? ['\x73\x65\x6c\x65\x63\x74\x6f\x72'] || [])[
-				'\x63\x6f\x6e\x63\x61\x74'](window['\x49\x31\x38\x4e'][LANG]['\x70\x75\x62\x6c\x69\x63'][
-				'\x73\x65\x6c\x65\x63\x74\x6f\x72'
-			] || []);
-			regexpRules = (window['\x49\x31\x38\x4e'][LANG][p]['\x72\x65\x67\x65\x78\x70'] || [])[
-				'\x63\x6f\x6e\x63\x61\x74'](window['\x49\x31\x38\x4e'][LANG]['\x70\x75\x62\x6c\x69\x63'][
-				'\x72\x65\x67\x65\x78\x70'
-			] || [])
+			} = window.I18N.conf;
+			characterData = characterDataPage.includes(p);
+			ignoreMutationSelectors = ignoreMutationSelectorPage['*'].concat(ignoreMutationSelectorPage[p] || []);
+			ignoreSelectors = ignoreSelectorPage['*'].concat(ignoreSelectorPage[p] || []);
+			tranSelectors = (window.I18N[LANG][p]?.selector || []).concat(window.I18N[LANG]['public'].selector ||
+			[]);
+			regexpRules = (window.I18N[LANG][p].regexp || []).concat(window.I18N[LANG]['public'].regexp || []);
 		}
 	}
 
 	function watchUpdate() {
-		const MutationObserver = window['\x4d\x75\x74\x61\x74\x69\x6f\x6e\x4f\x62\x73\x65\x72\x76\x65\x72'] ||
-			window['\x57\x65\x62\x4b\x69\x74\x4d\x75\x74\x61\x74\x69\x6f\x6e\x4f\x62\x73\x65\x72\x76\x65\x72'] ||
-			window['\x4d\x6f\x7a\x4d\x75\x74\x61\x74\x69\x6f\x6e\x4f\x62\x73\x65\x72\x76\x65\x72'];
-		let previousURL = location['\x68\x72\x65\x66'];
+		const MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window
+			.MozMutationObserver;
+		let previousURL = location.href;
+
 		new MutationObserver(mutations => {
-			const currentURL = location['\x68\x72\x65\x66'];
+			const currentURL = location.href;
 			if (currentURL !== previousURL) {
 				previousURL = currentURL;
-				page = initPage()
+				page = initPage();
 			}
 			if (page) {
-				const filteredMutations = mutations['\x66\x6c\x61\x74\x4d\x61\x70'](({
+				const filteredMutations = mutations.flatMap(({
 					target,
 					addedNodes,
 					type
 				}) => {
 					let nodes = [];
-					if (type === '\x63\x68\x69\x6c\x64\x4c\x69\x73\x74' && addedNodes[
-							'\x6c\x65\x6e\x67\x74\x68'] > 0) {
-						nodes = window["\x41\x72\x72\x61\x79"]['\x66\x72\x6f\x6d'](addedNodes)
-					} else if (type === '\x61\x74\x74\x72\x69\x62\x75\x74\x65\x73' || (
-							characterData && type ===
-							'\x63\x68\x61\x72\x61\x63\x74\x65\x72\x44\x61\x74\x61')) {
-						nodes = [target]
+					if (type === 'childList' && addedNodes.length > 0) {
+						nodes = Array.from(addedNodes);
+					} else if (type === 'attributes' || (characterData && type ===
+							'characterData')) {
+						nodes = [target];
 					}
-					return nodes['\x66\x69\x6c\x74\x65\x72'](node => !ignoreMutationSelectors[
-						'\x73\x6f\x6d\x65'](selector => node[
-						'\x70\x61\x72\x65\x6e\x74\x45\x6c\x65\x6d\x65\x6e\x74'] ? [
-						'\x63\x6c\x6f\x73\x65\x73\x74'
-					](selector)))
+					return nodes.filter(node =>
+						!ignoreMutationSelectors.some(selector => node.parentElement?.closest(
+							selector))
+					);
 				});
-				filteredMutations['\x66\x6f\x72\x45\x61\x63\x68'](node => traverseNode(node))
+				filteredMutations.forEach(node => traverseNode(node));
 			}
-		})['\x6f\x62\x73\x65\x72\x76\x65'](window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"]['\x62\x6f\x64\x79'], {
+		}).observe(document.body, {
 			characterData: true,
 			subtree: true,
 			childList: true,
-			attributeFilter: ['\x76\x61\x6c\x75\x65', '\x70\x6c\x61\x63\x65\x68\x6f\x6c\x64\x65\x72',
-				'\x61\x72\x69\x61\x2d\x6c\x61\x62\x65\x6c',
-				'\x64\x61\x74\x61\x2d\x63\x6f\x6e\x66\x69\x72\x6d',
-				'\x64\x61\x74\x61\x2d\x76\x69\x73\x69\x62\x6c\x65\x2d\x74\x65\x78\x74'
-			],
-		})
+			attributeFilter: ['value', 'placeholder', 'aria-label', 'data-confirm', 'data-visible-text'],
+		});
 	}
 
-	function traverseNode(XDJgYBZ3) {
-		if (ignoreSelectors['\x73\x6f\x6d\x65'](sel => XDJgYBZ3['\x6d\x61\x74\x63\x68\x65\x73']?.(sel))) return;
-		if (XDJgYBZ3['\x6e\x6f\x64\x65\x54\x79\x70\x65'] === Node[
-				'\x45\x4c\x45\x4d\x45\x4e\x54\x5f\x4e\x4f\x44\x45']) {
-			switch (XDJgYBZ3['\x74\x61\x67\x4e\x61\x6d\x65']) {
-				case '\x52\x45\x4c\x41\x54\x49\x56\x45\x2d\x54\x49\x4d\x45':
-					transTimeElement(XDJgYBZ3['\x73\x68\x61\x64\x6f\x77\x52\x6f\x6f\x74']);
-					watchTimeElement(XDJgYBZ3['\x73\x68\x61\x64\x6f\x77\x52\x6f\x6f\x74']);
+	function traverseNode(node) {
+		if (ignoreSelectors.some(sel => node.matches?.(sel))) return;
+
+		if (node.nodeType === Node.ELEMENT_NODE) {
+			switch (node.tagName) {
+				case 'RELATIVE-TIME':
+					transTimeElement(node.shadowRoot);
+					watchTimeElement(node.shadowRoot);
 					return;
-				case '\x49\x4e\x50\x55\x54':
-				case '\x54\x45\x58\x54\x41\x52\x45\x41':
-					if (['\x62\x75\x74\x74\x6f\x6e', '\x73\x75\x62\x6d\x69\x74', '\x72\x65\x73\x65\x74'][
-							'\x69\x6e\x63\x6c\x75\x64\x65\x73'
-						](XDJgYBZ3['\x74\x79\x70\x65'])) {
-						transElement(XDJgYBZ3['\x64\x61\x74\x61\x73\x65\x74'], '\x63\x6f\x6e\x66\x69\x72\x6d');
-						transElement(XDJgYBZ3, '\x76\x61\x6c\x75\x65')
+				case 'INPUT':
+				case 'TEXTAREA':
+					if (['button', 'submit', 'reset'].includes(node.type)) {
+						transElement(node.dataset, 'confirm');
+						transElement(node, 'value');
 					} else {
-						transElement(XDJgYBZ3, '\x70\x6c\x61\x63\x65\x68\x6f\x6c\x64\x65\x72')
+						transElement(node, 'placeholder');
 					}
 					break;
-				case '\x42\x55\x54\x54\x4f\x4e':
-					if (/tooltipped/ ['\x74\x65\x73\x74'](XDJgYBZ3['\x63\x6c\x61\x73\x73\x4e\x61\x6d\x65']))
-						transElement(XDJgYBZ3, '\x61\x72\x69\x61\x4c\x61\x62\x65\x6c');
-					transElement(XDJgYBZ3, '\x74\x69\x74\x6c\x65');
-					transElement(XDJgYBZ3['\x64\x61\x74\x61\x73\x65\x74'], '\x63\x6f\x6e\x66\x69\x72\x6d');
-					transElement(XDJgYBZ3['\x64\x61\x74\x61\x73\x65\x74'],
-						'\x63\x6f\x6e\x66\x69\x72\x6d\x54\x65\x78\x74');
-					transElement(XDJgYBZ3['\x64\x61\x74\x61\x73\x65\x74'],
-						'\x63\x6f\x6e\x66\x69\x72\x6d\x43\x61\x6e\x63\x65\x6c\x54\x65\x78\x74');
-					transElement(XDJgYBZ3, '\x63\x61\x6e\x63\x65\x6c\x43\x6f\x6e\x66\x69\x72\x6d\x54\x65\x78\x74');
-					transElement(XDJgYBZ3['\x64\x61\x74\x61\x73\x65\x74'],
-						'\x64\x69\x73\x61\x62\x6c\x65\x57\x69\x74\x68');
+				case 'BUTTON':
+					if (/tooltipped/.test(node.className)) transElement(node, 'ariaLabel');
+					transElement(node, 'title');
+					transElement(node.dataset, 'confirm');
+					transElement(node.dataset, 'confirmText');
+					transElement(node.dataset, 'confirmCancelText');
+					transElement(node, 'cancelConfirmText');
+					transElement(node.dataset, 'disableWith');
 					break;
-				case '\x4f\x50\x54\x47\x52\x4f\x55\x50':
-					transElement(XDJgYBZ3, '\x6c\x61\x62\x65\x6c');
+				case 'OPTGROUP':
+					transElement(node, 'label');
 					break;
-				case '\x41':
-					transElement(XDJgYBZ3, '\x74\x69\x74\x6c\x65');
-					transElement(XDJgYBZ3, '\x61\x72\x69\x61\x4c\x61\x62\x65\x6c');
+				case 'A':
+					transElement(node, 'title');
+					transElement(node, 'ariaLabel');
 					break;
-				case '\x53\x50\x41\x4e':
-					transElement(XDJgYBZ3, '\x74\x69\x74\x6c\x65');
-					if (/tooltipped/ ['\x74\x65\x73\x74'](XDJgYBZ3['\x63\x6c\x61\x73\x73\x4e\x61\x6d\x65']))
-						transElement(XDJgYBZ3, '\x61\x72\x69\x61\x4c\x61\x62\x65\x6c');
-					transElement(XDJgYBZ3['\x64\x61\x74\x61\x73\x65\x74'],
-						'\x76\x69\x73\x69\x62\x6c\x65\x54\x65\x78\x74');
+				case 'SPAN':
+					transElement(node, 'title');
+					if (/tooltipped/.test(node.className)) transElement(node, 'ariaLabel');
+					transElement(node.dataset, 'visibleText');
 					break;
 				default:
-					if (/tooltipped/ ['\x74\x65\x73\x74'](XDJgYBZ3['\x63\x6c\x61\x73\x73\x4e\x61\x6d\x65']))
-						transElement(XDJgYBZ3, '\x61\x72\x69\x61\x4c\x61\x62\x65\x6c')
+					if (/tooltipped/.test(node.className)) transElement(node, 'ariaLabel');
 			}
-			XDJgYBZ3['\x63\x68\x69\x6c\x64\x4e\x6f\x64\x65\x73']['\x66\x6f\x72\x45\x61\x63\x68'](child =>
-				traverseNode(child))
-		} else if (XDJgYBZ3['\x6e\x6f\x64\x65\x54\x79\x70\x65'] === Node['\x54\x45\x58\x54\x5f\x4e\x4f\x44\x45'] &&
-			XDJgYBZ3['\x6e\x6f\x64\x65\x56\x61\x6c\x75\x65']['\x6c\x65\x6e\x67\x74\x68'] <= 500) {
-			transElement(XDJgYBZ3, '\x64\x61\x74\x61')
+			node.childNodes.forEach(child => traverseNode(child));
+		} else if (node.nodeType === Node.TEXT_NODE && node.nodeValue.length <= 500) {
+			transElement(node, 'data');
 		}
 	}
 
 	function transTitle() {
-		const text = window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"]['\x74\x69\x74\x6c\x65'];
-		const dictTitle = window['\x49\x31\x38\x4e'][LANG]['\x74\x69\x74\x6c\x65'];
-		let translatedText = dictTitle['\x73\x74\x61\x74\x69\x63'][text] || '';
+		const text = document.title;
+		const
+			dictTitle = window.I18N[LANG]['title'];
+		let translatedText = dictTitle['static'][text] || '';
 		if (!translatedText) {
-			const reArr = dictTitle['\x72\x65\x67\x65\x78\x70'] || [];
+			const reArr = dictTitle.regexp || [];
 			for (let [pattern, replacement] of reArr) {
-				const newText = text['\x72\x65\x70\x6c\x61\x63\x65'](pattern, replacement);
+				const newText = text.replace(pattern, replacement);
 				if (newText !== text) {
 					translatedText = newText;
-					break
+					break;
 				}
 			}
 		}
 		if (translatedText) {
-			window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"]['\x74\x69\x74\x6c\x65'] = translatedText
+			document.title = translatedText;
 		}
 	}
 
-	function transTimeElement(zN4) {
-		if (!zN4) return;
-		const text = zN4['\x63\x68\x69\x6c\x64\x4e\x6f\x64\x65\x73']['\x6c\x65\x6e\x67\x74\x68'] > 0 ? zN4[
-			'\x6c\x61\x73\x74\x43\x68\x69\x6c\x64']['\x74\x65\x78\x74\x43\x6f\x6e\x74\x65\x6e\x74'] : zN4[
-			'\x74\x65\x78\x74\x43\x6f\x6e\x74\x65\x6e\x74'];
+	function transTimeElement(el) {
+		if (!el) return;
+		const text = el.childNodes.length > 0 ? el.lastChild.textContent : el.textContent;
 		if (!text) return;
-		const newText = text['\x72\x65\x70\x6c\x61\x63\x65'](/^on/, '');
+		const newText = text.replace(/^on/, '');
 		if (newText !== text) {
-			zN4['\x74\x65\x78\x74\x43\x6f\x6e\x74\x65\x6e\x74'] = newText
+			el.textContent = newText;
 		}
 	}
 
 	function watchTimeElement(el) {
 		if (!el) return;
-		const MutationObserver = window['\x4d\x75\x74\x61\x74\x69\x6f\x6e\x4f\x62\x73\x65\x72\x76\x65\x72'] ||
-			window['\x57\x65\x62\x4b\x69\x74\x4d\x75\x74\x61\x74\x69\x6f\x6e\x4f\x62\x73\x65\x72\x76\x65\x72'] ||
-			window['\x4d\x6f\x7a\x4d\x75\x74\x61\x74\x69\x6f\x6e\x4f\x62\x73\x65\x72\x76\x65\x72'];
+		const MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window
+			.MozMutationObserver;
 		new MutationObserver(mutations => {
-			const node = mutations[0] ? ['\x61\x64\x64\x65\x64\x4e\x6f\x64\x65\x73']?.[0];
-			if (node) transTimeElement(node)
-		})['\x6f\x62\x73\x65\x72\x76\x65'](el, {
+			const node = mutations[0]?.addedNodes?.[0];
+			if (node) transTimeElement(node);
+		}).observe(el, {
 			childList: true
-		})
+		});
 	}
 
-	function transElement(Yaopz5, ddGDO6) {
-		if (!Yaopz5[ddGDO6]) return;
-		const text = Yaopz5[ddGDO6];
+	function transElement(el, field) {
+		if (!el[field]) return;
+		const text = el[field];
 		const translatedText = transText(text);
 		if (translatedText) {
-			Yaopz5[ddGDO6] = translatedText
+			el[field] = translatedText;
 		}
 	}
 
 	function transText(text) {
-		if (/^[\\s0-9]*$/ ['\x74\x65\x73\x74'](text) || /^[\\u4e00-\\u9fa5]+$/ ['\x74\x65\x73\x74'](text) || !
-			/[a-zA-Z,.]/ ['\x74\x65\x73\x74'](text)) {
-			return false
+		if (/^[\\s0-9]*$/.test(text) || /^[\\u4e00-\\u9fa5]+$/.test(text) || !/[a-zA-Z,.]/.test(text)) {
+			return false;
 		}
-		const trimmedText = text['\x74\x72\x69\x6d']();
-		const cleanedText = trimmedText['\x72\x65\x70\x6c\x61\x63\x65'](/\\xa0|[\\s]+/g, ' ');
+		const trimmedText = text.trim();
+		const cleanedText = trimmedText.replace(/\\xa0|[\\s]+/g, ' ');
 		const result = fetchTranslatedText(cleanedText);
 		if (result && result !== cleanedText) {
-			return text['\x72\x65\x70\x6c\x61\x63\x65'](trimmedText, result)
+			return text.replace(trimmedText, result);
 		}
-		return false
+		return false;
 	}
 
-	function fetchTranslatedText(RbOsKu7) {
-		let translatedText = window['\x49\x31\x38\x4e'][LANG][page]['\x73\x74\x61\x74\x69\x63'][RbOsKu7] || window[
-			'\x49\x31\x38\x4e'][LANG]['\x70\x75\x62\x6c\x69\x63']['\x73\x74\x61\x74\x69\x63'][RbOsKu7];
-		if (typeof translatedText === '\x73\x74\x72\x69\x6e\x67') {
-			return translatedText
+	function fetchTranslatedText(text) {
+		let translatedText = window.I18N[LANG][page]['static'][text] ||
+			window.I18N[LANG]['public']['static'][text];
+		if (typeof translatedText === 'string') {
+			return translatedText;
 		}
-		if (enable_RegExp && regexpRules['\x6c\x65\x6e\x67\x74\x68'] > 0) {
+		if (enable_RegExp && regexpRules.length > 0) {
 			for (let [pattern, replacement] of regexpRules) {
-				const newText = RbOsKu7['\x72\x65\x70\x6c\x61\x63\x65'](pattern, replacement);
-				if (newText !== RbOsKu7) {
-					return newText
+				const newText = text.replace(pattern, replacement);
+				if (newText !== text) {
+					return newText;
 				}
 			}
 		}
-		return false
+		return false;
 	}
 
 	function transBySelector() {
-		if (!tranSelectors || tranSelectors['\x6c\x65\x6e\x67\x74\x68'] === 0) return;
+		if (!tranSelectors || tranSelectors.length === 0) return;
 		for (let [selector, newText] of tranSelectors) {
-			const el = window["\x64\x6f\x63\x75\x6d\x65\x6e\x74"][
-				'\x71\x75\x65\x72\x79\x53\x65\x6c\x65\x63\x74\x6f\x72'
-			](selector);
+			const el = document.querySelector(selector);
 			if (el) {
-				el['\x74\x65\x78\x74\x43\x6f\x6e\x74\x65\x6e\x74'] = newText
+				el.textContent = newText;
 			}
 		}
 	}
-	window['\x5f\x74\x6f\x67\x67\x6c\x65\x52\x65\x67\x45\x78\x70\x54\x72\x61\x6e\x73\x6c\x61\x74\x69\x6f\x6e'] =
-		function() {
-			enable_RegExp = !enable_RegExp;
-			localStorage['\x73\x65\x74\x49\x74\x65\x6d'](STORAGE_KEY_REGEXP, window["\x53\x74\x72\x69\x6e\x67"](
-				enable_RegExp))
-		}
+
+	window._toggleRegExpTranslation = function() {
+		enable_RegExp = !enable_RegExp;
+		localStorage.setItem(STORAGE_KEY_REGEXP, String(enable_RegExp));
+		// 不输出任何日志
+	};
+
 })();
