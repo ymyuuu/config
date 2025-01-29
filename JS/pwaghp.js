@@ -37,25 +37,29 @@ self.addEventListener('fetch', (event) => {
 		return;
 	}
 
-	// 定义需要跳过缓存的路径
+	// 定义需要缓存的路径
 	const cachePaths = [
-		'/_avatars',
-		'/_assets',
-		'/_private-user-images',
-		'/_camo',
-		'/_raw',
-		'/login',
-		'/sessions',
+		'/_avatars', // 用户头像
+		'/_assets', // 资源文件
+		'/_private-user-images', // 私有用户图片
+		'/_camo', // 伪装资源
+		'/_raw' // 原始资源
 	];
 
-	// 3. 跳过指定路径的请求
+	// 定义需要跳过缓存的路径
+	const skipCachePaths = [
+		'/login', // 用户头像
+		'/sessions', // 用户头像
+	];
+
+	// 3. 如果请求的路径包含跳过缓存路径，则跳过缓存
 	if (skipCachePaths.some(path => url.pathname.includes(path))) {
-		console.log(`%c${logMessage} - 跳过缓存（指定路径）`, 'color: #607d8b;'); // 蓝灰色
+		console.log(`%c${logMessage} - 跳过缓存（跳过路径）`, 'color: #f44336;'); // 红色
 		return;
 	}
 
-	// 4. 只缓存非 API 请求，且请求方式为 GET
-	if (event.request.method === 'GET') {
+	// 4. 只缓存上述指定路径的请求
+	if (cachePaths.some(path => url.pathname.includes(path)) && event.request.method === 'GET') {
 		event.respondWith(
 			caches.match(event.request).then((cachedResponse) => {
 				if (cachedResponse) {
