@@ -20,7 +20,6 @@ const cachePaths = [
 	'/login',
 	'/login',
 	'/sessions',
-	'/_docs',
 ];
 
 // 判断是否为需要缓存的路径
