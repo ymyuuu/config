@@ -1,11 +1,12 @@
 /**
  * Service Worker 配置文件
- * 实现请求的缓存策略和控制
+ * 用于实现请求的缓存策略和控制
+ * 包含了详细的日志输出，方便调试和监控
  */
 
-// 日志颜色配置 - 使用柔和的色调便于分辨
+// 日志颜色配置
 const LOG_COLORS = {
-    INFO: '#2196f3',    // 普通信息 - 淡蓝色
+    INFO: '#2196f3',    // 普通信息 - 蓝色
     WARN: '#ff9800',    // 警告信息 - 橙色
     ERROR: '#f44336',   // 错误信息 - 红色
     DEBUG: '#757575'    // 调试信息 - 灰色
@@ -13,30 +14,29 @@ const LOG_COLORS = {
 
 /**
  * 缓存配置
- * cachePaths: 必须缓存的资源路径，这些路径的资源无论请求方法如何都会被缓存
- * skipPaths: 禁止缓存的路径，这些路径的资源永远不会被缓存
+ * 包含必须缓存的资源路径和禁止缓存的路径
  */
 const CACHE_CONFIG = {
-    // 必须缓存的路径
+    // 必须缓存的路径 - 这些路径下的资源无论请求方法如何都会被缓存
     cachePaths: [
-        '/_avatars',           // 用户头像资源 - 频繁访问且不常变化
-        '/_assets',            // 静态资源文件 - 如JS、CSS、图片等
-        '/_private-user-images', // 用户上传的私有图片 - 需要缓存以提高访问速度
-        '/_camo',              // 代理的外部资源 - 已经过安全处理的外部资源
-        '/_raw'                // 原始资源文件 - 如大型文件等
+        '/_avatars',           // 用户头像资源
+        '/_assets',            // 静态资源文件
+        '/_private-user-images', // 用户上传的私有图片
+        '/_camo',              // 代理的外部资源
+        '/_raw'                // 原始资源文件
     ],
-    // 禁止缓存的路径
+    // 禁止缓存的路径 - 这些路径下的资源永远不会被缓存
     skipPaths: [
-        '/login',              // 登录路径 - 涉及安全凭证，不能缓存
-        '/sessions'            // 会话路径 - 包含敏感会话信息
+        '/login',              // 登录路径
+        '/sessions'            // 会话路径
     ]
 };
 
 /**
- * 格式化日志输出
+ * 日志输出函数
  * @param {string} message - 日志消息
- * @param {string} color - 日志颜色
- * @param {string} type - 日志类型（可选）
+ * @param {string} color - 日志颜色代码
+ * @param {string} type - 日志类型
  */
 const log = (message, color, type = '') => {
     const prefix = type ? `[${type}] ` : '';
@@ -50,12 +50,12 @@ const log = (message, color, type = '') => {
  * @returns {Object} 包含是否跳过的布尔值和跳过原因
  */
 const shouldSkipCache = (request, url) => {
-    // 检查chrome扩展请求
+    // 检查是否是浏览器扩展请求
     if (url.protocol === 'chrome-extension:') {
         return { skip: true, reason: '浏览器扩展请求' };
     }
 
-    // 检查跳过缓存路径
+    // 检查是否在跳过缓存的路径列表中
     if (CACHE_CONFIG.skipPaths.some(path => url.pathname.includes(path))) {
         return { skip: true, reason: '安全敏感路径' };
     }
@@ -67,7 +67,7 @@ const shouldSkipCache = (request, url) => {
         return { skip: true, reason: '请求头指定不缓存' };
     }
 
-    // 检查授权头
+    // 检查是否包含授权头
     if (request.headers.get('Authorization')) {
         return { skip: true, reason: '包含授权信息' };
     }
@@ -96,22 +96,23 @@ const updateCache = async (request, response, logMessage) => {
     } catch (error) {
         log(`${logMessage} - 缓存更新失败: ${error.message}`, LOG_COLORS.ERROR);
     }
+
     return response;
 };
 
-// 安装事件处理
+// Service Worker 安装事件处理
 self.addEventListener('install', (event) => {
     log('Service Worker 安装完成', LOG_COLORS.INFO, 'Install');
     self.skipWaiting(); // 跳过等待，立即激活
 });
 
-// 激活事件处理
+// Service Worker 激活事件处理
 self.addEventListener('activate', (event) => {
     log('Service Worker 激活完成', LOG_COLORS.INFO, 'Activate');
     self.clients.claim(); // 取得控制权
 });
 
-// 请求拦截处理
+// Service Worker 请求拦截处理
 self.addEventListener('fetch', (event) => {
     // 验证请求有效性
     if (!event.request?.url) {
@@ -158,9 +159,10 @@ self.addEventListener('fetch', (event) => {
 
             } catch (error) {
                 log(`${logMessage} - 请求处理失败: ${error.message}`, LOG_COLORS.ERROR);
+                // 创建错误响应，注意 statusText 必须使用英文
                 return new Response('网络请求失败', {
                     status: 408,
-                    statusText: '请求超时',
+                    statusText: 'Request Timeout',
                     headers: new Headers({
                         'Content-Type': 'text/plain; charset=utf-8'
                     })
