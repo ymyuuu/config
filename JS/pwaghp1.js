@@ -34,14 +34,10 @@ const CACHE_CONFIG = {
 	// 禁止缓存的路径 - 这些路径下的资源永远不会被缓存
 	skipPaths: [
 		'/login', // 登录请求
-		'/logout', // 登录请求
-		'/admin', // 登录请求
 		'/sessions', // 会话相关
 		'/c', // 会话相关
 		'/chat', // 会话相关
 		'/api', // 会话相关
-		'/new', // 会话相关
-		'/settings', // 会话相关
 		'/', // 根路径，避免所有路径都跳过
 	]
 };
@@ -72,12 +68,14 @@ const shouldSkipCache = (request, url) => {
 		};
 	}
 
-	// 跳过配置中指定的路径
-	if (CACHE_CONFIG.skipPaths.includes(url.pathname)) { // 精确匹配路径
-		return {
-			skip: true,
-			reason: '路径在禁止缓存列表中'
-		};
+	// 精确匹配禁止缓存路径
+	for (const skipPath of CACHE_CONFIG.skipPaths) {
+		if (url.pathname === skipPath || url.pathname.startsWith(skipPath + '/')) {
+			return {
+				skip: true,
+				reason: `路径在禁止缓存列表中: ${skipPath}`
+			};
+		}
 	}
 
 	// 检查缓存控制头
