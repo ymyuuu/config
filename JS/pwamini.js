@@ -18,7 +18,6 @@ const cachePaths = [
 	'/_camo',
 	'/_raw',
 	'/login',
-	'/login',
 	'/sessions',
 ];
 
