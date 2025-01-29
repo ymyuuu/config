@@ -38,7 +38,7 @@ const CACHE_CONFIG = {
 		'/c', // 会话相关
 		'/chat', // 会话相关
 		'/api', // 会话相关
-		'/', // 会话相关
+		'/', // 根路径，避免所有路径都跳过
 	]
 };
 
@@ -69,7 +69,7 @@ const shouldSkipCache = (request, url) => {
 	}
 
 	// 跳过配置中指定的路径
-	if (CACHE_CONFIG.skipPaths.some(path => url.pathname.includes(path))) {
+	if (CACHE_CONFIG.skipPaths.includes(url.pathname)) { // 精确匹配路径
 		return {
 			skip: true,
 			reason: '路径在禁止缓存列表中'
