@@ -1,0 +1,12 @@
+#!name = NodeSeek Bypass
+#!desc = 自动跳过 nodeseek 跳转页面，直接访问目标地址
+#!openUrl = https://raw.githubusercontent.com/ymyuuu/config/main/PLUGIN/NodeSeekJump.plugin
+#!author = @Mingyu
+#!homepage = https://t.me/ymyuuu
+#!date = 2025-02-04
+
+[Rewrite]
+^https:\/\/www\.nodeseek\.com\/jump\?to=(.+) 302 $1
+
+[Mitm]
+hostname = www.nodeseek.com
