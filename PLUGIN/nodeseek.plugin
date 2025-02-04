@@ -6,7 +6,7 @@
 #!date = 2025-02-04
 
 [Script]
-http-request ^https:\/\/www\.nodeseek\.com\/jump\?to=(.*)$ script-path=https://raw.githubusercontent.com/ymyuuu/config/refs/heads/main/JS/nodeseek.js, timeout=60, tag=Nodeseek Jump
+http-request ^https:\/\/www\.nodeseek\.com\/.*$ script-path=https://raw.githubusercontent.com/ymyuuu/config/refs/heads/main/JS/nodeseek.js, timeout=60, tag=Nodeseek Jump
 
 [Mitm]
 hostname = www.nodeseek.com
