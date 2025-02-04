@@ -6,7 +6,7 @@
 #!date = 2025-02-04
 
 [Rewrite]
-^https:\/\/www\.nodeseek\.com\/jump\?to=(.+) 302 $1
+^https:\/\/www\.nodeseek\.com\/jump\?to=(.*)$ 302 $1
 
 [Mitm]
 hostname = www.nodeseek.com
