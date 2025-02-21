@@ -9,11 +9,11 @@
 
 // 缓存路径配置，只缓存包含以下路径的请求
 const CACHE_PATHS = [
-    '/_avatars',          // 用户头像等静态资源
-    '/_assets',           // JS、CSS等基础资源
+    '/_avatars',             // 用户头像等静态资源
+    '/_assets',              // JS、CSS等基础资源
     '/_private-user-images', // 用户上传的图片
-    '/_camo',             // 代理过的外部资源
-    '/_raw'               // 大文件等原始资源
+    '/_camo',                // 代理过的外部资源
+    '/_raw'                  // 大文件等原始资源
 ];
 
 // 日志颜色配置 - 使用七种主要颜色标识不同类型的操作
@@ -24,7 +24,7 @@ const LOG_COLORS = {
     ERROR: '#f44336',   // 错误信息 - 红色（请求失败、严重错误）
     SKIP: '#757575',    // 跳过操作 - 灰色（跳过缓存的请求）
     UPDATE: '#00bcd4',  // 更新操作 - 青色（缓存更新操作）
-    LIFECYCLE: '#9c27b0' // 生命周期 - 紫色（安装、激活事件）
+    LIFECYCLE: '#9c27b0'// 生命周期 - 紫色（安装、激活事件）
 };
 
 /**
@@ -33,7 +33,7 @@ const LOG_COLORS = {
  * @returns {boolean} 是否匹配缓存路径
  */
 const isCachePath = (pathname) => {
-    return CACHE_PATHS.some(path => pathname.startsWith(path));
+    return CACHE_PATHS.some(path => pathname.includes(path));
 };
 
 /**
@@ -49,24 +49,25 @@ const log = (message, color, type = '') => {
 
 /**
  * 检查请求是否应该跳过缓存
+ * 先检查路径，如果 URL 中不包含指定路径则直接跳过缓存，再检查其他条件
  * @param {Request} request - 请求对象
  * @param {URL} url - 解析后的 URL 对象
  * @returns {Object} 包含是否跳过的布尔值和具体原因
  */
 const shouldSkipCache = (request, url) => {
+    // 先判断 URL 路径是否包含缓存目录
+    if (!isCachePath(url.pathname)) {
+        return {
+            skip: true,
+            reason: `路径不包含缓存目录(${url.pathname})`
+        };
+    }
+
     // 如果不是 GET 请求，跳过缓存
     if (request.method !== 'GET') {
         return {
             skip: true,
             reason: '非 GET 请求不缓存'
-        };
-    }
-
-    // 仅缓存指定路径的请求，若 URL 路径不包含指定内容，则跳过缓存
-    if (!isCachePath(url.pathname)) {
-        return {
-            skip: true,
-            reason: `路径不在缓存范围内(${url.pathname})`
         };
     }
 
@@ -151,7 +152,7 @@ self.addEventListener('fetch', (event) => {
     const url = new URL(event.request.url);
     const logMessage = `${event.request.method} ${url.pathname}`;
 
-    // 检查是否需要跳过缓存
+    // 先判断是否需要缓存，若路径不匹配则跳过缓存
     const skipCheck = shouldSkipCache(event.request, url);
     if (skipCheck.skip) {
         log(`${logMessage} - 跳过缓存: ${skipCheck.reason}`, LOG_COLORS.SKIP);
