@@ -7,6 +7,15 @@
  * 3. 下次请求时使用更新后的缓存
  */
 
+// 缓存路径配置，只缓存包含以下路径的请求
+const CACHE_PATHS = [
+    '/_avatars',          // 用户头像等静态资源
+    '/_assets',           // JS、CSS等基础资源
+    '/_private-user-images', // 用户上传的图片
+    '/_camo',             // 代理过的外部资源
+    '/_raw'               // 大文件等原始资源
+];
+
 // 日志颜色配置 - 使用七种主要颜色标识不同类型的操作
 const LOG_COLORS = {
     SUCCESS: '#4caf50', // 成功操作 - 绿色（缓存命中、更新成功）
@@ -18,27 +27,13 @@ const LOG_COLORS = {
     LIFECYCLE: '#9c27b0' // 生命周期 - 紫色（安装、激活事件）
 };
 
-// 定义需要缓存的路径
-const cachePaths = [
-    '/_avatars', // 用户头像等静态资源
-    '/_assets', // JS、CSS等基础资源
-    '/_private-user-images', // 用户上传的图片
-    '/_camo', // 代理过的外部资源
-    '/_raw' // 大文件等原始资源
-];
-
 /**
- * 检查是否为静态资源
+ * 检查请求是否匹配需要缓存的路径
  * @param {string} pathname - URL 路径
- * @returns {boolean} 是否为静态资源
+ * @returns {boolean} 是否匹配缓存路径
  */
-const isStaticResource = (pathname) => {
-    // 定义静态资源的文件扩展名
-    const staticExtensions = [
-        '.js', '.css', '.png', '.jpg', '.jpeg', '.gif', 
-        '.svg', '.ico', '.woff', '.woff2', '.ttf', '.eot'
-    ];
-    return staticExtensions.some(ext => pathname.toLowerCase().endsWith(ext));
+const isCachePath = (pathname) => {
+    return CACHE_PATHS.some(path => pathname.startsWith(path));
 };
 
 /**
@@ -55,7 +50,7 @@ const log = (message, color, type = '') => {
 /**
  * 检查请求是否应该跳过缓存
  * @param {Request} request - 请求对象
- * @param {URL} url - 解析后的URL对象
+ * @param {URL} url - 解析后的 URL 对象
  * @returns {Object} 包含是否跳过的布尔值和具体原因
  */
 const shouldSkipCache = (request, url) => {
@@ -67,19 +62,11 @@ const shouldSkipCache = (request, url) => {
         };
     }
 
-    // 检查 URL 是否包含在 cachePaths 中
-    if (!cachePaths.some(path => url.pathname.startsWith(path))) {
+    // 仅缓存指定路径的请求，若 URL 路径不包含指定内容，则跳过缓存
+    if (!isCachePath(url.pathname)) {
         return {
             skip: true,
-            reason: '路径不在缓存列表中'
-        };
-    }
-
-    // 如果不是静态资源，跳过缓存
-    if (!isStaticResource(url.pathname)) {
-        return {
-            skip: true,
-            reason: '非静态资源不缓存'
+            reason: `路径不在缓存范围内(${url.pathname})`
         };
     }
 
@@ -181,9 +168,8 @@ self.addEventListener('fetch', (event) => {
                 // 后台更新缓存（Stale-While-Revalidate 策略）
                 event.waitUntil(
                     fetch(event.request)
-                    .then(response => updateCache(event.request, response, logMessage))
-                    .catch(error => log(`${logMessage} - 后台更新失败: ${error.message}`,
-                        LOG_COLORS.WARN))
+                        .then(response => updateCache(event.request, response, logMessage))
+                        .catch(error => log(`${logMessage} - 后台更新失败: ${error.message}`, LOG_COLORS.WARN))
                 );
                 return cachedResponse;
             }
