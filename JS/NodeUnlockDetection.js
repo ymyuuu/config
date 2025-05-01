@@ -20,6 +20,11 @@ const GPT_RegionL_URL = 'https://chatgpt.com/cdn-cgi/trace'
 
 const Google_BASE_URL = 'https://www.google.com/maps/timeline'
 
+// 最大重试次数
+const MAX_RETRIES = 2;
+// 统一超时设置（10秒）
+const TIMEOUT = 10000;
+
 var inputParams = $environment.params;
 var nodeName = inputParams.node;
 
@@ -53,16 +58,20 @@ Promise.all([ytbTest(),disneyLocation(),nfTest(),daznTest(),parmTest(),discovery
 
 function disneyLocation() {
     return new Promise((resolve, reject) => {
-        let params = {
-            url: DISNEY_LOCATION_BASE_URL,
-            node: nodeName,
-            timeout: 5000, //ms
-            headers: {
-                'Accept-Language': 'en',
-                "Authorization": 'ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84',
-                'Content-Type': 'application/json',
-                'User-Agent': 'UA'
-            },
+        // 当前重试次数
+        let currentRetry = 0;
+        
+        function performRequest() {
+            let params = {
+                url: DISNEY_LOCATION_BASE_URL,
+                node: nodeName,
+                timeout: TIMEOUT, // 使用统一的超时设置
+                headers: {
+                    'Accept-Language': 'en',
+                    "Authorization": 'ZGlzbmV5JmJyb3dzZXImMS4wLjA.Cu56AgSfBTDag5NiRA81oLHkDZfu5L3CKadnefEAY84',
+                    'Content-Type': 'application/json',
+                    'User-Agent': 'UA'
+                },
             body: JSON.stringify({
                 query: 'mutation registerDevice($input: RegisterDeviceInput!) { registerDevice(registerDevice: $input) { grant { grantType assertion } } }',
                 variables: {
@@ -83,38 +92,69 @@ function disneyLocation() {
                   },
                 },
             }),
-        }
-        $httpClient.post(params, (errormsg,response,data) => {
-            console.log("----------disney--------------");
-            if (errormsg) {
-                result["Discovery"] = "<b>Disneyᐩ:</b>检测失败 ❗️";
-                resolve("disney request failed:" + errormsg);
-                return;
             }
+            
+            $httpClient.post(params, (errormsg,response,data) => {
+                console.log("----------disney--------------");
+                if (errormsg) {
+                    console.log("Disney request failed: " + errormsg);
+                    // 如果还有重试次数，则重试
+                    if (currentRetry < MAX_RETRIES) {
+                        currentRetry++;
+                        console.log("正在重试 Disney+ 检测，第 " + currentRetry + " 次");
+                        performRequest();
+                        return;
+                    }
+                    result["Disney"] = "<b>Disneyᐩ:</b>检测失败 ❗️";
+                    resolve("disney request failed:" + errormsg);
+                    return;
+                }
             if (response.status == 200) {
                 console.log("disney request result:" + response.status);
-                let resData = JSON.parse(data);
-                if (resData?.extensions?.sdk?.session != null) {
-                    let {
-                        inSupportedLocation,
-                        location: { countryCode },
-                    } = resData?.extensions?.sdk?.session
-                    if (inSupportedLocation == false) {
-                        result["Disney"] = "<b>Disneyᐩ:</b> 即将登陆 ➟ "+'⟦'+flags.get(countryCode.toUpperCase())+"⟧ ⚠️"
-                        resolve();
+                try {
+                    let resData = JSON.parse(data);
+                    if (resData?.extensions?.sdk?.session != null) {
+                        let {
+                            inSupportedLocation,
+                            location: { countryCode },
+                        } = resData?.extensions?.sdk?.session
+                        if (inSupportedLocation == false) {
+                            result["Disney"] = "<b>Disneyᐩ:</b> 即将登陆 ➟ "+'⟦'+flags.get(countryCode.toUpperCase())+"⟧ ⚠️"
+                            resolve();
+                        } else {
+                            result["Disney"] = "<b>Disneyᐩ:</b> 支持 ➟ "+'⟦'+flags.get(countryCode.toUpperCase())+"⟧ 🎉"
+                            resolve({ inSupportedLocation, countryCode });
+                        }
                     } else {
-                        result["Disney"] = "<b>Disneyᐩ:</b> 支持 ➟ "+'⟦'+flags.get(countryCode.toUpperCase())+"⟧ 🎉"
-                        resolve({ inSupportedLocation, countryCode });
+                        result["Disney"] = "<b>Disneyᐩ:</b> 未支持 🚫 ";
+                        resolve();
                     }
-                } else {
-                    result["Disney"] = "<b>Disneyᐩ:</b> 未支持 🚫 ";
+                } catch (err) {
+                    console.log("解析 Disney+ 数据失败: " + err);
+                    if (currentRetry < MAX_RETRIES) {
+                        currentRetry++;
+                        console.log("正在重试 Disney+ 检测，第 " + currentRetry + " 次");
+                        performRequest();
+                        return;
+                    }
+                    result["Disney"] = "<b>Disneyᐩ:</b>检测失败 ❗️";
                     resolve();
                 }
             } else {
-                result["Discovery"] = "<b>Disneyᐩ:</b>检测失败 ❗️";
+                console.log("Disney+ 请求失败，状态码: " + response.status);
+                if (currentRetry < MAX_RETRIES) {
+                    currentRetry++;
+                    console.log("正在重试 Disney+ 检测，第 " + currentRetry + " 次");
+                    performRequest();
+                    return;
+                }
+                result["Disney"] = "<b>Disneyᐩ:</b>检测失败 ❗️";
                 resolve();
             }
-        })
+        });
+        
+        // 开始执行请求
+        performRequest();
     })
 }
 
@@ -404,63 +444,97 @@ function nfTest() {
 }
 
 //chatgpt
-support_countryCodes=["T1","XX","AL","DZ","AD","AO","AG","AR","AM","AU","AT","AZ","BS","BD","BB","BE","BZ","BJ","BT","BA","BW","BR","BG","BF","CV","CA","CL","CO","KM","CR","HR","CY","DK","DJ","DM","DO","EC","SV","EE","FJ","FI","FR","GA","GM","GE","DE","GH","GR","GD","GT","GN","GW","GY","HT","HN","HU","IS","IN","ID","IQ","IE","IL","IT","JM","JP","JO","KZ","KE","KI","KW","KG","LV","LB","LS","LR","LI","LT","LU","MG","MW","MY","MV","ML","MT","MH","MR","MU","MX","MC","MN","ME","MA","MZ","MM","NA","NR","NP","NL","NZ","NI","NE","NG","MK","NO","OM","PK","PW","PA","PG","PE","PH","PL","PT","QA","RO","RW","KN","LC","VC","WS","SM","ST","SN","RS","SC","SL","SG","SK","SI","SB","ZA","ES","LK","SR","SE","CH","TH","TG","TO","TT","TN","TR","TV","UG","AE","US","UY","VU","ZM","BO","BN","CG","CZ","VA","FM","MD","PS","KR","TW","TZ","TL","GB"]
-
+// 简化ChatGPT检测方法
 function gptTest() {
     return new Promise((resolve, reject) => {
-        let params = {
-            url: GPT_BASE_URL,
-            node: nodeName,
-            timeout: 5000, //ms
-        }
-        $httpClient.get(params, (errormsg,response,data) => {
-            console.log("----------GPT--------------");
-            if (errormsg) {
-                console.log("GPT request failed:!!! " + errormsg);
-                result["ChatGPT"] = "<b>ChatGPT: </b>未支持 🚫"
-                // resolve(errormsg);
-                resolve("不支持 ChatGPT")
-                return;
-            } 
-            let resp = JSON.stringify(data)
-            console.log("ChatGPT Main Test")
-            let jdg = resp.indexOf("text/plain")
-            if (jdg == -1) {
-                let p = {
-                    url: GPT_RegionL_URL,
-                    node: nodeName,
-                    timeout: 5000, //ms
-                }
-                $httpClient.get(p, (emsg, resheader, resData) => {
-                    console.log("----------GPT RegionL--------------");
-                    if (emsg) {
-                        console.log("GPT RegionL request error:" + errormsg);
-                        result["ChatGPT"] = "<b>ChatGPT: </b>检测失败 ❗️";
-                        resolve(emsg);
+        // 重试次数
+        const maxRetries = 2;
+        let currentRetry = 0;
+        
+        function performRequest() {
+            let params = {
+                url: GPT_BASE_URL,
+                node: nodeName,
+                timeout: 10000, // 超时时间增加到10秒
+            }
+            
+            $httpClient.get(params, (errormsg, response, data) => {
+                console.log("----------GPT--------------");
+                if (errormsg) {
+                    console.log("GPT request failed: " + errormsg);
+                    // 如果还有重试次数，则重试
+                    if (currentRetry < maxRetries) {
+                        currentRetry++;
+                        console.log("正在重试 ChatGPT 检测，第 " + currentRetry + " 次");
+                        performRequest();
                         return;
                     }
-
-                    console.log("ChatGPT Region Test")
-                    let region = resData.split("loc=")[1].split("\n")[0]
-                    console.log("ChatGPT Region: "+region)
-                    let res = support_countryCodes.indexOf(region)
-                    if (res != -1) {
-                        result["ChatGPT"] = "<b>ChatGPT: </b>支持 "+arrow+ "⟦"+flags.get(region.toUpperCase())+"⟧ 🎉"
-                        console.log("支持 ChatGPT")
-                        resolve(region)
-                    } else {
-                        result["ChatGPT"] = "<b>ChatGPT: </b>未支持 🚫"
-                        console.log("不支持 ChatGPT")
-                        resolve("不支持 ChatGPT")
-                    }
-                })
-            } else {
-                result["ChatGPT"] = "<b>ChatGPT: </b>未支持 🚫"
-                console.log("不支持 ChatGPT")
-                resolve("不支持 ChatGPT")
+                    result["ChatGPT"] = "<b>ChatGPT: </b>检测失败 ❗️";
+                    resolve("检测失败");
+                    return;
+                }
+                
+                // 检查状态码，非403表示解锁
+                if (response.status !== 403) {
+                    // 获取地区信息
+                    checkRegion();
+                } else {
+                    result["ChatGPT"] = "<b>ChatGPT: </b>未支持 🚫";
+                    console.log("不支持 ChatGPT，状态码: " + response.status);
+                    resolve("不支持 ChatGPT");
+                }
+            });
+        }
+        
+        function checkRegion() {
+            let params = {
+                url: GPT_RegionL_URL,
+                node: nodeName,
+                timeout: 10000, // 超时时间增加到10秒
             }
-        })
-    })
+            
+            $httpClient.get(params, (errormsg, response, data) => {
+                console.log("----------GPT Region--------------");
+                if (errormsg) {
+                    console.log("GPT Region request failed: " + errormsg);
+                    // 如果还有重试次数，则重试
+                    if (currentRetry < maxRetries) {
+                        currentRetry++;
+                        console.log("正在重试 ChatGPT 地区检测，第 " + currentRetry + " 次");
+                        checkRegion();
+                        return;
+                    }
+                    result["ChatGPT"] = "<b>ChatGPT: </b>支持但无法确定地区 ⚠️";
+                    resolve("支持但无法确定地区");
+                    return;
+                }
+                
+                try {
+                    // 解析地区信息
+                    let region = "未知";
+                    if (data.indexOf("loc=") !== -1) {
+                        region = data.split("loc=")[1].split("\n")[0];
+                    }
+                    console.log("ChatGPT Region: " + region);
+                    
+                    // 直接显示地区信息
+                    if (region && region !== "未知" && flags.get(region.toUpperCase())) {
+                        result["ChatGPT"] = "<b>ChatGPT: </b>支持 " + arrow + "⟦" + flags.get(region.toUpperCase()) + "⟧ 🎉";
+                    } else {
+                        result["ChatGPT"] = "<b>ChatGPT: </b>支持 " + arrow + "⟦未知地区⟧ 🎉";
+                    }
+                    resolve(region);
+                } catch (err) {
+                    console.log("解析 ChatGPT 地区信息失败: " + err);
+                    result["ChatGPT"] = "<b>ChatGPT: </b>支持但无法确定地区 ⚠️";
+                    resolve("支持但无法确定地区");
+                }
+            });
+        }
+        
+        // 开始执行请求
+        performRequest();
+    });
 }
 
 //google送中
