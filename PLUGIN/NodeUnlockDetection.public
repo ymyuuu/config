@@ -1,0 +1,7 @@
+#!name=节点解锁
+#!date=2025-05-01 15:25:28
+
+[Script]
+generic script-path=https://kelee.one/Resource/Script/Node_detection_tool/NetworkEntryAndExitQueries.js,timeout=10,tag=入口落地查询,img-url=globe.asia.australia.system
+generic script-path=https://kelee.one/Resource/Script/Node_detection_tool/LocationDetection.js,timeout=10,tag=地理位置查询,img-url=location.circle.system
+generic script-path=https://raw.githubusercontent.com/ymyuuu/config/refs/heads/main/JS/NodeUnlockDetection.js,timeout=20,tag=节点解锁查询,img-url=play.circle.system
