@@ -19,7 +19,7 @@
 	// 动态加载词典
 	async function loadDictionary() {
 		try {
-			console.log('[GitHub中文化] 加载词典...');
+			console.log('[GitHub Chinese version] 加载词典...');
 			const response = await fetch(CONFIG.DICT_URL);
 			const scriptText = await response.text();
 
@@ -30,11 +30,11 @@
 
 			if (typeof window.I18N !== 'undefined') {
 				I18N = window.I18N;
-				console.log('[GitHub中文化] 词典加载成功');
+				console.log('[GitHub Chinese version] 词典加载成功');
 				return true;
 			}
 		} catch (error) {
-			console.error('[GitHub中文化] 词典加载失败:', error);
+			console.error('[GitHub Chinese version] 词典加载失败:', error);
 		}
 		return false;
 	}
@@ -90,7 +90,7 @@
 		}
 
 		if (pageType && I18N[CONFIG.LANG]?.[pageType]) {
-			console.log(`[GitHub中文化] 页面类型: ${pageType}`);
+			console.log(`[GitHub Chinese version] 页面类型: ${pageType}`);
 			return pageType;
 		}
 
@@ -250,7 +250,7 @@
 
 		const duration = performance.now() - start;
 		if (duration > 20) {
-			console.log(`[GitHub中文化] 节点翻译耗时: ${duration.toFixed(2)}ms`);
+			console.log(`[GitHub Chinese version] 节点翻译耗时: ${duration.toFixed(2)}ms`);
 		}
 	}
 
@@ -339,7 +339,7 @@
 				traverseNode(document.body);
 				transTitle();
 				transBySelector();
-				console.log('[GitHub中文化] 初始化完成');
+				console.log('[GitHub Chinese version] 初始化完成');
 			}
 		};
 
